@@ -40,9 +40,9 @@ If you have questions concerning this license or the applicable additional terms
 
 typedef enum
 {
-    NoState = -1,
-    StatCount,
-    ShowNextLoc
+	NoState = -1,
+	StatCount,
+	ShowNextLoc
 
 } stateenum_t;
 

@@ -136,10 +136,10 @@ typedef enum
 // the game final animation, or a demo. 
 typedef enum
 {
-    GS_LEVEL,
-    GS_INTERMISSION,
-    GS_FINALE,
-    GS_DEMOSCREEN
+	GS_LEVEL,
+	GS_INTERMISSION,
+	GS_FINALE,
+	GS_DEMOSCREEN
 } gamestate_t;
 
 //
@@ -156,11 +156,11 @@ typedef enum
 
 typedef enum
 {
-    sk_baby,
-    sk_easy,
-    sk_medium,
-    sk_hard,
-    sk_nightmare
+	sk_baby,
+	sk_easy,
+	sk_medium,
+	sk_hard,
+	sk_nightmare
 } skill_t;
 
 
@@ -171,15 +171,15 @@ typedef enum
 //
 typedef enum
 {
-    it_bluecard,
-    it_yellowcard,
-    it_redcard,
-    it_blueskull,
-    it_yellowskull,
-    it_redskull,
-    
-    NUMCARDS
-    
+	it_bluecard,
+	it_yellowcard,
+	it_redcard,
+	it_blueskull,
+	it_yellowskull,
+	it_redskull,
+	
+	NUMCARDS
+	
 } card_t;
 
 
@@ -189,20 +189,20 @@ typedef enum
 //  user has not changed weapon.
 typedef enum
 {
-    wp_fist,
-    wp_pistol,
-    wp_shotgun,
-    wp_chaingun,
-    wp_missile,
-    wp_plasma,
-    wp_bfg,
-    wp_chainsaw,
-    wp_supershotgun,
+	wp_fist,
+	wp_pistol,
+	wp_shotgun,
+	wp_chaingun,
+	wp_missile,
+	wp_plasma,
+	wp_bfg,
+	wp_chainsaw,
+	wp_supershotgun,
 
-    NUMWEAPONS,
-    
-    // No pending weapon change.
-    wp_nochange
+	NUMWEAPONS,
+	
+	// No pending weapon change.
+	wp_nochange
 
 } weapontype_t;
 
@@ -210,12 +210,12 @@ typedef enum
 // Ammunition types defined.
 typedef enum
 {
-    am_clip,	// Pistol / chaingun ammo.
-    am_shell,	// Shotgun / double barreled shotgun.
-    am_cell,	// Plasma rifle, BFG.
-    am_misl,	// Missile launcher.
-    NUMAMMO,
-    am_noammo	// Unlimited for chainsaw / fist.	
+	am_clip,	// Pistol / chaingun ammo.
+	am_shell,	// Shotgun / double barreled shotgun.
+	am_cell,	// Plasma rifle, BFG.
+	am_misl,	// Missile launcher.
+	NUMAMMO,
+	am_noammo	// Unlimited for chainsaw / fist.	
 
 } ammotype_t;
 
@@ -223,14 +223,14 @@ typedef enum
 // Power up artifacts.
 typedef enum
 {
-    pw_invulnerability,
-    pw_strength,
-    pw_invisibility,
-    pw_ironfeet,
-    pw_allmap,
-    pw_infrared,
-    NUMPOWERS
-    
+	pw_invulnerability,
+	pw_strength,
+	pw_invisibility,
+	pw_ironfeet,
+	pw_allmap,
+	pw_infrared,
+	NUMPOWERS
+	
 } powertype_t;
 
 
@@ -242,11 +242,11 @@ typedef enum
 //
 typedef enum
 {
-    INVULNTICS	= (30*TICRATE),
-    INVISTICS	= (60*TICRATE),
-    INFRATICS	= (120*TICRATE),
-    IRONTICS	= (60*TICRATE)
-    
+	INVULNTICS	= (30*TICRATE),
+	INVISTICS	= (60*TICRATE),
+	INFRATICS	= (120*TICRATE),
+	IRONTICS	= (60*TICRATE)
+	
 } powerduration_t;
 
 

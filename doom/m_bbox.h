@@ -40,10 +40,10 @@ If you have questions concerning this license or the applicable additional terms
 // Bounding box coordinate storage.
 enum
 {
-    BOXTOP,
-    BOXBOTTOM,
-    BOXLEFT,
-    BOXRIGHT
+	BOXTOP,
+	BOXBOTTOM,
+	BOXLEFT,
+	BOXRIGHT
 };	// bbox coordinates
 
 // Bounding box functions.

@@ -43,9 +43,9 @@ If you have questions concerning this license or the applicable additional terms
 
 typedef struct
 {
-    unsigned char*	sequence;
-    unsigned char*	p;
-    
+	unsigned char*	sequence;
+	unsigned char*	p;
+	
 } cheatseq_t;
 
 int

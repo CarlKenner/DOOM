@@ -37,7 +37,7 @@ If you have questions concerning this license or the applicable additional terms
 //	 Remarkable thing is, how to use BAMs with this? 
 //
 //	int tantoangle[2049]	- ArcTan LUT,
-//	  maps tan(angle) to angle fast. Gotta search.	
+//		maps tan(angle) to angle fast. Gotta search.	
 //    
 //-----------------------------------------------------------------------------
 
