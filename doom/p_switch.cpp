@@ -280,7 +280,7 @@ P_ChangeSwitchTexture
 //
 // P_UseSpecialLine
 // Called when a thing uses a special line.
-// Only the front sides of lines are usable.
+// Only the front sides of ::g->lines are usable.
 //
 boolean
 P_UseSpecialLine

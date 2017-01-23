@@ -230,7 +230,7 @@ typedef struct line_s
 //
 // A SubSector.
 // References a Sector.
-// Basically, this is a list of LineSegs,
+// Basically, this is a list of ::g->linesegs,
 //  indicating the visible walls that define
 //  (all or some) sides of a convex BSP leaf.
 //

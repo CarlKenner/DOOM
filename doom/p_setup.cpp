@@ -527,7 +527,7 @@ void P_GroupLines (void)
 	ss->sector = seg->sidedef->sector;
 	}
 
-	// count number of lines in each sector
+	// count number of ::g->lines in each sector
 	li = lines;
 	total = 0;
 	for (i=0 ; i<numlines ; i++, li++)

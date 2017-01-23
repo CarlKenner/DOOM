@@ -449,7 +449,7 @@ void D_PageDrawer (void)
 
 //
 // D_AdvanceDemo
-// Called after each demo or intro demosequence finishes
+// Called after each demo or intro ::g->demosequence finishes
 //
 void D_AdvanceDemo (void)
 {
@@ -542,7 +542,7 @@ void D_StartTitle (void)
 
 
 
-//      print title for every printed line
+//      print ::g->title for every printed line
 char            title[128];
 
 

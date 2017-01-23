@@ -26,7 +26,7 @@ If you have questions concerning this license or the applicable additional terms
 // $Log:$
 //
 // DESCRIPTION:
-//	BSP traversal, handling of LineSegs for rendering.
+//	BSP traversal, handling of ::g->linesegs for rendering.
 
 ===========================================================================
 */

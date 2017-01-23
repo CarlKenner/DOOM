@@ -201,7 +201,7 @@ void PacketGet (void)
 
 	if (i == doomcom->numnodes)
 	{
-	// packet is not from one of the players (new game broadcast)
+	// packet is not from one of the ::g->players (new game broadcast)
 	doomcom->remotenode = -1;		// no packet
 	return;
 	}

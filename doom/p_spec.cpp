@@ -636,7 +636,7 @@ P_CrossSpecialLine
 	
 		case 30:
 	// Raise floor to shortest texture height
-	//  on either side of lines.
+	//  on either side of ::g->lines.
 	EV_DoFloor(line,raiseToTexture);
 	line->special = 0;
 	break;
@@ -907,7 +907,7 @@ P_CrossSpecialLine
 	
 		case 96:
 	// Raise floor to shortest texture height
-	// on either side of lines.
+	// on either side of ::g->lines.
 	EV_DoFloor(line,raiseToTexture);
 	break;
 	

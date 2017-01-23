@@ -509,7 +509,7 @@ void G_DoLoadLevel (void)
  
 //
 // G_Responder  
-// Get info needed to make ticcmd_ts for the players.
+// Get info needed to make ticcmd_ts for the ::g->players.
 // 
 boolean G_Responder (event_t* ev) 
 { 
@@ -610,7 +610,7 @@ boolean G_Responder (event_t* ev)
  
 //
 // G_Ticker
-// Make ticcmd_ts for the players.
+// Make ticcmd_ts for the ::g->players.
 //
 void G_Ticker (void) 
 { 

@@ -60,9 +60,9 @@ doomdata_t*	netbuffer;		// points inside doomcom
 //
 // gametic is the tic about to (or currently being) run
 // maketic is the tick that hasn't had control made for it yet
-// nettics[] has the maketics for all players 
+// nettics[] has the maketics for all ::g->players 
 //
-// a gametic cannot be run until nettics[] > gametic for all players
+// a gametic cannot be run until nettics[] > gametic for all ::g->players
 //
 #define	RESENDCOUNT	10
 #define	PL_DRONE	0x80	// bit flag in doomdata->player

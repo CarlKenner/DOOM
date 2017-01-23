@@ -115,7 +115,7 @@ static const char rcsid[] = "$Id: am_map.c,v 1.4 1997/02/03 21:24:33 b1 Exp $";
 
 // scale on entry
 #define INITSCALEMTOF (.2*FRACUNIT)
-// how much the automap moves window per tic in frame-buffer coordinates
+// how much the automap moves window per tic in frame-::g->buffer coordinates
 // moves 140 pixels in 1 second
 #define F_PANINC	4
 // how much zoom-in per tic
@@ -125,10 +125,10 @@ static const char rcsid[] = "$Id: am_map.c,v 1.4 1997/02/03 21:24:33 b1 Exp $";
 // pulls out to 0.5x in 1 second
 #define M_ZOOMOUT       ((int) (FRACUNIT/1.02))
 
-// translates between frame-buffer and map distances
+// translates between frame-::g->buffer and map distances
 #define FTOM(x) FixedMul(((x)<<16),scale_ftom)
 #define MTOF(x) (FixedMul((x),scale_mtof)>>16)
-// translates between frame-buffer and map coordinates
+// translates between frame-::g->buffer and map coordinates
 #define CXMTOF(x)  (f_x + MTOF((x)-m_x))
 #define CYMTOF(y)  (f_y + (f_h - MTOF((y)-m_y)))
 
@@ -241,12 +241,12 @@ static int 	f_w;
 static int	f_h;
 
 static int 	lightlev; 		// used for funky strobing effect
-static byte*	fb; 			// pseudo-frame buffer
+static byte*	fb; 			// pseudo-frame ::g->buffer
 static int 	amclock;
 
 static mpoint_t m_paninc; // how far the window pans each tic (map coords)
 static fixed_t 	mtof_zoommul; // how far the window zooms in each tic (map coords)
-static fixed_t 	ftom_zoommul; // how far the window zooms in each tic (fb coords)
+static fixed_t 	ftom_zoommul; // how far the window zooms in each tic (fb ::g->coords)
 
 static fixed_t 	m_x, m_y;   // LL x,y where the window is on the map (map coords)
 static fixed_t 	m_x2, m_y2; // UR x,y where the window is on the map (map coords)
@@ -281,9 +281,9 @@ static fixed_t old_m_x, old_m_y;
 // old location used by the Follower routine
 static mpoint_t f_oldloc;
 
-// used by MTOF to scale from map-to-frame-buffer coords
+// used by MTOF to scale from map-to-frame-::g->buffer coords
 static fixed_t scale_mtof = INITSCALEMTOF;
-// used by FTOM to scale from frame-buffer-to-map coords (=1/scale_mtof)
+// used by FTOM to scale from frame-::g->buffer-to-map coords (=1/scale_mtof)
 static fixed_t scale_ftom;
 
 static player_t *plr; // the player represented by an arrow
@@ -618,7 +618,7 @@ void AM_maxOutWindowScale(void)
 
 
 //
-// Handle events (user inputs) in automap mode
+// handle ::g->events (user inputs) in automap mode
 //
 boolean
 AM_Responder
@@ -838,7 +838,7 @@ void AM_Ticker (void)
 
 
 //
-// Clear automap frame buffer.
+// Clear automap frame ::g->buffer.
 //
 void AM_clearFB(int color)
 {
@@ -847,7 +847,7 @@ void AM_clearFB(int color)
 
 
 //
-// Automap clipping of lines.
+// Automap clipping of ::g->lines.
 //
 // Based on Cohen-Sutherland clipping algorithm but with a slightly
 // faster reject and precalculated slopes.  If the speed is needed,
@@ -910,7 +910,7 @@ AM_clipMline
 	if (outcode1 & outcode2)
 	return false; // trivially outside
 
-	// transform to frame-buffer coordinates.
+	// transform to frame-::g->buffer coordinates.
 	fl->a.x = CXMTOF(ml->a.x);
 	fl->a.y = CYMTOF(ml->a.y);
 	fl->b.x = CXMTOF(ml->b.x);
@@ -1060,7 +1060,7 @@ AM_drawFline
 
 
 //
-// Clip lines, draw visible part sof lines.
+// Clip ::g->lines, draw visible part sof ::g->lines.
 //
 void
 AM_drawMline
@@ -1070,13 +1070,13 @@ AM_drawMline
 	static fline_t fl;
 
 	if (AM_clipMline(ml, &fl))
-	AM_drawFline(&fl, color); // draws it on frame buffer using fb coords
+	AM_drawFline(&fl, color); // draws it on frame ::g->buffer using fb ::g->coords
 }
 
 
 
 //
-// Draws flat (floor/ceiling tile) aligned grid lines.
+// Draws flat (floor/ceiling tile) aligned ::g->grid ::g->lines.
 //
 void AM_drawGrid(int color)
 {

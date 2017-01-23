@@ -251,7 +251,7 @@ void HUlib_drawSText(hu_stext_t* s)
 	{
 	idx = s->cl - i;
 	if (idx < 0)
-		idx += s->h; // handle queue of lines
+		idx += s->h; // handle queue of ::g->lines
 	
 	l = &s->l[idx];
 

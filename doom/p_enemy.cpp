@@ -99,7 +99,7 @@ void A_Fall (mobj_t *actor);
 // ENEMY THINKING
 // Enemies are allways spawned
 // with targetplayer = -1, threshold = 0
-// Most monsters are spawned unaware of all players,
+// Most monsters are spawned unaware of all ::g->players,
 // but some can be made preaware
 //
 
