@@ -89,6 +89,7 @@ int			mouseSensitivity;       // has default
 int			showMessages;
 	
 
+
 // Blocky mode, has default, 0 = high, 1 = normal
 int			detailLevel;		
 int			screenblocks;		// has default
@@ -119,10 +120,10 @@ void    (*messageRoutine)(int response);
 char gammamsg[5][26] =
 {
 	GAMMALVL0,
-	GAMMALVL1,
-	GAMMALVL2,
-	GAMMALVL3,
-	GAMMALVL4
+		GAMMALVL1,
+		GAMMALVL2,
+		GAMMALVL3,
+		GAMMALVL4
 };
 
 // we are going to be entering a savegame string
@@ -182,7 +183,10 @@ short		whichSkull;		// which skull to draw
 
 // graphic name of skulls
 // warning: initializer-string for array of chars is too long
-char    skullName[2][/*8*/9] = {"M_SKULL1","M_SKULL2"};
+char    skullName[2][/*8*/9] = 
+{
+	"M_SKULL1","M_SKULL2"
+};
 
 // current menudef
 menu_t*	currentMenu;                          
@@ -524,7 +528,7 @@ void M_ReadSaveStrings(void)
 	int             count;
 	int             i;
 	char    name[256];
-	
+
 	for (i = 0;i < load_end;i++)
 	{
 	if (M_CheckParm("-cdrom"))
@@ -556,8 +560,8 @@ void M_DrawLoad(void)
 	V_DrawPatchDirect (72,28,0,W_CacheLumpName("M_LOADG",PU_CACHE));
 	for (i = 0;i < load_end; i++)
 	{
-	M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
-	M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
+		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
+		M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
 	}
 }
 
@@ -569,13 +573,13 @@ void M_DrawLoad(void)
 void M_DrawSaveLoadBorder(int x,int y)
 {
 	int             i;
-	
+
 	V_DrawPatchDirect (x-8,y+7,0,W_CacheLumpName("M_LSLEFT",PU_CACHE));
-	
+
 	for (i = 0;i < 24;i++)
 	{
 	V_DrawPatchDirect (x,y+7,0,W_CacheLumpName("M_LSCNTR",PU_CACHE));
-	x += 8;
+		x += 8;
 	}
 
 	V_DrawPatchDirect (x,y+7,0,W_CacheLumpName("M_LSRGHT",PU_CACHE));
@@ -605,8 +609,8 @@ void M_LoadGame (int choice)
 {
 	if (netgame)
 	{
-	M_StartMessage(LOADNET,NULL,false);
-	return;
+		M_StartMessage(LOADNET,NULL,false);
+		return;
 	}
 	
 	M_SetupNextMenu(&LoadDef);
@@ -620,18 +624,18 @@ void M_LoadGame (int choice)
 void M_DrawSave(void)
 {
 	int             i;
-	
+
 	V_DrawPatchDirect (72,28,0,W_CacheLumpName("M_SAVEG",PU_CACHE));
 	for (i = 0;i < load_end; i++)
 	{
-	M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
-	M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
+		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
+		M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
 	}
-	
+
 	if (saveStringEnter)
 	{
-	i = M_StringWidth(savegamestrings[saveSlot]);
-	M_WriteText(LoadDef.x + i,LoadDef.y+LINEHEIGHT*saveSlot,"_");
+		i = M_StringWidth(savegamestrings[saveSlot]);
+		M_WriteText(LoadDef.x + i,LoadDef.y+LINEHEIGHT*saveSlot,"_");
 	}
 }
 
@@ -645,7 +649,7 @@ void M_DoSave(int slot)
 
 	// PICK QUICKSAVE SLOT YET?
 	if (quickSaveSlot == -2)
-	quickSaveSlot = slot;
+		quickSaveSlot = slot;
 }
 
 //
@@ -670,8 +674,8 @@ void M_SaveGame (int choice)
 {
 	if (!usergame)
 	{
-	M_StartMessage(SAVEDEAD,NULL,false);
-	return;
+		M_StartMessage(SAVEDEAD,NULL,false);
+		return;
 	}
 	
 	if (gamestate != GS_LEVEL)
@@ -692,8 +696,8 @@ void M_QuickSaveResponse(int ch)
 {
 	if (ch == 'y')
 	{
-	M_DoSave(quickSaveSlot);
-	S_StartSound(NULL,sfx_swtchx);
+		M_DoSave(quickSaveSlot);
+		S_StartSound(NULL,sfx_swtchx);
 	}
 }
 
@@ -701,20 +705,20 @@ void M_QuickSave(void)
 {
 	if (!usergame)
 	{
-	S_StartSound(NULL,sfx_oof);
-	return;
+		S_StartSound(NULL,sfx_oof);
+		return;
 	}
 
 	if (gamestate != GS_LEVEL)
-	return;
-	
+		return;
+
 	if (quickSaveSlot < 0)
 	{
-	M_StartControlPanel();
-	M_ReadSaveStrings();
-	M_SetupNextMenu(&SaveDef);
-	quickSaveSlot = -2;	// means to pick a slot now
-	return;
+		M_StartControlPanel();
+		M_ReadSaveStrings();
+		M_SetupNextMenu(&SaveDef);
+		quickSaveSlot = -2;	// means to pick a slot now
+		return;
 	}
 	sprintf(tempstring,QSPROMPT,savegamestrings[quickSaveSlot]);
 	M_StartMessage(tempstring,M_QuickSaveResponse,true);
@@ -729,8 +733,8 @@ void M_QuickLoadResponse(int ch)
 {
 	if (ch == 'y')
 	{
-	M_LoadSelect(quickSaveSlot);
-	S_StartSound(NULL,sfx_swtchx);
+		M_LoadSelect(quickSaveSlot);
+		S_StartSound(NULL,sfx_swtchx);
 	}
 }
 
@@ -739,14 +743,14 @@ void M_QuickLoad(void)
 {
 	if (netgame)
 	{
-	M_StartMessage(QLOADNET,NULL,false);
-	return;
+		M_StartMessage(QLOADNET,NULL,false);
+		return;
 	}
-	
+
 	if (quickSaveSlot < 0)
 	{
-	M_StartMessage(QSAVESPOT,NULL,false);
-	return;
+		M_StartMessage(QSAVESPOT,NULL,false);
+		return;
 	}
 	sprintf(tempstring,QLPROMPT,savegamestrings[quickSaveSlot]);
 	M_StartMessage(tempstring,M_QuickLoadResponse,true);
@@ -764,16 +768,16 @@ void M_DrawReadThis1(void)
 	inhelpscreens = true;
 	switch ( gamemode )
 	{
-		case commercial:
-	V_DrawPatchDirect (0,0,0,W_CacheLumpName("HELP",PU_CACHE));
-	break;
-		case shareware:
-		case registered:
-		case retail:
-	V_DrawPatchDirect (0,0,0,W_CacheLumpName("HELP1",PU_CACHE));
-	break;
-		default:
-	break;
+	case commercial:
+		V_DrawPatchDirect (0,0,0,W_CacheLumpName("HELP",PU_CACHE));
+		break;
+	case shareware:
+	case registered:
+	case retail:
+		V_DrawPatchDirect (0,0,0,W_CacheLumpName("HELP1",PU_CACHE));
+		break;
+	default:
+		break;
 	}
 	return;
 }
@@ -788,17 +792,17 @@ void M_DrawReadThis2(void)
 	inhelpscreens = true;
 	switch ( gamemode )
 	{
-		case retail:
-		case commercial:
-	// This hack keeps us from having to change menus.
-	V_DrawPatchDirect (0,0,0,W_CacheLumpName("CREDIT",PU_CACHE));
-	break;
-		case shareware:
-		case registered:
-	V_DrawPatchDirect (0,0,0,W_CacheLumpName("HELP2",PU_CACHE));
-	break;
-		default:
-	break;
+	case retail:
+	case commercial:
+		// This hack keeps us from having to change menus.
+		V_DrawPatchDirect (0,0,0,W_CacheLumpName("CREDIT",PU_CACHE));
+		break;
+	case shareware:
+	case registered:
+		V_DrawPatchDirect (0,0,0,W_CacheLumpName("HELP2",PU_CACHE));
+		break;
+	default:
+		break;
 	}
 	return;
 }
@@ -811,7 +815,7 @@ void M_DrawSound(void)
 {
 	V_DrawPatchDirect (60,38,0,W_CacheLumpName("M_SVOL",PU_CACHE));
 
-	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sfx_vol+1),
+	M_DrawThermo( SoundDef.x,SoundDef.y+LINEHEIGHT*(sfx_vol+1),
 		16,snd_SfxVolume);
 
 	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(music_vol+1),
@@ -827,14 +831,14 @@ void M_SfxVol(int choice)
 {
 	switch(choice)
 	{
-		case 0:
-	if (snd_SfxVolume)
-		snd_SfxVolume--;
-	break;
-		case 1:
-	if (snd_SfxVolume < 15)
-		snd_SfxVolume++;
-	break;
+	case 0:
+		if (snd_SfxVolume)
+			snd_SfxVolume--;
+		break;
+	case 1:
+		if (snd_SfxVolume < 15)
+			snd_SfxVolume++;
+		break;
 	}
 	
 	S_SetSfxVolume(snd_SfxVolume /* *8 */);
@@ -844,14 +848,13 @@ void M_MusicVol(int choice)
 {
 	switch(choice)
 	{
-		case 0:
-	if (snd_MusicVolume)
-		snd_MusicVolume--;
-	break;
-		case 1:
-	if (snd_MusicVolume < 15)
-		snd_MusicVolume++;
-	break;
+	case 0:
+		if (snd_MusicVolume)
+			snd_MusicVolume--;
+	case 1:
+		if (snd_MusicVolume < 15)
+			snd_MusicVolume++;
+		break;
 	}
 	
 	S_SetMusicVolume(snd_MusicVolume /* *8 */);
@@ -884,21 +887,20 @@ void M_NewGame(int choice)
 {
 	if (netgame && !demoplayback)
 	{
-	M_StartMessage(NEWGAME,NULL,false);
-	return;
+		M_StartMessage(NEWGAME,NULL,false);
+		return;
 	}
-	
+
 	if ( gamemode == commercial )
-	M_SetupNextMenu(&NewDef);
+		M_SetupNextMenu(&NewDef);
 	else
-	M_SetupNextMenu(&EpiDef);
+		M_SetupNextMenu(&EpiDef);
 }
 
 
 //
 //      M_Episode
 //
-int     epi;
 
 void M_DrawEpisode(void)
 {
@@ -908,9 +910,9 @@ void M_DrawEpisode(void)
 void M_VerifyNightmare(int ch)
 {
 	if (ch != 'y')
-	return;
-		
-	G_DeferedInitNew(nightmare,epi+1,1);
+		return;
+
+	G_DeferedInitNew(nightmare,epi+1, 1);
 	M_ClearMenus ();
 }
 
@@ -918,8 +920,8 @@ void M_ChooseSkill(int choice)
 {
 	if (choice == nightmare)
 	{
-	M_StartMessage(NIGHTMARE,M_VerifyNightmare,true);
-	return;
+		M_StartMessage(NIGHTMARE,M_VerifyNightmare,true);
+		return;
 	}
 	
 	G_DeferedInitNew(choice,epi+1,1);
@@ -938,13 +940,12 @@ void M_Episode(int choice)
 
 	// Yet another hack...
 	if ( (gamemode == registered)
-	&& (choice > 2))
+		&& (choice > 2))
 	{
-		fprintf( stderr,
-			"M_Episode: 4th episode requires UltimateDOOM\n");
+		fprintf( stderr, "M_Episode: 4th episode requires UltimateDOOM\n");
 		choice = 0;
 	}
-	
+
 	epi = choice;
 	M_SetupNextMenu(&NewDef);
 }
@@ -954,9 +955,15 @@ void M_Episode(int choice)
 //
 // M_Options
 //
-char    detailNames[2][9]	= {"M_GDHIGH","M_GDLOW"};
-char	msgNames[2][9]		= {"M_MSGOFF","M_MSGON"};
+char    detailNames[2][9]	= 
+{
+"M_GDHIGH","M_GDLOW"
+};
 
+char	msgNames[2][9]		= 
+{
+"M_MSGOFF","M_MSGON"
+};
 
 void M_DrawOptions(void)
 {
@@ -992,9 +999,9 @@ void M_ChangeMessages(int choice)
 	showMessages = 1 - showMessages;
 	
 	if (!showMessages)
-	players[consoleplayer].message = MSGOFF;
+		players[consoleplayer].message = MSGOFF;
 	else
-	players[consoleplayer].message = MSGON ;
+		players[consoleplayer].message = MSGON ;
 
 	message_dontfuckwithme = true;
 }
@@ -1006,8 +1013,8 @@ void M_ChangeMessages(int choice)
 void M_EndGameResponse(int ch)
 {
 	if (ch != 'y')
-	return;
-		
+		return;
+
 	currentMenu->lastOn = itemOn;
 	M_ClearMenus ();
 	D_StartTitle ();
@@ -1018,16 +1025,16 @@ void M_EndGame(int choice)
 	choice = 0;
 	if (!usergame)
 	{
-	S_StartSound(NULL,sfx_oof);
-	return;
+		S_StartSound(NULL,sfx_oof);
+		return;
 	}
-	
+
 	if (netgame)
 	{
-	M_StartMessage(NETEND,NULL,false);
-	return;
+		M_StartMessage(NETEND,NULL,false);
+		return;
 	}
-	
+
 	M_StartMessage(ENDGAME,M_EndGameResponse,true);
 }
 
@@ -1147,7 +1154,7 @@ void M_ChangeDetail(int choice)
 	fprintf( stderr, "M_ChangeDetail: low detail mode n.a.\n");
 
 	return;
-	
+
 	/*R_SetViewSize (screenblocks, detailLevel);
 
 	if (!detailLevel)
@@ -1180,6 +1187,7 @@ void M_SizeDisplay(int choice)
 	}
 	
 
+
 	R_SetViewSize (screenblocks, detailLevel);
 }
 
@@ -1204,8 +1212,8 @@ M_DrawThermo
 	xx += 8;
 	for (i=0;i<thermWidth;i++)
 	{
-	V_DrawPatchDirect (xx,y,0,W_CacheLumpName("M_THERMM",PU_CACHE));
-	xx += 8;
+		V_DrawPatchDirect (xx,y,0,W_CacheLumpName("M_THERMM",PU_CACHE));
+		xx += 8;
 	}
 	V_DrawPatchDirect (xx,y,0,W_CacheLumpName("M_THERMR",PU_CACHE));
 
@@ -1267,16 +1275,16 @@ int M_StringWidth(char* string)
 	int             i;
 	int             w = 0;
 	int             c;
-	
+
 	for (i = 0;i < strlen(string);i++)
 	{
-	c = toupper(string[i]) - HU_FONTSTART;
-	if (c < 0 || c >= HU_FONTSIZE)
-		w += 4;
-	else
-		w += SHORT (hu_font[c]->width);
+		c = toupper(string[i]) - HU_FONTSTART;
+		if (c < 0 || c >= HU_FONTSIZE)
+			w += 4;
+		else
+			w += SHORT (hu_font[c]->width);
 	}
-		
+
 	return w;
 }
 
@@ -1290,12 +1298,12 @@ int M_StringHeight(char* string)
 	int             i;
 	int             h;
 	int             height = SHORT(hu_font[0]->height);
-	
+
 	h = height;
 	for (i = 0;i < strlen(string);i++)
-	if (string[i] == '\n')
-		h += height;
-		
+		if (string[i] == '\n')
+			h += height;
+
 	return h;
 }
 
@@ -1314,36 +1322,36 @@ M_WriteText
 	int		c;
 	int		cx;
 	int		cy;
-		
+
 
 	ch = string;
 	cx = x;
 	cy = y;
-	
+
 	while(1)
 	{
-	c = *ch++;
-	if (!c)
-		break;
-	if (c == '\n')
-	{
-		cx = x;
-		cy += 12;
-		continue;
-	}
-		
-	c = toupper(c) - HU_FONTSTART;
-	if (c < 0 || c>= HU_FONTSIZE)
-	{
-		cx += 4;
-		continue;
-	}
-		
-	w = SHORT (hu_font[c]->width);
-	if (cx+w > SCREENWIDTH)
-		break;
-	V_DrawPatchDirect(cx, cy, 0, hu_font[c]);
-	cx+=w;
+		c = *ch++;
+		if (!c)
+			break;
+		if (c == '\n')
+		{
+			cx = x;
+			cy += 12;
+			continue;
+		}
+
+		c = toupper(c) - HU_FONTSTART;
+		if (c < 0 || c>= HU_FONTSIZE)
+		{
+			cx += 4;
+			continue;
+		}
+
+		w = SHORT (hu_font[c]->width);
+		if (cx+w > SCREENWIDTH)
+			break;
+		V_DrawPatchDirect(cx, cy, 0, hu_font[c]);
+		cx+=w;
 	}
 }
 
@@ -1368,7 +1376,7 @@ boolean M_Responder (event_t* ev)
 	static  int     lastx = 0;
 	
 	ch = -1;
-	
+
 	if (ev->type == ev_joystick && joywait < I_GetTime())
 	{
 	if (ev->data3 == -1)
@@ -1411,41 +1419,40 @@ boolean M_Responder (event_t* ev)
 		mousey += ev->data3;
 		if (mousey < lasty-30)
 		{
-		ch = KEY_DOWNARROW;
-		mousewait = I_GetTime() + 5;
-		mousey = lasty -= 30;
+			ch = KEY_DOWNARROW;
+			mousewait = I_GetTime() + 5;
+			mousey = lasty -= 30;
 		}
 		else if (mousey > lasty+30)
 		{
-		ch = KEY_UPARROW;
-		mousewait = I_GetTime() + 5;
-		mousey = lasty += 30;
+			ch = KEY_UPARROW;
+			mousewait = I_GetTime() + 5;
+			mousey = lasty += 30;
 		}
 		
 		mousex += ev->data2;
 		if (mousex < lastx-30)
 		{
-		ch = KEY_LEFTARROW;
-		mousewait = I_GetTime() + 5;
-		mousex = lastx -= 30;
+			ch = KEY_LEFTARROW;
+			mousewait = I_GetTime() + 5;
+			mousex = lastx -= 30;
 		}
 		else if (mousex > lastx+30)
 		{
-		ch = KEY_RIGHTARROW;
-		mousewait = I_GetTime() + 5;
-		mousex = lastx += 30;
+			ch = KEY_RIGHTARROW;
+			mousewait = I_GetTime() + 5;
+			mousex = lastx += 30;
 		}
-		
+
 		if (ev->data1&1)
 		{
-		ch = KEY_ENTER;
-		mousewait = I_GetTime() + 15;
+			ch = KEY_ENTER;
+			mousewait = I_GetTime() + 15;
 		}
-			
 		if (ev->data1&2)
 		{
-		ch = KEY_BACKSPACE;
-		mousewait = I_GetTime() + 15;
+			ch = KEY_BACKSPACE;
+			mousewait = I_GetTime() + 15;
 		}
 	}
 	else
@@ -1454,272 +1461,271 @@ boolean M_Responder (event_t* ev)
 		ch = ev->data1;
 		}
 	}
-	
-	if (ch == -1)
-	return false;
 
-	
+	if (ch == -1)
+		return false;
+
+
 	// Save Game string input
 	if (saveStringEnter)
 	{
-	switch(ch)
-	{
+		switch(ch)
+		{
 		case KEY_BACKSPACE:
-		if (saveCharIndex > 0)
-		{
-		saveCharIndex--;
-		savegamestrings[saveSlot][saveCharIndex] = 0;
-		}
-		break;
-				
-		case KEY_ESCAPE:
-		saveStringEnter = 0;
-		strcpy(&savegamestrings[saveSlot][0],saveOldString);
-		break;
-				
-		case KEY_ENTER:
-		saveStringEnter = 0;
-		if (savegamestrings[saveSlot][0])
-		M_DoSave(saveSlot);
-		break;
-				
-		default:
-		ch = toupper(ch);
-		if (ch != 32)
-		if (ch-HU_FONTSTART < 0 || ch-HU_FONTSTART >= HU_FONTSIZE)
+			if (saveCharIndex > 0)
+			{
+				saveCharIndex--;
+				savegamestrings[saveSlot][saveCharIndex] = 0;
+			}
 			break;
-		if (ch >= 32 && ch <= 127 &&
-		saveCharIndex < SAVESTRINGSIZE-1 &&
-		M_StringWidth(savegamestrings[saveSlot]) <
-		(SAVESTRINGSIZE-2)*8)
-		{
-		savegamestrings[saveSlot][saveCharIndex++] = ch;
-		savegamestrings[saveSlot][saveCharIndex] = 0;
+
+		case KEY_ESCAPE:
+			saveStringEnter = 0;
+			strcpy(&savegamestrings[saveSlot][0],saveOldString);
+			break;
+
+		case KEY_ENTER:
+			saveStringEnter = 0;
+			if (savegamestrings[saveSlot][0])
+				M_DoSave(saveSlot);
+			break;
+
+		default:
+			ch = toupper(ch);
+			if (ch != 32)
+				if (ch-HU_FONTSTART < 0 || ch-HU_FONTSTART >= HU_FONTSIZE)
+					break;
+			if (ch >= 32 && ch <= 127 &&
+				saveCharIndex < SAVESTRINGSIZE-1 &&
+				M_StringWidth(savegamestrings[saveSlot]) <
+				(SAVESTRINGSIZE-2)*8)
+			{
+				savegamestrings[saveSlot][saveCharIndex++] = ch;
+				savegamestrings[saveSlot][saveCharIndex] = 0;
+			}
+			break;
 		}
-		break;
+		return true;
 	}
-	return true;
-	}
-	
+
 	// Take care of any messages that need input
 	if (messageToPrint)
 	{
 	if (messageNeedsInput == true &&
 		!(ch == ' ' || ch == 'n' || ch == 'y' || ch == KEY_ESCAPE))
-		return false;
-		
-	menuactive = messageLastMenuActive;
-	messageToPrint = 0;
-	if (messageRoutine)
-		messageRoutine(ch);
-			
-	menuactive = false;
-	S_StartSound(NULL,sfx_swtchx);
-	return true;
+			return false;
+
+		menuactive = messageLastMenuActive;
+		messageToPrint = 0;
+		if (messageRoutine)
+			messageRoutine(ch);
+
+		menuactive = false;
+		S_StartSound(NULL,sfx_swtchx);
+		return true;
 	}
 	
 	if (devparm && ch == KEY_F1)
 	{
-	G_ScreenShot ();
-	return true;
+		G_ScreenShot ();
+		return true;
 	}
-		
-	
+
 	// F-Keys
 	if (!menuactive)
-	switch(ch)
+		switch(ch)
 	{
 		case KEY_MINUS:         // Screen size down
-		if (automapactive || chat_on)
-		return false;
-		M_SizeDisplay(0);
-		S_StartSound(NULL,sfx_stnmov);
-		return true;
-				
-		case KEY_EQUALS:        // Screen size up
-		if (automapactive || chat_on)
-		return false;
-		M_SizeDisplay(1);
-		S_StartSound(NULL,sfx_stnmov);
-		return true;
-				
-		case KEY_F1:            // Help key
-		M_StartControlPanel ();
+			if (automapactive || chat_on)
+				return false;
+			M_SizeDisplay(0);
+			S_StartSound(NULL,sfx_stnmov);
+			return true;
 
-		if ( gamemode == retail )
-			currentMenu = &ReadDef2;
-		else
-			currentMenu = &ReadDef1;
-		
-		itemOn = 0;
-		S_StartSound(NULL,sfx_swtchn);
-		return true;
-				
+		case KEY_EQUALS:        // Screen size up
+			if (automapactive || chat_on)
+				return false;
+			M_SizeDisplay(1);
+			S_StartSound(NULL,sfx_stnmov);
+			return true;
+
+		case KEY_F1:            // Help key
+			M_StartControlPanel ();
+
+			if ( gamemode == retail )
+				currentMenu = &ReadDef2;
+			else
+				currentMenu = &ReadDef1;
+
+			itemOn = 0;
+			S_StartSound(NULL,sfx_swtchn);
+			return true;
+
 		case KEY_F2:            // Save
-		M_StartControlPanel();
-		S_StartSound(NULL,sfx_swtchn);
-		M_SaveGame(0);
-		return true;
-				
+			M_StartControlPanel();
+			S_StartSound(NULL,sfx_swtchn);
+			M_SaveGame(0);
+			return true;
+
 		case KEY_F3:            // Load
-		M_StartControlPanel();
-		S_StartSound(NULL,sfx_swtchn);
-		M_LoadGame(0);
-		return true;
-				
+			M_StartControlPanel();
+			S_StartSound(NULL,sfx_swtchn);
+			M_LoadGame(0);
+			return true;
+
 		case KEY_F4:            // Sound Volume
-		M_StartControlPanel ();
-		currentMenu = &SoundDef;
-		itemOn = sfx_vol;
-		S_StartSound(NULL,sfx_swtchn);
-		return true;
-				
+			M_StartControlPanel ();
+			currentMenu = &SoundDef;
+			itemOn = sfx_vol;
+			S_StartSound(NULL,sfx_swtchn);
+			return true;
+
 		case KEY_F5:            // Detail toggle
-		M_ChangeDetail(0);
-		S_StartSound(NULL,sfx_swtchn);
-		return true;
-				
+			M_ChangeDetail(0);
+			S_StartSound(NULL,sfx_swtchn);
+			return true;
+
 		case KEY_F6:            // Quicksave
-		S_StartSound(NULL,sfx_swtchn);
-		M_QuickSave();
-		return true;
-				
+			S_StartSound(NULL,sfx_swtchn);
+			M_QuickSave();
+			return true;
+
 		case KEY_F7:            // End game
-		S_StartSound(NULL,sfx_swtchn);
-		M_EndGame(0);
-		return true;
-				
+			S_StartSound(NULL,sfx_swtchn);
+			M_EndGame(0);
+			return true;
+
 		case KEY_F8:            // Toggle messages
-		M_ChangeMessages(0);
-		S_StartSound(NULL,sfx_swtchn);
-		return true;
-				
+			M_ChangeMessages(0);
+			S_StartSound(NULL,sfx_swtchn);
+			return true;
+
 		case KEY_F9:            // Quickload
-		S_StartSound(NULL,sfx_swtchn);
-		M_QuickLoad();
-		return true;
-				
+			S_StartSound(NULL,sfx_swtchn);
+			M_QuickLoad();
+			return true;
+
 		case KEY_F10:           // Quit DOOM
-		S_StartSound(NULL,sfx_swtchn);
-		M_QuitDOOM(0);
-		return true;
-				
+			S_StartSound(NULL,sfx_swtchn);
+			M_QuitDOOM(0);
+			return true;
+
 		case KEY_F11:           // gamma toggle
-		usegamma++;
-		if (usegamma > 4)
-		usegamma = 0;
-		players[consoleplayer].message = gammamsg[usegamma];
-		I_SetPalette (W_CacheLumpName ("PLAYPAL",PU_CACHE));
-		return true;
-				
+			usegamma++;
+			if (usegamma > 4)
+				usegamma = 0;
+			players[consoleplayer].message = gammamsg[usegamma];
+			I_SetPalette (W_CacheLumpName ("PLAYPAL",PU_CACHE));
+			return true;
+
 	}
 
-	
 	// Pop-up menu?
 	if (!menuactive)
 	{
-	if (ch == KEY_ESCAPE)
-	{
-		M_StartControlPanel ();
-		S_StartSound(NULL,sfx_swtchn);
-		return true;
-	}
-	return false;
+		if (ch == KEY_ESCAPE && ( gamestate == GS_LEVEL || gamestate == GS_INTERMISSION || gamestate == GS_FINALE  ) )
+		{
+			M_StartControlPanel ();
+
+			S_StartSound(NULL,sfx_swtchn);
+			return true;
+		}
+		
+		return false;
 	}
 
-	
 	// Keys usable within menu
 	switch (ch)
 	{
-		case KEY_DOWNARROW:
-	do
-	{
-		if (itemOn+1 > currentMenu->numitems-1)
-		itemOn = 0;
-		else itemOn++;
-		S_StartSound(NULL,sfx_pstop);
-	} while(currentMenu->menuitems[itemOn].status==-1);
-	return true;
-		
-		case KEY_UPARROW:
-	do
-	{
-		if (!itemOn)
-		itemOn = currentMenu->numitems-1;
-		else itemOn--;
-		S_StartSound(NULL,sfx_pstop);
-	} while(currentMenu->menuitems[itemOn].status==-1);
-	return true;
+	case KEY_DOWNARROW:
+		do
+		{
+			if (itemOn+1 > currentMenu->numitems-1)
+				itemOn = 0;
+			else itemOn++;
+			S_StartSound(NULL,sfx_pstop);
+		} while(currentMenu->menuitems[itemOn].status==-1);
+		return true;
 
-		case KEY_LEFTARROW:
-	if (currentMenu->menuitems[itemOn].routine &&
-		currentMenu->menuitems[itemOn].status == 2)
-	{
-		S_StartSound(NULL,sfx_stnmov);
-		currentMenu->menuitems[itemOn].routine(0);
-	}
-	return true;
-		
-		case KEY_RIGHTARROW:
-	if (currentMenu->menuitems[itemOn].routine &&
-		currentMenu->menuitems[itemOn].status == 2)
-	{
-		S_StartSound(NULL,sfx_stnmov);
-		currentMenu->menuitems[itemOn].routine(1);
-	}
-	return true;
+	case KEY_UPARROW:
+		do
+		{
+			if (!itemOn)
+				itemOn = currentMenu->numitems-1;
+			else itemOn--;
+			S_StartSound(NULL,sfx_pstop);
+		} while(currentMenu->menuitems[itemOn].status==-1);
+		return true;
 
-		case KEY_ENTER:
-	if (currentMenu->menuitems[itemOn].routine &&
-		currentMenu->menuitems[itemOn].status)
-	{
+	case KEY_LEFTARROW:
+		if (currentMenu->menuitems[itemOn].routine &&
+			currentMenu->menuitems[itemOn].status == 2)
+		{
+			S_StartSound(NULL,sfx_stnmov);
+			currentMenu->menuitems[itemOn].routine(0);
+		}
+		return true;
+
+	case KEY_RIGHTARROW:
+		if (currentMenu->menuitems[itemOn].routine &&
+			currentMenu->menuitems[itemOn].status == 2)
+		{
+			S_StartSound(NULL,sfx_stnmov);
+			currentMenu->menuitems[itemOn].routine(1);
+		}
+		return true;
+
+	case KEY_ENTER:
+		if (currentMenu->menuitems[itemOn].routine &&
+			currentMenu->menuitems[itemOn].status)
+		{
+			currentMenu->lastOn = itemOn;
+			if (currentMenu->menuitems[itemOn].status == 2)
+			{
+				currentMenu->menuitems[itemOn].routine(1);      // right arrow
+				S_StartSound(NULL,sfx_stnmov);
+			}
+			else
+			{
+				currentMenu->menuitems[itemOn].routine(itemOn);
+				S_StartSound(NULL,sfx_pistol);
+			}
+		}
+		return true;
+		
+	case KEY_ESCAPE:
 		currentMenu->lastOn = itemOn;
-		if (currentMenu->menuitems[itemOn].status == 2)
-		{
-		currentMenu->menuitems[itemOn].routine(1);      // right arrow
-		S_StartSound(NULL,sfx_stnmov);
-		}
-		else
-		{
-		currentMenu->menuitems[itemOn].routine(itemOn);
-		S_StartSound(NULL,sfx_pistol);
-		}
-	}
-	return true;
-		
-		case KEY_ESCAPE:
-	currentMenu->lastOn = itemOn;
-	M_ClearMenus ();
-	S_StartSound(NULL,sfx_swtchx);
-	return true;
-		
-		case KEY_BACKSPACE:
-	currentMenu->lastOn = itemOn;
-	if (currentMenu->prevMenu)
-	{
-		currentMenu = currentMenu->prevMenu;
-		itemOn = currentMenu->lastOn;
-		S_StartSound(NULL,sfx_swtchn);
-	}
-	return true;
-	
-		default:
-	for (i = itemOn+1;i < currentMenu->numitems;i++)
-		if (currentMenu->menuitems[i].alphaKey == ch)
-		{
-		itemOn = i;
-		S_StartSound(NULL,sfx_pstop);
+		M_ClearMenus ();
+		S_StartSound(NULL,sfx_swtchx);
 		return true;
-		}
-	for (i = 0;i <= itemOn;i++)
-		if (currentMenu->menuitems[i].alphaKey == ch)
+		
+	case KEY_BACKSPACE:
+		currentMenu->lastOn = itemOn;
+		if (currentMenu->prevMenu)
 		{
-		itemOn = i;
-		S_StartSound(NULL,sfx_pstop);
-		return true;
+			currentMenu = currentMenu->prevMenu;
+			itemOn = currentMenu->lastOn;
+			S_StartSound(NULL,sfx_swtchn);
 		}
-	break;
-	
+		return true;
+
+	default:
+		for (i = itemOn+1;i < currentMenu->numitems;i++)
+			if (currentMenu->menuitems[i].alphaKey == ch)
+			{
+				itemOn = i;
+				S_StartSound(NULL,sfx_pstop);
+				return true;
+			}
+			for (i = 0;i <= itemOn;i++)
+				if (currentMenu->menuitems[i].alphaKey == ch)
+				{
+					itemOn = i;
+					S_StartSound(NULL,sfx_pstop);
+					return true;
+				}
+				break;
+
 	}
 
 	return false;
@@ -1734,8 +1740,8 @@ void M_StartControlPanel (void)
 {
 	// intro might call this repeatedly
 	if (menuactive)
-	return;
-	
+		return;
+
 	menuactive = 1;
 	currentMenu = &MainDef;         // JDC
 	itemOn = currentMenu->lastOn;   // JDC
@@ -1758,7 +1764,7 @@ void M_Drawer (void)
 
 	inhelpscreens = false;
 
-	
+
 	// Horiz. & Vertically center string and print it.
 	if (messageToPrint)
 	{
@@ -1788,12 +1794,13 @@ void M_Drawer (void)
 	return;
 	}
 
+
 	if (!menuactive)
-	return;
+		return;
 
 	if (currentMenu->routine)
-	currentMenu->routine();         // call Draw routine
-	
+		currentMenu->routine();         // call Draw routine
+
 	// DRAW MENU
 	x = currentMenu->x;
 	y = currentMenu->y;
@@ -1801,13 +1808,13 @@ void M_Drawer (void)
 
 	for (i=0;i<max;i++)
 	{
-	if (currentMenu->menuitems[i].name[0])
-		V_DrawPatchDirect (x,y,0,
+		if (currentMenu->menuitems[i].name[0])
+			V_DrawPatchDirect (x,y,0,
 					W_CacheLumpName(currentMenu->menuitems[i].name ,PU_CACHE));
 	y += LINEHEIGHT;
 	}
 
-	
+
 	// DRAW SKULL
 	V_DrawPatchDirect(x + SKULLXOFF,currentMenu->y - 5 + itemOn*LINEHEIGHT, 0,
 				W_CacheLumpName(skullName[whichSkull],PU_CACHE));
@@ -1845,8 +1852,8 @@ void M_Ticker (void)
 {
 	if (--skullAnimCounter <= 0)
 	{
-	whichSkull ^= 1;
-	skullAnimCounter = 8;
+		whichSkull ^= 1;
+		skullAnimCounter = 8;
 	}
 }
 
@@ -1855,7 +1862,8 @@ void M_Ticker (void)
 // M_Init
 //
 void M_Init (void)
-{
+{	
+
 	currentMenu = &MainDef;
 	menuactive = 0;
 	itemOn = currentMenu->lastOn;
@@ -1870,34 +1878,34 @@ void M_Init (void)
 	// Here we could catch other version dependencies,
 	//  like HELP1/2, and four episodes.
 
- 
+
 	switch ( gamemode )
 	{
-		case commercial:
-	// This is used because DOOM 2 had only one HELP
+	case commercial:
+		// This is used because DOOM 2 had only one HELP
 		//  page. I use CREDIT as second page now, but
-	//  kept this hack for educational purposes.
-	MainMenu[readthis] = MainMenu[quitdoom];
-	MainDef.numitems--;
-	MainDef.y += 8;
-	NewDef.prevMenu = &MainDef;
-	ReadDef1.routine = M_DrawReadThis1;
-	ReadDef1.x = 330;
-	ReadDef1.y = 165;
-	ReadMenu1[0].routine = M_FinishReadThis;
-	break;
-		case shareware:
-	// Episode 2 and 3 are handled,
-	//  branching to an ad screen.
-		case registered:
-	// We need to remove the fourth episode.
-	EpiDef.numitems--;
-	break;
-		case retail:
-	// We are fine.
-		default:
-	break;
+		//  kept this hack for educational purposes.
+		MainMenu[readthis] = MainMenu[quitdoom];
+		MainDef.numitems--;
+		MainDef.y += 8;
+		NewDef.prevMenu = &MainDef;
+		ReadDef1.routine = M_DrawReadThis1;
+		ReadDef1.x = 330;
+		ReadDef1.y = 165;
+		ReadMenu1[0].routine = M_FinishReadThis;
+		break;
+	case shareware:
+		// Episode 2 and 3 are handled,
+		//  branching to an ad screen.
+	case registered:
+		// We need to remove the fourth episode.
+		EpiDef.numitems--;
+		break;
+	case retail:
+		// We are fine.
+	default:
+		break;
 	}
-	
 }
+
 

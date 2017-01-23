@@ -23,17 +23,12 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:  none
-
 ===========================================================================
 */
 
 
 static const char
 rcsid[] = "$Id: s_sound.c,v 1.6 1997/02/03 22:45:12 b1 Exp $";
-
 
 
 #include <stdio.h>
@@ -52,7 +47,6 @@ rcsid[] = "$Id: s_sound.c,v 1.6 1997/02/03 22:45:12 b1 Exp $";
 #include "p_local.h"
 
 #include "doomstat.h"
-
 
 // Purpose?
 const char snd_prefixen[]
@@ -172,7 +166,7 @@ void S_Init
 ( int		sfxVolume,
  int		musicVolume )
 {  
- int		i;
+	int		i;
 
  fprintf( stderr, "S_Init: default sfx volume %d\n", sfxVolume);
 
@@ -214,40 +208,40 @@ void S_Start(void)
  int cnum;
  int mnum;
 
-  // kill all playing sounds at start of level
-  //  (trust me - a good idea)
+	// kill all playing sounds at start of level
+	//  (trust me - a good idea)
  for (cnum=0 ; cnum<numChannels ; cnum++)
 	if (channels[cnum].sfxinfo)
 		S_StopChannel(cnum);
- 
-  // start new music for the level
- mus_paused = 0;
- 
- if (gamemode == commercial)
-	mnum = mus_runnin + gamemap - 1;
- else
-  {
-	int spmus[]=
-	{
-		// Song - Who? - Where?
+
+	// start new music for the level
+	mus_paused = 0;
+
+	if (gamemode == commercial) {
 		
-		mus_e3m4,	// American	e4m1
-		mus_e3m2,	// Romero	e4m2
-		mus_e3m3,	// Shawn	e4m3
-		mus_e1m5,	// American	e4m4
-		mus_e2m7,	// Tim 	e4m5
-		mus_e2m4,	// Romero	e4m6
-		mus_e2m6,	// J.Anderson	e4m7 CHIRON.WAD
-		mus_e2m5,	// Shawn	e4m8
-		mus_e1m9	// Tim		e4m9
-	};
-	
-	if (gameepisode < 4)
-		mnum = mus_e1m1 + (gameepisode-1)*9 + gamemap-1;
+		mnum = mus_runnin + gamemap - 1;
+	}
 	else
-		mnum = spmus[gamemap-1];
+	{
+		int spmus[] = {
+			// Song -	Who? -			Where?
+			mus_e3m4,	// American		e4m1
+			mus_e3m2,	// Romero		e4m2
+			mus_e3m3,	// Shawn		e4m3
+			mus_e1m5,	// American		e4m4
+			mus_e2m7,	// Tim			e4m5
+			mus_e2m4,	// Romero		e4m6
+			mus_e2m6,	// J.Anderson	e4m7 CHIRON.WAD
+			mus_e2m5,	// Shawn		e4m8
+			mus_e1m9	// Tim			e4m9
+		};
+
+		if (gameepisode < 4)
+			mnum = mus_e1m1 + (gameepisode-1)*9 + gamemap-1;
+		else
+			mnum = spmus[gamemap-1];
 	}	
- 
+
   // HACK FOR COMMERCIAL
   //  if (commercial && mnum > mus_e3m9)	
   //      mnum -= mus_e3m9;
@@ -268,12 +262,12 @@ S_StartSoundAtVolume
  int		volume )
 {
 
- int		rc;
- int		sep;
- int		pitch;
- int		priority;
- sfxinfo_t*	sfx;
- int		cnum;
+	int		rc;
+	int		sep;
+	int		pitch;
+	int		priority;
+	sfxinfo_t*	sfx;
+	int		cnum;
  
  mobj_t*	origin = (mobj_t *) origin_p;
  
@@ -483,19 +477,15 @@ void S_StopSound(void *origin)
 
 	int cnum;
 
-	for (cnum=0 ; cnum<numChannels ; cnum++)
+	for (cnum=0 ; cnum < numChannels ; cnum++)
 	{
-	if (channels[cnum].sfxinfo && channels[cnum].origin == origin)
-	{
-		S_StopChannel(cnum);
-		break;
-	}
+		if (channels[cnum].sfxinfo && channels[cnum].origin == origin)
+		{
+			S_StopChannel(cnum);
+			break;
+		}
 	}
 }
-
-
-
-
 
 
 
@@ -508,8 +498,8 @@ void S_PauseSound(void)
 {
 	if (mus_playing && !mus_paused)
 	{
-	I_PauseSong(mus_playing->handle);
-	mus_paused = true;
+		I_PauseSong(mus_playing->handle);
+		mus_paused = true;
 	}
 }
 
@@ -517,8 +507,8 @@ void S_ResumeSound(void)
 {
 	if (mus_playing && mus_paused)
 	{
-	I_ResumeSong(mus_playing->handle);
-	mus_paused = false;
+		I_ResumeSong(mus_playing->handle);
+		mus_paused = false;
 	}
 }
 
@@ -535,7 +525,7 @@ void S_UpdateSounds(void* listener_p)
 	int		pitch;
 	sfxinfo_t*	sfx;
 	channel_t*	c;
-	
+
 	mobj_t*	listener = (mobj_t*)listener_p;
 
 
@@ -656,24 +646,21 @@ void S_StartMusic(int m_id)
 	S_ChangeMusic(m_id, false);
 }
 
-void
-S_ChangeMusic
-( int			musicnum,
- int			looping )
+void S_ChangeMusic ( int			musicnum, int			looping )
 {
 	musicinfo_t*	music;
 	char		namebuf[9];
 
 	if ( (musicnum <= mus_None)
-	|| (musicnum >= NUMMUSIC) )
+		|| (musicnum >= NUMMUSIC) )
 	{
-	I_Error("Bad music number %d", musicnum);
+		I_Error("Bad music number %d", musicnum);
 	}
 	else
-	music = &S_music[musicnum];
+		music = &S_music[musicnum];
 
 	if (mus_playing == music)
-	return;
+		return;
 
 	// shutdown old music
 	S_StopMusic();
@@ -700,15 +687,15 @@ void S_StopMusic(void)
 {
 	if (mus_playing)
 	{
-	if (mus_paused)
-		I_ResumeSong(mus_playing->handle);
+		if (mus_paused)
+			I_ResumeSong(mus_playing->handle);
 
-	I_StopSong(mus_playing->handle);
-	I_UnRegisterSong(mus_playing->handle);
-	Z_ChangeTag(mus_playing->data, PU_CACHE);
-	
-	mus_playing->data = 0;
-	mus_playing = 0;
+		I_StopSong(mus_playing->handle);
+		I_UnRegisterSong(mus_playing->handle);
+		Z_ChangeTag(mus_playing->data, PU_CACHE);
+
+		mus_playing->data = 0;
+		mus_playing = 0;
 	}
 }
 
@@ -723,31 +710,31 @@ void S_StopChannel(int cnum)
 
 	if (c->sfxinfo)
 	{
-	// stop the sound playing
-	if (I_SoundIsPlaying(c->handle))
-	{
-#ifdef SAWDEBUG
-		if (c->sfxinfo == &S_sfx[sfx_sawful])
-		fprintf(stderr, "stopped\n");
-#endif
-		I_StopSound(c->handle);
-	}
-
-	// check to see
-	//  if other channels are playing the sound
-	for (i=0 ; i<numChannels ; i++)
-	{
-		if (cnum != i
-		&& c->sfxinfo == channels[i].sfxinfo)
+		// stop the sound playing
+		if (I_SoundIsPlaying(c->handle))
 		{
-		break;
+#ifdef SAWDEBUG
+			if (c->sfxinfo == &S_sfx[sfx_sawful])
+				fprintf(stderr, "stopped\n");
+#endif
+			I_StopSound(c->handle);
 		}
-	}
-	
-	// degrade usefulness of sound data
-	c->sfxinfo->usefulness--;
 
-	c->sfxinfo = 0;
+		// check to see
+		//  if other channels are playing the sound
+		for (i=0 ; i < numChannels ; i++)
+		{
+			if (cnum != i
+				&& c->sfxinfo == channels[i].sfxinfo)
+			{
+				break;
+			}
+		}
+
+		// degrade usefulness of sound data
+		c->sfxinfo->usefulness--;
+
+		c->sfxinfo = 0;
 	}
 }
 
@@ -759,14 +746,7 @@ void S_StopChannel(int cnum)
 // If the sound is not audible, returns a 0.
 // Otherwise, modifies parameters and returns 1.
 //
-int
-S_AdjustSoundParams
-( mobj_t*	listener,
- mobj_t*	source,
- int*		vol,
- int*		sep,
- int*		pitch )
-{
+int S_AdjustSoundParams( mobj_t* listener, mobj_t* source, int* vol, int* sep, int* pitch ) {
 	fixed_t	approx_dist;
 	fixed_t	adx;
 	fixed_t	ady;
@@ -785,7 +765,7 @@ S_AdjustSoundParams
 	{
 	return 0;
 	}
-	
+
 	// angle of source to listener
 	angle = R_PointToAngle2(listener->x,
 				listener->y,
@@ -803,9 +783,8 @@ S_AdjustSoundParams
 	*sep = 128 - (FixedMul(S_STEREO_SWING,finesine[angle])>>FRACBITS);
 
 	// volume calculation
-	if (approx_dist < S_CLOSE_DIST)
-	{
-	*vol = snd_SfxVolume;
+	if (approx_dist < S_CLOSE_DIST)	{
+		*vol = snd_SfxVolume;
 	}
 	else if (gamemap == 8)
 	{
@@ -841,38 +820,37 @@ S_getChannel
 {
 	// channel number to use
 	int		cnum;
-	
+
 	channel_t*	c;
 
 	// Find an open channel
-	for (cnum=0 ; cnum<numChannels ; cnum++)
+	for (cnum=0 ; cnum < numChannels ; cnum++)
 	{
-	if (!channels[cnum].sfxinfo)
-		break;
+		if (!channels[cnum].sfxinfo)
+			break;
 	else if (origin &&  channels[cnum].origin ==  origin)
 	{
-		S_StopChannel(cnum);
+	    S_StopChannel(cnum);
 		break;
-	}
 	}
 
 	// None available
 	if (cnum == numChannels)
 	{
-	// Look for lower priority
-	for (cnum=0 ; cnum<numChannels ; cnum++)
-		if (channels[cnum].sfxinfo->priority >= sfxinfo->priority) break;
+		// Look for lower priority
+		for (cnum=0 ; cnum < numChannels ; cnum++)
+			if (channels[cnum].sfxinfo->priority >= sfxinfo->priority) break;
 
-	if (cnum == numChannels)
-	{
-		// FUCK!  No lower priority.  Sorry, Charlie.    
-		return -1;
-	}
-	else
-	{
-		// Otherwise, kick out lower priority.
-		S_StopChannel(cnum);
-	}
+		if (cnum == numChannels)
+		{
+			// FUCK!  No lower priority.  Sorry, Charlie.    
+			return -1;
+		}
+		else
+		{
+			// Otherwise, kick out lower priority.
+			S_StopChannel(cnum);
+		}
 	}
 
 	c = &channels[cnum];
@@ -883,6 +861,7 @@ S_getChannel
 
 	return cnum;
 }
+
 
 
 
