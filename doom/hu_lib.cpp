@@ -63,10 +63,10 @@ void HUlib_clearTextLine(hu_textline_t* t)
 void
 HUlib_initTextLine
 ( hu_textline_t*	t,
-  int			x,
-  int			y,
-  patch_t**		f,
-  int			sc )
+ int			x,
+ int			y,
+ patch_t**		f,
+ int			sc )
 {
 	t->x = x;
 	t->y = y;
@@ -78,7 +78,7 @@ HUlib_initTextLine
 boolean
 HUlib_addCharToTextLine
 ( hu_textline_t*	t,
-  char			ch )
+ char			ch )
 {
 
 	if (t->len == HU_MAXLINELENGTH)
@@ -109,7 +109,7 @@ boolean HUlib_delCharFromTextLine(hu_textline_t* t)
 void
 HUlib_drawTextLine
 ( hu_textline_t*	l,
-  boolean		drawcursor )
+ boolean		drawcursor )
 {
 
 	int			i;
@@ -186,12 +186,12 @@ void HUlib_eraseTextLine(hu_textline_t* l)
 void
 HUlib_initSText
 ( hu_stext_t*	s,
-  int		x,
-  int		y,
-  int		h,
-  patch_t**	font,
-  int		startchar,
-  boolean*	on )
+ int		x,
+ int		y,
+ int		h,
+ patch_t**	font,
+ int		startchar,
+ boolean*	on )
 {
 
 	int i;
@@ -226,8 +226,8 @@ void HUlib_addLineToSText(hu_stext_t* s)
 void
 HUlib_addMessageToSText
 ( hu_stext_t*	s,
-  char*		prefix,
-  char*		msg )
+ char*		prefix,
+ char*		msg )
 {
 	HUlib_addLineToSText(s);
 	if (prefix)
@@ -279,11 +279,11 @@ void HUlib_eraseSText(hu_stext_t* s)
 void
 HUlib_initIText
 ( hu_itext_t*	it,
-  int		x,
-  int		y,
-  patch_t**	font,
-  int		startchar,
-  boolean*	on )
+ int		x,
+ int		y,
+ patch_t**	font,
+ int		startchar,
+ boolean*	on )
 {
 	it->lm = 0; // default left margin is start of text
 	it->on = on;
@@ -315,7 +315,7 @@ void HUlib_resetIText(hu_itext_t* it)
 void
 HUlib_addPrefixToIText
 ( hu_itext_t*	it,
-  char*		str )
+ char*		str )
 {
 	while (*str)
 	HUlib_addCharToTextLine(&it->l, *(str++));
@@ -327,11 +327,11 @@ HUlib_addPrefixToIText
 boolean
 HUlib_keyInIText
 ( hu_itext_t*	it,
-  unsigned char ch )
+ unsigned char ch )
 {
 
 	if (ch >= ' ' && ch <= '_') 
-  	HUlib_addCharToTextLine(&it->l, (char) ch);
+ 	HUlib_addCharToTextLine(&it->l, (char) ch);
 	else 
 	if (ch == KEY_BACKSPACE) 
 		HUlib_delCharFromIText(it);

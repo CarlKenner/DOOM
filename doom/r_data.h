@@ -45,7 +45,7 @@ If you have questions concerning this license or the applicable additional terms
 byte*
 R_GetColumn
 ( int		tex,
-  int		col );
+ int		col );
 
 
 // I/O, setting up the stuff.

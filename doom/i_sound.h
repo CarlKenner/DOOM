@@ -73,10 +73,10 @@ int I_GetSfxLumpNum (sfxinfo_t* sfxinfo );
 int
 I_StartSound
 ( int		id,
-  int		vol,
-  int		sep,
-  int		pitch,
-  int		priority );
+ int		vol,
+ int		sep,
+ int		pitch,
+ int		priority );
 
 
 // Stops a sound channel.
@@ -92,9 +92,9 @@ int I_SoundIsPlaying(int handle);
 void
 I_UpdateSoundParams
 ( int		handle,
-  int		vol,
-  int		sep,
-  int		pitch );
+ int		vol,
+ int		sep,
+ int		pitch );
 
 
 //
@@ -116,7 +116,7 @@ int I_RegisterSong(void *data);
 void
 I_PlaySong
 ( int		handle,
-  int		looping );
+ int		looping );
 // Stops a song over 3 seconds.
 void I_StopSong(int handle);
 // See above (register), then think backwards

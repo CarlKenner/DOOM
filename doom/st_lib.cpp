@@ -75,12 +75,12 @@ void STlib_init(void)
 void
 STlib_initNum
 ( st_number_t*		n,
-  int			x,
-  int			y,
-  patch_t**		pl,
-  int*			num,
-  boolean*		on,
-  int			width )
+ int			x,
+ int			y,
+ patch_t**		pl,
+ int*			num,
+ boolean*		on,
+ int			width )
 {
 	n->x	= x;
 	n->y	= y;
@@ -100,7 +100,7 @@ STlib_initNum
 void
 STlib_drawNum
 ( st_number_t*	n,
-  boolean	refresh )
+ boolean	refresh )
 {
 
 	int		numdigits = n->width;
@@ -162,7 +162,7 @@ STlib_drawNum
 void
 STlib_updateNum
 ( st_number_t*		n,
-  boolean		refresh )
+ boolean		refresh )
 {
 	if (*n->on) STlib_drawNum(n, refresh);
 }
@@ -172,12 +172,12 @@ STlib_updateNum
 void
 STlib_initPercent
 ( st_percent_t*		p,
-  int			x,
-  int			y,
-  patch_t**		pl,
-  int*			num,
-  boolean*		on,
-  patch_t*		percent )
+ int			x,
+ int			y,
+ patch_t**		pl,
+ int*			num,
+ boolean*		on,
+ patch_t*		percent )
 {
 	STlib_initNum(&p->n, x, y, pl, num, on, 3);
 	p->p = percent;
@@ -189,7 +189,7 @@ STlib_initPercent
 void
 STlib_updatePercent
 ( st_percent_t*		per,
-  int			refresh )
+ int			refresh )
 {
 	if (refresh && *per->n.on)
 	V_DrawPatch(per->n.x, per->n.y, FG, per->p);
@@ -202,11 +202,11 @@ STlib_updatePercent
 void
 STlib_initMultIcon
 ( st_multicon_t*	i,
-  int			x,
-  int			y,
-  patch_t**		il,
-  int*			inum,
-  boolean*		on )
+ int			x,
+ int			y,
+ patch_t**		il,
+ int*			inum,
+ boolean*		on )
 {
 	i->x	= x;
 	i->y	= y;
@@ -221,7 +221,7 @@ STlib_initMultIcon
 void
 STlib_updateMultIcon
 ( st_multicon_t*	mi,
-  boolean		refresh )
+ boolean		refresh )
 {
 	int			w;
 	int			h;
@@ -254,11 +254,11 @@ STlib_updateMultIcon
 void
 STlib_initBinIcon
 ( st_binicon_t*		b,
-  int			x,
-  int			y,
-  patch_t*		i,
-  boolean*		val,
-  boolean*		on )
+ int			x,
+ int			y,
+ patch_t*		i,
+ boolean*		val,
+ boolean*		on )
 {
 	b->x	= x;
 	b->y	= y;
@@ -273,7 +273,7 @@ STlib_initBinIcon
 void
 STlib_updateBinIcon
 ( st_binicon_t*		bi,
-  boolean		refresh )
+ boolean		refresh )
 {
 	int			x;
 	int			y;

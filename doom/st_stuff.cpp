@@ -235,7 +235,7 @@ rcsid[] = "$Id: st_stuff.c,v 1.6 1997/02/03 22:45:13 b1 Exp $";
 #define ST_WEAPON4X			122 
 #define ST_WEAPON4Y			181
 
- // bfg
+  // bfg
 #define ST_WEAPON5X			134
 #define ST_WEAPON5Y			181
 
@@ -243,7 +243,7 @@ rcsid[] = "$Id: st_stuff.c,v 1.6 1997/02/03 22:45:13 b1 Exp $";
 #define ST_WPNSX			109 
 #define ST_WPNSY			191
 
- // DETH title
+  // DETH title
 #define ST_DETHX			109
 #define ST_DETHY			191
 
@@ -263,7 +263,7 @@ rcsid[] = "$Id: st_stuff.c,v 1.6 1997/02/03 22:45:13 b1 Exp $";
 
 // Width, in characters again.
 #define ST_OUTWIDTH			52 
- // Height, in lines. 
+  // Height, in lines. 
 #define ST_OUTHEIGHT		1
 
 #define ST_MAPWIDTH	\
@@ -342,7 +342,7 @@ static patch_t*		faces[ST_NUMFACES];
 // face background
 static patch_t*		faceback;
 
- // main bar right
+  // main bar right
 static patch_t*		armsbg;
 
 // weapon ownership patches
@@ -351,7 +351,7 @@ static patch_t*		arms[6][2];
 // ready-weapon widget
 static st_number_t	w_ready;
 
- // in deathmatch only, summary of frags stats
+  // in deathmatch only, summary of frags stats
 static st_number_t	w_frags;
 
 // health widget
@@ -381,7 +381,7 @@ static st_number_t	w_maxammo[4];
 
 
 
- // number of frags so far in deathmatch
+  // number of frags so far in deathmatch
 static int	st_fragscount;
 
 // used to use appopriately pained face
@@ -390,7 +390,7 @@ static int	st_oldhealth = -1;
 // used for evil grin
 static boolean	oldweaponsowned[NUMWEAPONS]; 
 
- // count until face changes
+  // count until face changes
 static int	st_facecount = 0;
 
 // current face index, used by w_faces
@@ -527,10 +527,10 @@ void ST_refreshBackground(void)
 boolean
 ST_Responder (event_t* ev)
 {
-  int		i;
+ int		i;
 	
   // Filter automap on/off.
-  if (ev->type == ev_keyup
+ if (ev->type == ev_keyup
 		&& ((ev->data1 & 0xffff0000) == AM_MSGHEADER))
   {
 	switch(ev->data1)
@@ -545,10 +545,10 @@ ST_Responder (event_t* ev)
 	st_gamestate = FirstPersonState;
 	break;
 	}
-  }
+ }
 
   // if a user keypress...
-  else if (ev->type == ev_keydown)
+ else if (ev->type == ev_keydown)
   {
 	if (!netgame)
 	{
@@ -730,8 +730,8 @@ ST_Responder (event_t* ev)
 		plyr->message = STSTR_CLEV;
 		G_DeferedInitNew(gameskill, epsd, map);
 	}    
-  }
-  return false;
+ }
+ return false;
 }
 
 
@@ -804,7 +804,7 @@ void ST_updateFaceWidget(void)
 	}
 
 	}
-  
+ 
 	if (priority < 8)
 	{
 	if (plyr->damagecount
@@ -861,7 +861,7 @@ void ST_updateFaceWidget(void)
 		}
 	}
 	}
-  
+ 
 	if (priority < 7)
 	{
 	// getting hurt because of your own damn stupidity
@@ -883,7 +883,7 @@ void ST_updateFaceWidget(void)
 	}
 
 	}
-  
+ 
 	if (priority < 6)
 	{
 	// rapid firing
@@ -903,7 +903,7 @@ void ST_updateFaceWidget(void)
 		lastattackdown = -1;
 
 	}
-  
+ 
 	if (priority < 5)
 	{
 	// invulnerability
@@ -1020,7 +1020,7 @@ void ST_doPaletteStuff(void)
 	if (plyr->powers[pw_strength])
 	{
 	// slowly fade the berzerk out
-  	bzc = 12 - (plyr->powers[pw_strength]>>6);
+ 	bzc = 12 - (plyr->powers[pw_strength]>>6);
 
 	if (bzc > cnt)
 		cnt = bzc;
@@ -1117,7 +1117,7 @@ void ST_diffDraw(void)
 
 void ST_Drawer (boolean fullscreen, boolean refresh)
 {
-  
+ 
 	st_statusbaron = (!fullscreen) || automapactive;
 	st_firsttime = st_firsttime || refresh;
 

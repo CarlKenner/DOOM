@@ -193,8 +193,8 @@ void Z_Free (void* ptr)
 void*
 Z_Malloc
 ( int		size,
-  int		tag,
-  void*		user )
+ int		tag,
+ void*		user )
 {
 	int		extra;
 	memblock_t*	start;
@@ -306,7 +306,7 @@ Z_Malloc
 void
 Z_FreeTags
 ( int		lowtag,
-  int		hightag )
+ int		hightag )
 {
 	memblock_t*	block;
 	memblock_t*	next;
@@ -336,7 +336,7 @@ Z_FreeTags
 void
 Z_DumpHeap
 ( int		lowtag,
-  int		hightag )
+ int		hightag )
 {
 	memblock_t*	block;
 	
@@ -438,7 +438,7 @@ void Z_CheckHeap (void)
 void
 Z_ChangeTag2
 ( void*		ptr,
-  int		tag )
+ int		tag )
 {
 	memblock_t*	block;
 	

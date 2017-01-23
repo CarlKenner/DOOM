@@ -90,7 +90,7 @@ void P_AddThinker (thinker_t* thinker)
 void P_RemoveThinker (thinker_t* thinker)
 {
   // FIXME: NOP.
-  thinker->function.acv = (actionf_v)(-1);
+ thinker->function.acv = (actionf_v)(-1);
 }
 
 

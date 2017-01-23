@@ -165,68 +165,68 @@ void STlib_init(void);
 void
 STlib_initNum
 ( st_number_t*		n,
-  int			x,
-  int			y,
-  patch_t**		pl,
-  int*			num,
-  boolean*		on,
-  int			width );
+ int			x,
+ int			y,
+ patch_t**		pl,
+ int*			num,
+ boolean*		on,
+ int			width );
 
 void
 STlib_updateNum
 ( st_number_t*		n,
-  boolean		refresh );
+ boolean		refresh );
 
 
 // Percent widget routines
 void
 STlib_initPercent
 ( st_percent_t*		p,
-  int			x,
-  int			y,
-  patch_t**		pl,
-  int*			num,
-  boolean*		on,
-  patch_t*		percent );
+ int			x,
+ int			y,
+ patch_t**		pl,
+ int*			num,
+ boolean*		on,
+ patch_t*		percent );
 
 
 void
 STlib_updatePercent
 ( st_percent_t*		per,
-  int			refresh );
+ int			refresh );
 
 
 // Multiple Icon widget routines
 void
 STlib_initMultIcon
 ( st_multicon_t*	mi,
-  int			x,
-  int			y,
-  patch_t**		il,
-  int*			inum,
-  boolean*		on );
+ int			x,
+ int			y,
+ patch_t**		il,
+ int*			inum,
+ boolean*		on );
 
 
 void
 STlib_updateMultIcon
 ( st_multicon_t*	mi,
-  boolean		refresh );
+ boolean		refresh );
 
 // Binary Icon widget routines
 
 void
 STlib_initBinIcon
 ( st_binicon_t*		b,
-  int			x,
-  int			y,
-  patch_t*		i,
-  boolean*		val,
-  boolean*		on );
+ int			x,
+ int			y,
+ patch_t*		i,
+ boolean*		val,
+ boolean*		on );
 
 void
 STlib_updateBinIcon
 ( st_binicon_t*		bi,
-  boolean		refresh );
+ boolean		refresh );
 
 #endif
 

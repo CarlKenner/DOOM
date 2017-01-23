@@ -148,8 +148,8 @@ void (*spanfunc) (void);
 void
 R_AddPointToBox
 ( int		x,
-  int		y,
-  fixed_t*	box )
+ int		y,
+ fixed_t*	box )
 {
 	if (x< box[BOXLEFT])
 	box[BOXLEFT] = x;
@@ -171,8 +171,8 @@ R_AddPointToBox
 int
 R_PointOnSide
 ( fixed_t	x,
-  fixed_t	y,
-  node_t*	node )
+ fixed_t	y,
+ node_t*	node )
 {
 	fixed_t	dx;
 	fixed_t	dy;
@@ -224,8 +224,8 @@ R_PointOnSide
 int
 R_PointOnSegSide
 ( fixed_t	x,
-  fixed_t	y,
-  seg_t*	line )
+ fixed_t	y,
+ seg_t*	line )
 {
 	fixed_t	lx;
 	fixed_t	ly;
@@ -301,7 +301,7 @@ R_PointOnSegSide
 angle_t
 R_PointToAngle
 ( fixed_t	x,
-  fixed_t	y )
+ fixed_t	y )
 {	
 	x -= viewx;
 	y -= viewy;
@@ -387,9 +387,9 @@ R_PointToAngle
 angle_t
 R_PointToAngle2
 ( fixed_t	x1,
-  fixed_t	y1,
-  fixed_t	x2,
-  fixed_t	y2 )
+ fixed_t	y1,
+ fixed_t	x2,
+ fixed_t	y2 )
 {	
 	viewx = x1;
 	viewy = y1;
@@ -401,7 +401,7 @@ R_PointToAngle2
 fixed_t
 R_PointToDist
 ( fixed_t	x,
-  fixed_t	y )
+ fixed_t	y )
 {
 	int		angle;
 	fixed_t	dx;
@@ -667,7 +667,7 @@ int		setdetail;
 void
 R_SetViewSize
 ( int		blocks,
-  int		detail )
+ int		detail )
 {
 	setsizeneeded = true;
 	setblocks = blocks;
@@ -810,7 +810,7 @@ void R_Init (void)
 subsector_t*
 R_PointInSubsector
 ( fixed_t	x,
-  fixed_t	y )
+ fixed_t	y )
 {
 	node_t*	node;
 	int		side;

@@ -62,30 +62,30 @@ void R_ClearPlanes (void);
 void
 R_MapPlane
 ( int		y,
-  int		x1,
-  int		x2 );
+ int		x1,
+ int		x2 );
 
 void
 R_MakeSpans
 ( int		x,
-  int		t1,
-  int		b1,
-  int		t2,
-  int		b2 );
+ int		t1,
+ int		b1,
+ int		t2,
+ int		b2 );
 
 void R_DrawPlanes (void);
 
 visplane_t*
 R_FindPlane
 ( fixed_t	height,
-  int		picnum,
-  int		lightlevel );
+ int		picnum,
+ int		lightlevel );
 
 visplane_t*
 R_CheckPlane
 ( visplane_t*	pl,
-  int		start,
-  int		stop );
+ int		start,
+ int		stop );
 
 
 

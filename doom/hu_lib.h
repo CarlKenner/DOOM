@@ -139,12 +139,12 @@ void	HUlib_eraseTextLine(hu_textline_t *l);
 void
 HUlib_initSText
 ( hu_stext_t*	s,
-  int		x,
-  int		y,
-  int		h,
-  patch_t**	font,
-  int		startchar,
-  boolean*	on );
+ int		x,
+ int		y,
+ int		h,
+ patch_t**	font,
+ int		startchar,
+ boolean*	on );
 
 // add a new line
 void HUlib_addLineToSText(hu_stext_t* s);  
@@ -153,8 +153,8 @@ void HUlib_addLineToSText(hu_stext_t* s);
 void
 HUlib_addMessageToSText
 ( hu_stext_t*	s,
-  char*		prefix,
-  char*		msg );
+ char*		prefix,
+ char*		msg );
 
 // draws stext
 void HUlib_drawSText(hu_stext_t* s);
@@ -166,11 +166,11 @@ void HUlib_eraseSText(hu_stext_t* s);
 void
 HUlib_initIText
 ( hu_itext_t*	it,
-  int		x,
-  int		y,
-  patch_t**	font,
-  int		startchar,
-  boolean*	on );
+ int		x,
+ int		y,
+ patch_t**	font,
+ int		startchar,
+ boolean*	on );
 
 // enforces left margin
 void HUlib_delCharFromIText(hu_itext_t* it);
@@ -185,13 +185,13 @@ void HUlib_resetIText(hu_itext_t* it);
 void
 HUlib_addPrefixToIText
 ( hu_itext_t*	it,
-  char*		str );
+ char*		str );
 
 // whether eaten
 boolean
 HUlib_keyInIText
 ( hu_itext_t*	it,
-  unsigned char ch );
+ unsigned char ch );
 
 void HUlib_drawIText(hu_itext_t* it);
 

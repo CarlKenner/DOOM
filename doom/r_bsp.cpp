@@ -67,7 +67,7 @@ drawseg_t*	ds_p;
 void
 R_StoreWallRange
 ( int	start,
-  int	stop );
+ int	stop );
 
 
 
@@ -113,7 +113,7 @@ cliprange_t	solidsegs[MAXSEGS];
 void
 R_ClipSolidWallSegment
 ( int			first,
-  int			last )
+ int			last )
 {
 	cliprange_t*	next;
 	cliprange_t*	start;
@@ -177,7 +177,7 @@ R_ClipSolidWallSegment
 	
 	// Remove start+1 to next from the clip list,
 	// because start now covers their area.
-  crunch:
+ crunch:
 	if (next == start)
 	{
 	// Post just extended past the bottom of one post.
@@ -206,7 +206,7 @@ R_ClipSolidWallSegment
 void
 R_ClipPassWallSegment
 ( int	first,
-  int	last )
+ int	last )
 {
 	cliprange_t*	start;
 
@@ -357,11 +357,11 @@ void R_AddLine (seg_t*	line)
 	}
 	
 				
-  clippass:
+ clippass:
 	R_ClipPassWallSegment (x1, x2-1);	
 	return;
 		
-  clipsolid:
+ clipsolid:
 	R_ClipSolidWallSegment (x1, x2-1);
 }
 

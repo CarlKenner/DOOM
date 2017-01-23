@@ -95,7 +95,7 @@ int filelength (int handle)
 void
 ExtractFileBase
 ( char*		path,
-  char*		dest )
+ char*		dest )
 {
 	char*	src;
 	int		length;
@@ -441,7 +441,7 @@ int W_LumpLength (int lump)
 void
 W_ReadLump
 ( int		lump,
-  void*		dest )
+ void*		dest )
 {
 	int		c;
 	lumpinfo_t*	l;
@@ -485,7 +485,7 @@ W_ReadLump
 void*
 W_CacheLumpNum
 ( int		lump,
-  int		tag )
+ int		tag )
 {
 	byte*	ptr;
 
@@ -517,7 +517,7 @@ W_CacheLumpNum
 void*
 W_CacheLumpName
 ( char*		name,
-  int		tag )
+ int		tag )
 {
 	return W_CacheLumpNum (W_GetNumForName(name), tag);
 }

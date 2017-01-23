@@ -112,8 +112,8 @@ short*		maskedtexturecol;
 void
 R_RenderMaskedSegRange
 ( drawseg_t*	ds,
-  int		x1,
-  int		x2 )
+ int		x1,
+ int		x2 )
 {
 	unsigned	index;
 	column_t*	col;
@@ -384,7 +384,7 @@ void R_RenderSegLoop (void)
 void
 R_StoreWallRange
 ( int	start,
-  int	stop )
+ int	stop )
 {
 	fixed_t		hyp;
 	fixed_t		sineval;
@@ -671,7 +671,7 @@ R_StoreWallRange
 	//  of the view plane, it is definitely invisible
 	//  and doesn't need to be marked.
 	
-  
+ 
 	if (frontsector->floorheight >= viewz)
 	{
 	// above view plane

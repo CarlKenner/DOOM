@@ -316,7 +316,7 @@ static int		acceleratestage;
 // wbs->pnum
 static int		me;
 
- // specifies current state
+  // specifies current state
 static stateenum_t	state;
 
 // contains information passed into intermission
@@ -376,7 +376,7 @@ static patch_t*		entering;
 // "secret"
 static patch_t*		sp_secret;
 
- // "Kills", "Scrt", "Items", "Frags"
+  // "Kills", "Scrt", "Items", "Frags"
 static patch_t*		kills;
 static patch_t*		secret;
 static patch_t*		items;
@@ -402,7 +402,7 @@ static patch_t*		p[MAXPLAYERS];
 // "gray P[1..MAXPLAYERS]"
 static patch_t*		bp[MAXPLAYERS];
 
- // Name graphics of each level (centered)
+  // Name graphics of each level (centered)
 static patch_t**	lnames;
 
 //
@@ -465,7 +465,7 @@ void WI_drawEL(void)
 void
 WI_drawOnLnode
 ( int		n,
-  patch_t*	c[] )
+ patch_t*	c[] )
 {
 
 	int		i;
@@ -621,9 +621,9 @@ void WI_drawAnimatedBack(void)
 int
 WI_drawNum
 ( int		x,
-  int		y,
-  int		n,
-  int		digits )
+ int		y,
+ int		n,
+ int		digits )
 {
 
 	int		fontwidth = SHORT(num[0]->width);
@@ -678,8 +678,8 @@ WI_drawNum
 void
 WI_drawPercent
 ( int		x,
-  int		y,
-  int		p )
+ int		y,
+ int		p )
 {
 	if (p < 0)
 	return;
@@ -697,8 +697,8 @@ WI_drawPercent
 void
 WI_drawTime
 ( int		x,
-  int		y,
-  int		t )
+ int		y,
+ int		t )
 {
 
 	int		div;
@@ -791,7 +791,7 @@ void WI_drawShowNextLoc(void)
 
 	if ( gamemode != commercial)
 	{
-  	if (wbs->epsd > 2)
+ 	if (wbs->epsd > 2)
 	{
 		WI_drawEL();
 		return;
@@ -1518,7 +1518,7 @@ void WI_Ticker(void)
 	if (bcnt == 1)
 	{
 	// intermission music
-  	if ( gamemode == commercial )
+ 	if ( gamemode == commercial )
 		S_ChangeMusic(mus_dm2int, true);
 	else
 		S_ChangeMusic(mus_inter, true); 
@@ -1667,7 +1667,7 @@ void WI_loadData(void)
 	// "items"
 	if (netgame && !deathmatch)
 		items = W_CacheLumpName("WIOBJ", PU_STATIC);    
-  	else
+ 	else
 		items = W_CacheLumpName("WIOSTI", PU_STATIC);
 	} else
 	items = W_CacheLumpName("WIOSTI", PU_STATIC);
@@ -1727,7 +1727,7 @@ void WI_unloadData(void)
 	
 	if (gamemode == commercial)
 	{
-  	for (i=0 ; i<NUMCMAPS ; i++)
+ 	for (i=0 ; i<NUMCMAPS ; i++)
 		Z_ChangeTag(lnames[i], PU_CACHE);
 	}
 	else

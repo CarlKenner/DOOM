@@ -148,8 +148,8 @@ void T_PlatRaise(plat_t* plat)
 int
 EV_DoPlat
 ( line_t*	line,
-  plattype_e	type,
-  int		amount )
+ plattype_e	type,
+ int		amount )
 {
 	plat_t*	plat;
 	int		secnum;

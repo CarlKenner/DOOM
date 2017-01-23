@@ -307,9 +307,9 @@ extern boolean viewactive;
 void
 V_MarkRect
 ( int	x,
-  int	y,
-  int	width,
-  int	height );
+ int	y,
+ int	width,
+ int	height );
 
 // Calculates the slope and slope according to the x-axis of a line
 // segment in map coordinates (with the upright y-axis n' all) so
@@ -318,7 +318,7 @@ V_MarkRect
 void
 AM_getIslope
 ( mline_t*	ml,
-  islope_t*	is )
+ islope_t*	is )
 {
 	int dx, dy;
 
@@ -404,7 +404,7 @@ void AM_findMinMaxBoundaries(void)
 
 	min_x = min_y =  MAXINT;
 	max_x = max_y = -MAXINT;
-  
+ 
 	for (i=0;i<numvertexes;i++)
 	{
 	if (vertexes[i].x < min_x)
@@ -417,7 +417,7 @@ void AM_findMinMaxBoundaries(void)
 	else if (vertexes[i].y > max_y)
 		max_y = vertexes[i].y;
 	}
-  
+ 
 	max_w = max_x - min_x;
 	max_h = max_y - min_y;
 
@@ -426,7 +426,7 @@ void AM_findMinMaxBoundaries(void)
 
 	a = FixedDiv(f_w<<FRACBITS, max_w);
 	b = FixedDiv(f_h<<FRACBITS, max_h);
-  
+ 
 	min_scale_mtof = a < b ? a : b;
 	max_scale_mtof = FixedDiv(f_h<<FRACBITS, 2*PLAYERRADIUS);
 
@@ -451,7 +451,7 @@ void AM_changeWindowLoc(void)
 	m_x = max_x - m_w/2;
 	else if (m_x + m_w/2 < min_x)
 	m_x = min_x - m_w/2;
-  
+ 
 	if (m_y + m_h/2 > max_y)
 	m_y = max_y - m_h/2;
 	else if (m_y + m_h/2 < min_y)
@@ -489,7 +489,7 @@ void AM_initVariables(void)
 	for (pnum=0;pnum<MAXPLAYERS;pnum++)
 		if (playeringame[pnum])
 		break;
-  
+ 
 	plr = &players[pnum];
 	m_x = plr->mo->x - m_w/2;
 	m_y = plr->mo->y - m_h/2;
@@ -513,7 +513,7 @@ void AM_loadPics(void)
 {
 	int i;
 	char namebuf[9];
-  
+ 
 	for (i=0;i<10;i++)
 	{
 	sprintf(namebuf, "AMMNUM%d", i);
@@ -525,7 +525,7 @@ void AM_loadPics(void)
 void AM_unloadPics(void)
 {
 	int i;
-  
+ 
 	for (i=0;i<10;i++)
 	Z_ChangeTag(marknums[i], PU_CACHE);
 
@@ -797,7 +797,7 @@ void AM_updateLightLev(void)
 	//static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
 	static int litelevels[] = { 0, 4, 7, 10, 12, 14, 15, 15 };
 	static int litelevelscnt = 0;
-   
+  
 	// Change light level
 	if (amclock>nexttic)
 	{
@@ -856,7 +856,7 @@ void AM_clearFB(int color)
 boolean
 AM_clipMline
 ( mline_t*	ml,
-  fline_t*	fl )
+ fline_t*	fl )
 {
 	enum
 	{
@@ -987,7 +987,7 @@ AM_clipMline
 void
 AM_drawFline
 ( fline_t*	fl,
-  int		color )
+ int		color )
 {
 	register int x;
 	register int y;
@@ -1065,7 +1065,7 @@ AM_drawFline
 void
 AM_drawMline
 ( mline_t*	ml,
-  int		color )
+ int		color )
 {
 	static fline_t fl;
 
@@ -1182,8 +1182,8 @@ void AM_drawWalls(void)
 void
 AM_rotate
 ( fixed_t*	x,
-  fixed_t*	y,
-  angle_t	a )
+ fixed_t*	y,
+ angle_t	a )
 {
 	fixed_t tmpx;
 
@@ -1201,12 +1201,12 @@ AM_rotate
 void
 AM_drawLineCharacter
 ( mline_t*	lineguy,
-  int		lineguylines,
-  fixed_t	scale,
-  angle_t	angle,
-  int		color,
-  fixed_t	x,
-  fixed_t	y )
+ int		lineguylines,
+ fixed_t	scale,
+ angle_t	angle,
+ int		color,
+ fixed_t	x,
+ fixed_t	y )
 {
 	int		i;
 	mline_t	l;
@@ -1294,7 +1294,7 @@ void AM_drawPlayers(void)
 void
 AM_drawThings
 ( int	colors,
-  int 	colorrange)
+ int 	colorrange)
 {
 	int		i;
 	mobj_t*	t;

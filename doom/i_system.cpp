@@ -64,11 +64,11 @@ int	mb_used = 6;
 void
 I_Tactile
 ( int	on,
-  int	off,
-  int	total )
+ int	off,
+ int	total )
 {
   // UNUSED.
-  on = off = total = 0;
+ on = off = total = 0;
 }
 
 ticcmd_t	emptycmd;
@@ -101,7 +101,7 @@ int  I_GetTime (void)
 	struct timezone	tzp;
 	int			newtics;
 	static int		basetime=0;
-  
+ 
 	gettimeofday(&tp, &tzp);
 	if (!basetime)
 	basetime = tp.tv_sec;

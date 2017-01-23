@@ -377,7 +377,7 @@ void R_DrawFuzzColumn (void)
 	} while (count--); 
 } 
  
-  
+ 
  
 
 //
@@ -678,7 +678,7 @@ void R_DrawSpanLow (void)
 	ds_x2 <<= 1;
 	
 	dest = ylookup[ds_y] + columnofs[ds_x1];
-  
+ 
 	
 	count = ds_x2 - ds_x1; 
 	do 
@@ -705,7 +705,7 @@ void R_DrawSpanLow (void)
 void
 R_InitBuffer
 ( int		width,
-  int		height ) 
+ int		height ) 
 { 
 	int		i; 
 
@@ -827,7 +827,7 @@ void R_FillBackScreen (void)
 void
 R_VideoErase
 ( unsigned	ofs,
-  int		count ) 
+ int		count ) 
 { 
   // LFB copy.
   // This might not be a good idea if memcpy
@@ -846,9 +846,9 @@ R_VideoErase
 void
 V_MarkRect
 ( int		x,
-  int		y,
-  int		width,
-  int		height ); 
+ int		y,
+ int		width,
+ int		height ); 
  
 void R_DrawViewBorder (void) 
 { 
@@ -859,7 +859,7 @@ void R_DrawViewBorder (void)
  
 	if (scaledviewwidth == SCREENWIDTH) 
 	return; 
-  
+ 
 	top = ((SCREENHEIGHT-SBARHEIGHT)-viewheight)/2; 
 	side = (SCREENWIDTH-scaledviewwidth)/2; 
  

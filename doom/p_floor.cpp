@@ -58,11 +58,11 @@ rcsid[] = "$Id: p_floor.c,v 1.4 1997/02/03 16:47:54 b1 Exp $";
 result_e
 T_MovePlane
 ( sector_t*	sector,
-  fixed_t	speed,
-  fixed_t	dest,
-  boolean	crush,
-  int		floorOrCeiling,
-  int		direction )
+ fixed_t	speed,
+ fixed_t	dest,
+ boolean	crush,
+ int		floorOrCeiling,
+ int		direction )
 {
 	boolean	flag;
 	fixed_t	lastpos;
@@ -269,7 +269,7 @@ void T_MoveFloor(floormove_t* floor)
 int
 EV_DoFloor
 ( line_t*	line,
-  floor_e	floortype )
+ floor_e	floortype )
 {
 	int			secnum;
 	int			rtn;
@@ -462,7 +462,7 @@ EV_DoFloor
 int
 EV_BuildStairs
 ( line_t*	line,
-  stair_e	type )
+ stair_e	type )
 {
 	int			secnum;
 	int			height;

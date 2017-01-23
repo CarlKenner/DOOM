@@ -79,9 +79,9 @@ extern patch_t*		hu_font[HU_FONTSIZE];
 int
 M_DrawText
 ( int		x,
-  int		y,
-  boolean	direct,
-  char*		string )
+ int		y,
+ boolean	direct,
+ char*		string )
 {
 	int 	c;
 	int		w;
@@ -122,8 +122,8 @@ M_DrawText
 boolean
 M_WriteFile
 ( char const*	name,
-  void*		source,
-  int		length )
+ void*		source,
+ int		length )
 {
 	int		handle;
 	int		count;
@@ -149,7 +149,7 @@ M_WriteFile
 int
 M_ReadFile
 ( char const*	name,
-  byte**	buffer )
+ byte**	buffer )
 {
 	int	handle, count, length;
 	struct stat	fileinfo;
@@ -451,10 +451,10 @@ typedef struct
 void
 WritePCXfile
 ( char*		filename,
-  byte*		data,
-  int		width,
-  int		height,
-  byte*		palette )
+ byte*		data,
+ int		width,
+ int		height,
+ byte*		palette )
 {
 	int		i;
 	int		length;

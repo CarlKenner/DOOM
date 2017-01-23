@@ -216,8 +216,8 @@ void T_VerticalDoor (vldoor_t* door)
 int
 EV_DoLockedDoor
 ( line_t*	line,
-  vldoor_e	type,
-  mobj_t*	thing )
+ vldoor_e	type,
+ mobj_t*	thing )
 {
 	player_t*	p;
 	
@@ -273,7 +273,7 @@ EV_DoLockedDoor
 int
 EV_DoDoor
 ( line_t*	line,
-  vldoor_e	type )
+ vldoor_e	type )
 {
 	int		secnum,rtn;
 	sector_t*	sec;
@@ -363,7 +363,7 @@ EV_DoDoor
 void
 EV_VerticalDoor
 ( line_t*	line,
-  mobj_t*	thing )
+ mobj_t*	thing )
 {
 	player_t*	player;
 	int		secnum;
@@ -537,7 +537,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
 void
 P_SpawnDoorRaiseIn5Mins
 ( sector_t*	sec,
-  int		secnum )
+ int		secnum )
 {
 	vldoor_t*	door;
 	
@@ -722,7 +722,7 @@ void T_SlidingDoor (slidedoor_t*	door)
 void
 EV_SlidingDoor
 ( line_t*	line,
-  mobj_t*	thing )
+ mobj_t*	thing )
 {
 	sector_t*		sec;
 	slidedoor_t*	door;

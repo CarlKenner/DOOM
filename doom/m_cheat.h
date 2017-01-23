@@ -51,13 +51,13 @@ typedef struct
 int
 cht_CheckCheat
 ( cheatseq_t*		cht,
-  char			key );
+ char			key );
 
 
 void
 cht_GetParam
 ( cheatseq_t*		cht,
-  char*			buffer );
+ char*			buffer );
 
 
 #endif

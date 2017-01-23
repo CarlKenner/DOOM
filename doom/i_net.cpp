@@ -115,7 +115,7 @@ int UDPsocket (void)
 void
 BindToLocalPort
 ( int	s,
-  int	port )
+ int	port )
 {
 	int			v;
 	struct sockaddr_in	address;

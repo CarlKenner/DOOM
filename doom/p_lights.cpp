@@ -190,8 +190,8 @@ void T_StrobeFlash (strobe_t*		flash)
 void
 P_SpawnStrobeFlash
 ( sector_t*	sector,
-  int		fastOrSlow,
-  int		inSync )
+ int		fastOrSlow,
+ int		inSync )
 {
 	strobe_t*	flash;
 	
@@ -280,7 +280,7 @@ void EV_TurnTagLightsOff(line_t* line)
 void
 EV_LightTurnOn
 ( line_t*	line,
-  int		bright )
+ int		bright )
 {
 	int		i;
 	int		j;

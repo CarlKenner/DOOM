@@ -124,8 +124,8 @@ boolean PIT_StompThing (mobj_t* thing)
 boolean
 P_TeleportMove
 ( mobj_t*	thing,
-  fixed_t	x,
-  fixed_t	y )
+ fixed_t	x,
+ fixed_t	y )
 {
 	int			xl;
 	int			xh;
@@ -384,8 +384,8 @@ boolean PIT_CheckThing (mobj_t* thing)
 boolean
 P_CheckPosition
 ( mobj_t*	thing,
-  fixed_t	x,
-  fixed_t	y )
+ fixed_t	x,
+ fixed_t	y )
 {
 	int			xl;
 	int			xh;
@@ -460,8 +460,8 @@ P_CheckPosition
 boolean
 P_TryMove
 ( mobj_t*	thing,
-  fixed_t	x,
-  fixed_t	y )
+ fixed_t	x,
+ fixed_t	y )
 {
 	fixed_t	oldx;
 	fixed_t	oldy;
@@ -679,7 +679,7 @@ boolean PTR_SlideTraverse (intercept_t* in)
 	
 	// the line does block movement,
 	// see if it is closer than best so far
-  isblocking:		
+ isblocking:		
 	if (in->frac < bestslidefrac)
 	{
 	secondslidefrac = bestslidefrac;
@@ -715,7 +715,7 @@ void P_SlideMove (mobj_t* mo)
 	slidemo = mo;
 	hitcount = 0;
 	
-  retry:
+ retry:
 	if (++hitcount == 3)
 	goto stairstep;		// don't loop forever
 
@@ -1032,8 +1032,8 @@ boolean PTR_ShootTraverse (intercept_t* in)
 fixed_t
 P_AimLineAttack
 ( mobj_t*	t1,
-  angle_t	angle,
-  fixed_t	distance )
+ angle_t	angle,
+ fixed_t	distance )
 {
 	fixed_t	x2;
 	fixed_t	y2;
@@ -1072,10 +1072,10 @@ P_AimLineAttack
 void
 P_LineAttack
 ( mobj_t*	t1,
-  angle_t	angle,
-  fixed_t	distance,
-  fixed_t	slope,
-  int		damage )
+ angle_t	angle,
+ fixed_t	distance,
+ fixed_t	slope,
+ int		damage )
 {
 	fixed_t	x2;
 	fixed_t	y2;
@@ -1215,8 +1215,8 @@ boolean PIT_RadiusAttack (mobj_t* thing)
 void
 P_RadiusAttack
 ( mobj_t*	spot,
-  mobj_t*	source,
-  int		damage )
+ mobj_t*	source,
+ int		damage )
 {
 	int		x;
 	int		y;
@@ -1330,7 +1330,7 @@ boolean PIT_ChangeSector (mobj_t*	thing)
 boolean
 P_ChangeSector
 ( sector_t*	sector,
-  boolean	crunch )
+ boolean	crunch )
 {
 	int		x;
 	int		y;

@@ -164,9 +164,9 @@ void P_InitSwitchList(void)
 void
 P_StartButton
 ( line_t*	line,
-  bwhere_e	w,
-  int		texture,
-  int		time )
+ bwhere_e	w,
+ int		texture,
+ int		time )
 {
 	int		i;
 	
@@ -210,7 +210,7 @@ P_StartButton
 void
 P_ChangeSwitchTexture
 ( line_t*	line,
-  int 		useAgain )
+ int 		useAgain )
 {
 	int     texTop;
 	int     texMid;
@@ -285,8 +285,8 @@ P_ChangeSwitchTexture
 boolean
 P_UseSpecialLine
 ( mobj_t*	thing,
-  line_t*	line,
-  int		side )
+ line_t*	line,
+ int		side )
 {               
 
 	// Err...

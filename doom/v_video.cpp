@@ -152,9 +152,9 @@ int	usegamma;
 void
 V_MarkRect
 ( int		x,
-  int		y,
-  int		width,
-  int		height ) 
+ int		y,
+ int		width,
+ int		height ) 
 { 
 	M_AddToBox (dirtybox, x, y); 
 	M_AddToBox (dirtybox, x+width-1, y+height-1); 
@@ -167,13 +167,13 @@ V_MarkRect
 void
 V_CopyRect
 ( int		srcx,
-  int		srcy,
-  int		srcscrn,
-  int		width,
-  int		height,
-  int		destx,
-  int		desty,
-  int		destscrn ) 
+ int		srcy,
+ int		srcscrn,
+ int		width,
+ int		height,
+ int		destx,
+ int		desty,
+ int		destscrn ) 
 { 
 	byte*	src;
 	byte*	dest; 
@@ -213,9 +213,9 @@ V_CopyRect
 void
 V_DrawPatch
 ( int		x,
-  int		y,
-  int		scrn,
-  patch_t*	patch ) 
+ int		y,
+ int		scrn,
+ patch_t*	patch ) 
 { 
 
 	int		count;
@@ -280,9 +280,9 @@ V_DrawPatch
 void
 V_DrawPatchFlipped
 ( int		x,
-  int		y,
-  int		scrn,
-  patch_t*	patch ) 
+ int		y,
+ int		scrn,
+ patch_t*	patch ) 
 { 
 
 	int		count;
@@ -346,9 +346,9 @@ V_DrawPatchFlipped
 void
 V_DrawPatchDirect
 ( int		x,
-  int		y,
-  int		scrn,
-  patch_t*	patch ) 
+ int		y,
+ int		scrn,
+ patch_t*	patch ) 
 {
 	V_DrawPatch (x,y,scrn, patch); 
 
@@ -414,11 +414,11 @@ V_DrawPatchDirect
 void
 V_DrawBlock
 ( int		x,
-  int		y,
-  int		scrn,
-  int		width,
-  int		height,
-  byte*		src ) 
+ int		y,
+ int		scrn,
+ int		width,
+ int		height,
+ byte*		src ) 
 { 
 	byte*	dest; 
 	
@@ -454,11 +454,11 @@ V_DrawBlock
 void
 V_GetBlock
 ( int		x,
-  int		y,
-  int		scrn,
-  int		width,
-  int		height,
-  byte*		dest ) 
+ int		y,
+ int		scrn,
+ int		width,
+ int		height,
+ byte*		dest ) 
 { 
 	byte*	src; 
 	

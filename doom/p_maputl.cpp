@@ -58,7 +58,7 @@ rcsid[] = "$Id: p_maputl.c,v 1.5 1997/02/03 22:45:11 b1 Exp $";
 fixed_t
 P_AproxDistance
 ( fixed_t	dx,
-  fixed_t	dy )
+ fixed_t	dy )
 {
 	dx = abs(dx);
 	dy = abs(dy);
@@ -75,8 +75,8 @@ P_AproxDistance
 int
 P_PointOnLineSide
 ( fixed_t	x,
-  fixed_t	y,
-  line_t*	line )
+ fixed_t	y,
+ line_t*	line )
 {
 	fixed_t	dx;
 	fixed_t	dy;
@@ -119,7 +119,7 @@ P_PointOnLineSide
 int
 P_BoxOnLineSide
 ( fixed_t*	tmbox,
-  line_t*	ld )
+ line_t*	ld )
 {
 	int		p1;
 	int		p2;
@@ -170,8 +170,8 @@ P_BoxOnLineSide
 int
 P_PointOnDivlineSide
 ( fixed_t	x,
-  fixed_t	y,
-  divline_t*	line )
+ fixed_t	y,
+ divline_t*	line )
 {
 	fixed_t	dx;
 	fixed_t	dy;
@@ -220,7 +220,7 @@ P_PointOnDivlineSide
 void
 P_MakeDivline
 ( line_t*	li,
-  divline_t*	dl )
+ divline_t*	dl )
 {
 	dl->x = li->v1->x;
 	dl->y = li->v1->y;
@@ -240,7 +240,7 @@ P_MakeDivline
 fixed_t
 P_InterceptVector
 ( divline_t*	v2,
-  divline_t*	v1 )
+ divline_t*	v1 )
 {
 #if 1
 	fixed_t	frac;
@@ -481,8 +481,8 @@ P_SetThingPosition (mobj_t* thing)
 boolean
 P_BlockLinesIterator
 ( int			x,
-  int			y,
-  boolean(*func)(line_t*) )
+ int			y,
+ boolean(*func)(line_t*) )
 {
 	int			offset;
 	short*		list;
@@ -522,8 +522,8 @@ P_BlockLinesIterator
 boolean
 P_BlockThingsIterator
 ( int			x,
-  int			y,
-  boolean(*func)(mobj_t*) )
+ int			y,
+ boolean(*func)(mobj_t*) )
 {
 	mobj_t*		mobj;
 	
@@ -692,7 +692,7 @@ boolean PIT_AddThingIntercepts (mobj_t* thing)
 boolean
 P_TraverseIntercepts
 ( traverser_t	func,
-  fixed_t	maxfrac )
+ fixed_t	maxfrac )
 {
 	int			count;
 	fixed_t		dist;
@@ -752,11 +752,11 @@ P_TraverseIntercepts
 boolean
 P_PathTraverse
 ( fixed_t		x1,
-  fixed_t		y1,
-  fixed_t		x2,
-  fixed_t		y2,
-  int			flags,
-  boolean (*trav) (intercept_t *))
+ fixed_t		y1,
+ fixed_t		x2,
+ fixed_t		y2,
+ int			flags,
+ boolean (*trav) (intercept_t *))
 {
 	fixed_t	xt1;
 	fixed_t	yt1;

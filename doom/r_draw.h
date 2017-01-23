@@ -69,7 +69,7 @@ void	R_DrawTranslatedColumnLow (void);
 void
 R_VideoErase
 ( unsigned	ofs,
-  int		count );
+ int		count );
 
 extern int		ds_y;
 extern int		ds_x1;
@@ -100,7 +100,7 @@ void 	R_DrawSpanLow (void);
 void
 R_InitBuffer
 ( int		width,
-  int		height );
+ int		height );
 
 
 // Initialize color translation tables,

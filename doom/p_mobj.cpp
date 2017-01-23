@@ -63,7 +63,7 @@ int test;
 boolean
 P_SetMobjState
 ( mobj_t*	mobj,
-  statenum_t	state )
+ statenum_t	state )
 {
 	state_t*	st;
 
@@ -489,9 +489,9 @@ void P_MobjThinker (mobj_t* mobj)
 mobj_t*
 P_SpawnMobj
 ( fixed_t	x,
-  fixed_t	y,
-  fixed_t	z,
-  mobjtype_t	type )
+ fixed_t	y,
+ fixed_t	z,
+ mobjtype_t	type )
 {
 	mobj_t*	mobj;
 	state_t*	st;
@@ -821,8 +821,8 @@ extern fixed_t attackrange;
 void
 P_SpawnPuff
 ( fixed_t	x,
-  fixed_t	y,
-  fixed_t	z )
+ fixed_t	y,
+ fixed_t	z )
 {
 	mobj_t*	th;
 	
@@ -848,9 +848,9 @@ P_SpawnPuff
 void
 P_SpawnBlood
 ( fixed_t	x,
-  fixed_t	y,
-  fixed_t	z,
-  int		damage )
+ fixed_t	y,
+ fixed_t	z,
+ int		damage )
 {
 	mobj_t*	th;
 	
@@ -898,8 +898,8 @@ void P_CheckMissileSpawn (mobj_t* th)
 mobj_t*
 P_SpawnMissile
 ( mobj_t*	source,
-  mobj_t*	dest,
-  mobjtype_t	type )
+ mobj_t*	dest,
+ mobjtype_t	type )
 {
 	mobj_t*	th;
 	angle_t	an;
@@ -944,7 +944,7 @@ P_SpawnMissile
 void
 P_SpawnPlayerMissile
 ( mobj_t*	source,
-  mobjtype_t	type )
+ mobjtype_t	type )
 {
 	mobj_t*	th;
 	angle_t	an;

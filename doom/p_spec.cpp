@@ -213,8 +213,8 @@ void P_InitPicAnims (void)
 side_t*
 getSide
 ( int		currentSector,
-  int		line,
-  int		side )
+ int		line,
+ int		side )
 {
 	return &sides[ (sectors[currentSector].lines[line])->sidenum[side] ];
 }
@@ -229,8 +229,8 @@ getSide
 sector_t*
 getSector
 ( int		currentSector,
-  int		line,
-  int		side )
+ int		line,
+ int		side )
 {
 	return sides[ (sectors[currentSector].lines[line])->sidenum[side] ].sector;
 }
@@ -244,7 +244,7 @@ getSector
 int
 twoSided
 ( int	sector,
-  int	line )
+ int	line )
 {
 	return (sectors[sector].lines[line])->flags & ML_TWOSIDED;
 }
@@ -260,7 +260,7 @@ twoSided
 sector_t*
 getNextSector
 ( line_t*	line,
-  sector_t*	sec )
+ sector_t*	sec )
 {
 	if (!(line->flags & ML_TWOSIDED))
 	return NULL;
@@ -338,7 +338,7 @@ fixed_t	P_FindHighestFloorSurrounding(sector_t *sec)
 fixed_t
 P_FindNextHighestFloor
 ( sector_t*	sec,
-  int		currentheight )
+ int		currentheight )
 {
 	int			i;
 	int			h;
@@ -443,7 +443,7 @@ fixed_t	P_FindHighestCeilingSurrounding(sector_t* sec)
 int
 P_FindSectorFromLineTag
 ( line_t*	line,
-  int		start )
+ int		start )
 {
 	int	i;
 	
@@ -463,7 +463,7 @@ P_FindSectorFromLineTag
 int
 P_FindMinSurroundingLight
 ( sector_t*	sector,
-  int		max )
+ int		max )
 {
 	int		i;
 	int		min;
@@ -501,8 +501,8 @@ P_FindMinSurroundingLight
 void
 P_CrossSpecialLine
 ( int		linenum,
-  int		side,
-  mobj_t*	thing )
+ int		side,
+ mobj_t*	thing )
 {
 	line_t*	line;
 	int		ok;
@@ -968,7 +968,7 @@ P_CrossSpecialLine
 void
 P_ShootSpecialLine
 ( mobj_t*	thing,
-  line_t*	line )
+ line_t*	line )
 {
 	int		ok;
 	

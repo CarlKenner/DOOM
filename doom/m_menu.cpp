@@ -99,7 +99,7 @@ int			screenSize;
 // -1 = no quicksave slot picked!
 int			quickSaveSlot;          
 
- // 1 = message to be printed
+  // 1 = message to be printed
 int			messageToPrint;
 // ...and here is the message string!
 char*			messageString;		
@@ -1109,12 +1109,12 @@ void M_QuitDOOM(int choice)
 {
   // We pick index 0 which is language sensitive,
   //  or one at random, between 1 and maximum number.
-  if (language != english )
+ if (language != english )
 	sprintf(endstring,"%s\n\n"DOSY, endmsg[0] );
-  else
+ else
 	sprintf(endstring,"%s\n\n"DOSY, endmsg[ (gametic%(NUM_QUITMESSAGES-2))+1 ]);
-  
-  M_StartMessage(endstring,M_QuitResponse,true);
+ 
+ M_StartMessage(endstring,M_QuitResponse,true);
 }
 
 
@@ -1192,9 +1192,9 @@ void M_SizeDisplay(int choice)
 void
 M_DrawThermo
 ( int	x,
-  int	y,
-  int	thermWidth,
-  int	thermDot )
+ int	y,
+ int	thermWidth,
+ int	thermDot )
 {
 	int		xx;
 	int		i;
@@ -1218,7 +1218,7 @@ M_DrawThermo
 void
 M_DrawEmptyCell
 ( menu_t*	menu,
-  int		item )
+ int		item )
 {
 	V_DrawPatchDirect (menu->x - 10,        menu->y+item*LINEHEIGHT - 1, 0,
 				W_CacheLumpName("M_CELL1",PU_CACHE));
@@ -1227,7 +1227,7 @@ M_DrawEmptyCell
 void
 M_DrawSelCell
 ( menu_t*	menu,
-  int		item )
+ int		item )
 {
 	V_DrawPatchDirect (menu->x - 10,        menu->y+item*LINEHEIGHT - 1, 0,
 				W_CacheLumpName("M_CELL2",PU_CACHE));
@@ -1237,8 +1237,8 @@ M_DrawSelCell
 void
 M_StartMessage
 ( char*		string,
-  void*		routine,
-  boolean	input )
+ void*		routine,
+ boolean	input )
 {
 	messageLastMenuActive = menuactive;
 	messageToPrint = 1;
@@ -1306,8 +1306,8 @@ int M_StringHeight(char* string)
 void
 M_WriteText
 ( int		x,
-  int		y,
-  char*		string)
+ int		y,
+ char*		string)
 {
 	int		w;
 	char*	ch;
@@ -1870,7 +1870,7 @@ void M_Init (void)
 	// Here we could catch other version dependencies,
 	//  like HELP1/2, and four episodes.
 
-  
+ 
 	switch ( gamemode )
 	{
 		case commercial:

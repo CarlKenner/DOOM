@@ -64,8 +64,8 @@ int		sightcounts[2];
 int
 P_DivlineSide
 ( fixed_t	x,
-  fixed_t	y,
-  divline_t*	node )
+ fixed_t	y,
+ divline_t*	node )
 {
 	fixed_t	dx;
 	fixed_t	dy;
@@ -118,7 +118,7 @@ P_DivlineSide
 fixed_t
 P_InterceptVector2
 ( divline_t*	v2,
-  divline_t*	v1 )
+ divline_t*	v1 )
 {
 	fixed_t	frac;
 	fixed_t	num;
@@ -309,7 +309,7 @@ boolean P_CrossBSPNode (int bspnum)
 boolean
 P_CheckSight
 ( mobj_t*	t1,
-  mobj_t*	t2 )
+ mobj_t*	t2 )
 {
 	int		s1;
 	int		s2;

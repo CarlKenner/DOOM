@@ -52,7 +52,7 @@ static unsigned char	cheat_xlate_table[256];
 int
 cht_CheckCheat
 ( cheatseq_t*	cht,
-  char		key )
+ char		key )
 {
 	int i;
 	int rc = 0;
@@ -87,7 +87,7 @@ cht_CheckCheat
 void
 cht_GetParam
 ( cheatseq_t*	cht,
-  char*		buffer )
+ char*		buffer )
 {
 
 	unsigned char *p, c;

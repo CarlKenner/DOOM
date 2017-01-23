@@ -853,7 +853,7 @@ void P_SpawnPlayer (mapthing_t* mthing);
 boolean
 G_CheckSpot
 ( int		playernum,
-  mapthing_t*	mthing ) 
+ mapthing_t*	mthing ) 
 { 
 	fixed_t		x;
 	fixed_t		y; 
@@ -1270,7 +1270,7 @@ void G_DoLoadGame (void)
 void
 G_SaveGame
 ( int	slot,
-  char*	description ) 
+ char*	description ) 
 { 
 	savegameslot = slot; 
 	strcpy (savedescription, description); 
@@ -1342,8 +1342,8 @@ int     d_map;
 void
 G_DeferedInitNew
 ( skill_t	skill,
-  int		episode,
-  int		map) 
+ int		episode,
+ int		map) 
 { 
 	d_skill = skill; 
 	d_episode = episode; 
@@ -1374,8 +1374,8 @@ extern  int	skytexture;
 void
 G_InitNew
 ( skill_t	skill,
-  int		episode,
-  int		map ) 
+ int		episode,
+ int		map ) 
 { 
 	int             i; 
 	
@@ -1413,7 +1413,7 @@ G_InitNew
 	}
 	
 
-  
+ 
 	if (map < 1) 
 	map = 1;
 	

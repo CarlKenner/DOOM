@@ -48,7 +48,7 @@ If you have questions concerning this license or the applicable additional terms
 void
 S_Init
 ( int		sfxVolume,
-  int		musicVolume );
+ int		musicVolume );
 
 
 
@@ -68,7 +68,7 @@ void S_Start(void);
 void
 S_StartSound
 ( void*		origin,
-  int		sound_id );
+ int		sound_id );
 
 
 
@@ -76,8 +76,8 @@ S_StartSound
 void
 S_StartSoundAtVolume
 ( void*		origin,
-  int		sound_id,
-  int		volume );
+ int		sound_id,
+ int		volume );
 
 
 // Stop sound for thing at <origin>
@@ -92,7 +92,7 @@ void S_StartMusic(int music_id);
 void
 S_ChangeMusic
 ( int		music_id,
-  int		looping );
+ int		looping );
 
 // Stops the music fer sure.
 void S_StopMusic(void);

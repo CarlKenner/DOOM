@@ -194,9 +194,9 @@ lighttable_t	*colormaps;
 void
 R_DrawColumnInCache
 ( column_t*	patch,
-  byte*		cache,
-  int		originy,
-  int		cacheheight )
+ byte*		cache,
+ int		originy,
+ int		cacheheight )
 {
 	int		count;
 	int		position;
@@ -392,7 +392,7 @@ void R_GenerateLookup (int texnum)
 byte*
 R_GetColumn
 ( int		tex,
-  int		col )
+ int		col )
 {
 	int		lump;
 	int		ofs;

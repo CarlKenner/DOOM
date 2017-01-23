@@ -152,7 +152,7 @@ int ExpandTics (int low)
 void
 HSendPacket
  (int	node,
-  int	flags )
+ int	flags )
 {
 	netbuffer->checksum = NetbufferChecksum () | flags;
 
@@ -451,7 +451,7 @@ void NetUpdate (void)
 	}
 	
 	// listen for other packets
-  listen:
+ listen:
 	GetPackets ();
 }
 

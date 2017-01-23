@@ -79,8 +79,8 @@ typedef enum
 //
 dirtype_t opposite[] =
 {
-  DI_WEST, DI_SOUTHWEST, DI_SOUTH, DI_SOUTHEAST,
-  DI_EAST, DI_NORTHEAST, DI_NORTH, DI_NORTHWEST, DI_NODIR
+ DI_WEST, DI_SOUTHWEST, DI_SOUTH, DI_SOUTHEAST,
+ DI_EAST, DI_NORTHEAST, DI_NORTH, DI_NORTHWEST, DI_NODIR
 };
 
 dirtype_t diags[] =
@@ -115,7 +115,7 @@ mobj_t*		soundtarget;
 void
 P_RecursiveSound
 ( sector_t*	sec,
-  int		soundblocks )
+ int		soundblocks )
 {
 	int		i;
 	line_t*	check;
@@ -168,7 +168,7 @@ P_RecursiveSound
 void
 P_NoiseAlert
 ( mobj_t*	target,
-  mobj_t*	emmiter )
+ mobj_t*	emmiter )
 {
 	soundtarget = target;
 	validcount++;
@@ -508,7 +508,7 @@ void P_NewChaseDir (mobj_t*	actor)
 boolean
 P_LookForPlayers
 ( mobj_t*	actor,
-  boolean	allaround )
+ boolean	allaround )
 {
 	int		c;
 	int		stop;
@@ -637,7 +637,7 @@ void A_Look (mobj_t* actor)
 	return;
 		
 	// go into chase state
-  seeyou:
+ seeyou:
 	if (actor->info->seesound)
 	{
 	int		sound;
@@ -760,7 +760,7 @@ void A_Chase (mobj_t*	actor)
 	}
 
 	// ?
-  nomissile:
+ nomissile:
 	// possibly choose another target
 	if (netgame
 	&& !actor->threshold
@@ -1459,7 +1459,7 @@ void A_SkullAttack (mobj_t* actor)
 void
 A_PainShootSkull
 ( mobj_t*	actor,
-  angle_t	angle )
+ angle_t	angle )
 {
 	fixed_t	x;
 	fixed_t	y;
@@ -1787,7 +1787,7 @@ void A_BabyMetal (mobj_t* mo)
 void
 A_OpenShotgun2
 ( player_t*	player,
-  pspdef_t*	psp )
+ pspdef_t*	psp )
 {
 	S_StartSound (player->mo, sfx_dbopn);
 }
@@ -1795,7 +1795,7 @@ A_OpenShotgun2
 void
 A_LoadShotgun2
 ( player_t*	player,
-  pspdef_t*	psp )
+ pspdef_t*	psp )
 {
 	S_StartSound (player->mo, sfx_dbload);
 }
@@ -1803,12 +1803,12 @@ A_LoadShotgun2
 void
 A_ReFire
 ( player_t*	player,
-  pspdef_t*	psp );
+ pspdef_t*	psp );
 
 void
 A_CloseShotgun2
 ( player_t*	player,
-  pspdef_t*	psp )
+ pspdef_t*	psp )
 {
 	S_StartSound (player->mo, sfx_dbcls);
 	A_ReFire(player,psp);

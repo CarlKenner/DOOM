@@ -186,7 +186,7 @@ void F_StartFinale (void)
 		break;
 		}	
 
-   
+  
 		// Indeterminate.
 		default:
 	S_ChangeMusic(mus_read_m, true);
@@ -619,8 +619,8 @@ void F_CastDrawer (void)
 void
 F_DrawPatchCol
 ( int		x,
-  patch_t*	patch,
-  int		col )
+ patch_t*	patch,
+ int		col )
 {
 	column_t*	column;
 	byte*	source;

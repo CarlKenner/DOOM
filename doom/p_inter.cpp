@@ -83,8 +83,8 @@ int	clipammo[NUMAMMO] = {10, 4, 20, 1};
 boolean
 P_GiveAmmo
 ( player_t*	player,
-  ammotype_t	ammo,
-  int		num )
+ ammotype_t	ammo,
+ int		num )
 {
 	int		oldammo;
 	
@@ -177,8 +177,8 @@ P_GiveAmmo
 boolean
 P_GiveWeapon
 ( player_t*	player,
-  weapontype_t	weapon,
-  boolean	dropped )
+ weapontype_t	weapon,
+ boolean	dropped )
 {
 	boolean	gaveammo;
 	boolean	gaveweapon;
@@ -238,7 +238,7 @@ P_GiveWeapon
 boolean
 P_GiveBody
 ( player_t*	player,
-  int		num )
+ int		num )
 {
 	if (player->health >= MAXHEALTH)
 	return false;
@@ -261,7 +261,7 @@ P_GiveBody
 boolean
 P_GiveArmor
 ( player_t*	player,
-  int		armortype )
+ int		armortype )
 {
 	int		hits;
 	
@@ -283,7 +283,7 @@ P_GiveArmor
 void
 P_GiveCard
 ( player_t*	player,
-  card_t	card )
+ card_t	card )
 {
 	if (player->cards[card])
 	return;
@@ -299,7 +299,7 @@ P_GiveCard
 boolean
 P_GivePower
 ( player_t*	player,
-  int /*powertype_t*/	power )
+ int /*powertype_t*/	power )
 {
 	if (power == pw_invulnerability)
 	{
@@ -348,7 +348,7 @@ P_GivePower
 void
 P_TouchSpecialThing
 ( mobj_t*	special,
-  mobj_t*	toucher )
+ mobj_t*	toucher )
 {
 	player_t*	player;
 	int		i;
@@ -677,7 +677,7 @@ P_TouchSpecialThing
 void
 P_KillMobj
 ( mobj_t*	source,
-  mobj_t*	target )
+ mobj_t*	target )
 {
 	mobjtype_t	item;
 	mobj_t*	mo;
@@ -784,9 +784,9 @@ P_KillMobj
 void
 P_DamageMobj
 ( mobj_t*	target,
-  mobj_t*	inflictor,
-  mobj_t*	source,
-  int 		damage )
+ mobj_t*	inflictor,
+ mobj_t*	source,
+ int 		damage )
 {
 	unsigned	ang;
 	int		saved;

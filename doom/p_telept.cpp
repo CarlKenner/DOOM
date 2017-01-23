@@ -57,8 +57,8 @@ rcsid[] = "$Id: p_telept.c,v 1.3 1997/01/28 22:08:29 b1 Exp $";
 int
 EV_Teleport
 ( line_t*	line,
-  int		side,
-  mobj_t*	thing )
+ int		side,
+ mobj_t*	thing )
 {
 	int		i;
 	int		tag;

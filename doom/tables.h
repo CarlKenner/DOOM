@@ -98,7 +98,7 @@ extern angle_t		tantoangle[SLOPERANGE+1];
 int
 SlopeDiv
 ( unsigned	num,
-  unsigned	den);
+ unsigned	den);
 
 
 #endif

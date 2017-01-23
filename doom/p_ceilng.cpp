@@ -181,7 +181,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 int
 EV_DoCeiling
 ( line_t*	line,
-  ceiling_e	type )
+ ceiling_e	type )
 {
 	int		secnum;
 	int		rtn;

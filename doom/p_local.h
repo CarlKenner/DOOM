@@ -119,9 +119,9 @@ void P_RespawnSpecials (void);
 mobj_t*
 P_SpawnMobj
 ( fixed_t	x,
-  fixed_t	y,
-  fixed_t	z,
-  mobjtype_t	type );
+ fixed_t	y,
+ fixed_t	z,
+ mobjtype_t	type );
 
 void 	P_RemoveMobj (mobj_t* th);
 boolean	P_SetMobjState (mobj_t* mobj, statenum_t state);
@@ -194,11 +194,11 @@ extern divline_t	trace;
 boolean
 P_PathTraverse
 ( fixed_t	x1,
-  fixed_t	y1,
-  fixed_t	x2,
-  fixed_t	y2,
-  int		flags,
-  boolean	(*trav) (intercept_t *));
+ fixed_t	y1,
+ fixed_t	x2,
+ fixed_t	y2,
+ int		flags,
+ boolean	(*trav) (intercept_t *));
 
 void P_UnsetThingPosition (mobj_t* thing);
 void P_SetThingPosition (mobj_t* thing);
@@ -231,22 +231,22 @@ extern mobj_t*	linetarget;	// who got hit (or NULL)
 fixed_t
 P_AimLineAttack
 ( mobj_t*	t1,
-  angle_t	angle,
-  fixed_t	distance );
+ angle_t	angle,
+ fixed_t	distance );
 
 void
 P_LineAttack
 ( mobj_t*	t1,
-  angle_t	angle,
-  fixed_t	distance,
-  fixed_t	slope,
-  int		damage );
+ angle_t	angle,
+ fixed_t	distance,
+ fixed_t	slope,
+ int		damage );
 
 void
 P_RadiusAttack
 ( mobj_t*	spot,
-  mobj_t*	source,
-  int		damage );
+ mobj_t*	source,
+ int		damage );
 
 
 
@@ -273,14 +273,14 @@ extern int		clipammo[NUMAMMO];
 void
 P_TouchSpecialThing
 ( mobj_t*	special,
-  mobj_t*	toucher );
+ mobj_t*	toucher );
 
 void
 P_DamageMobj
 ( mobj_t*	target,
-  mobj_t*	inflictor,
-  mobj_t*	source,
-  int		damage );
+ mobj_t*	inflictor,
+ mobj_t*	source,
+ int		damage );
 
 
 //

@@ -115,9 +115,9 @@ char*		spritename;
 void
 R_InstallSpriteLump
 ( int		lump,
-  unsigned	frame,
-  unsigned	rotation,
-  boolean	flipped )
+ unsigned	frame,
+ unsigned	rotation,
+ boolean	flipped )
 {
 	int		r;
 	
@@ -406,8 +406,8 @@ void R_DrawMaskedColumn (column_t* column)
 void
 R_DrawVisSprite
 ( vissprite_t*		vis,
-  int			x1,
-  int			x2 )
+ int			x1,
+ int			x2 )
 {
 	column_t*		column;
 	int			texturecolumn;

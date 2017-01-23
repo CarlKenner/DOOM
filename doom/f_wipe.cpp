@@ -60,8 +60,8 @@ static byte*	wipe_scr;
 void
 wipe_shittyColMajorXform
 ( short*	array,
-  int		width,
-  int		height )
+ int		width,
+ int		height )
 {
 	int		x;
 	int		y;
@@ -82,8 +82,8 @@ wipe_shittyColMajorXform
 int
 wipe_initColorXForm
 ( int	width,
-  int	height,
-  int	ticks )
+ int	height,
+ int	ticks )
 {
 	memcpy(wipe_scr, wipe_scr_start, width*height);
 	return 0;
@@ -92,8 +92,8 @@ wipe_initColorXForm
 int
 wipe_doColorXForm
 ( int	width,
-  int	height,
-  int	ticks )
+ int	height,
+ int	ticks )
 {
 	boolean	changed;
 	byte*	w;
@@ -138,8 +138,8 @@ wipe_doColorXForm
 int
 wipe_exitColorXForm
 ( int	width,
-  int	height,
-  int	ticks )
+ int	height,
+ int	ticks )
 {
 	return 0;
 }
@@ -150,8 +150,8 @@ static int*	y;
 int
 wipe_initMelt
 ( int	width,
-  int	height,
-  int	ticks )
+ int	height,
+ int	ticks )
 {
 	int i, r;
 	
@@ -181,8 +181,8 @@ wipe_initMelt
 int
 wipe_doMelt
 ( int	width,
-  int	height,
-  int	ticks )
+ int	height,
+ int	ticks )
 {
 	int		i;
 	int		j;
@@ -236,8 +236,8 @@ wipe_doMelt
 int
 wipe_exitMelt
 ( int	width,
-  int	height,
-  int	ticks )
+ int	height,
+ int	ticks )
 {
 	Z_Free(y);
 	return 0;
@@ -246,9 +246,9 @@ wipe_exitMelt
 int
 wipe_StartScreen
 ( int	x,
-  int	y,
-  int	width,
-  int	height )
+ int	y,
+ int	width,
+ int	height )
 {
 	wipe_scr_start = screens[2];
 	I_ReadScreen(wipe_scr_start);
@@ -258,9 +258,9 @@ wipe_StartScreen
 int
 wipe_EndScreen
 ( int	x,
-  int	y,
-  int	width,
-  int	height )
+ int	y,
+ int	width,
+ int	height )
 {
 	wipe_scr_end = screens[3];
 	I_ReadScreen(wipe_scr_end);
@@ -271,11 +271,11 @@ wipe_EndScreen
 int
 wipe_ScreenWipe
 ( int	wipeno,
-  int	x,
-  int	y,
-  int	width,
-  int	height,
-  int	ticks )
+ int	x,
+ int	y,
+ int	width,
+ int	height,
+ int	ticks )
 {
 	int rc;
 	static int (*wipes[])(int, int, int) =

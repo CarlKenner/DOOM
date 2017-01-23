@@ -174,15 +174,15 @@ int xlatekey(void)
 void I_ShutdownGraphics(void)
 {
   // Detach from X server
-  if (!XShmDetach(X_display, &X_shminfo))
+ if (!XShmDetach(X_display, &X_shminfo))
 		I_Error("XShmDetach() failed in I_ShutdownGraphics()");
 
   // Release shared memory.
-  shmdt(X_shminfo.shmaddr);
-  shmctl(X_shminfo.shmid, IPC_RMID, 0);
+ shmdt(X_shminfo.shmaddr);
+ shmctl(X_shminfo.shmid, IPC_RMID, 0);
 
   // Paranoia.
-  image->data = NULL;
+ image->data = NULL;
 }
 
 
@@ -291,7 +291,7 @@ void I_GetEvent(void)
 Cursor
 createnullcursor
 ( Display*	display,
-  Window	root )
+ Window	root )
 {
 	Pixmap cursormask;
 	XGCValues xgc;
@@ -487,7 +487,7 @@ void I_FinishUpdate (void)
 	{
 	// Broken. Gotta fix this some day.
 	void Expand4(unsigned *, double *);
-  	Expand4 ((unsigned *)(screens[0]), (double *) (image->data));
+ 	Expand4 ((unsigned *)(screens[0]), (double *) (image->data));
 	}
 
 	if (doShm)
@@ -605,16 +605,16 @@ void I_SetPalette (byte* palette)
 void grabsharedmemory(int size)
 {
 
-  int			key = ('d'<<24) | ('o'<<16) | ('o'<<8) | 'm';
-  struct shmid_ds	shminfo;
-  int			minsize = 320*200;
-  int			id;
-  int			rc;
+ int			key = ('d'<<24) | ('o'<<16) | ('o'<<8) | 'm';
+ struct shmid_ds	shminfo;
+ int			minsize = 320*200;
+ int			id;
+ int			rc;
   // UNUSED int done=0;
-  int			pollution=5;
-  
+ int			pollution=5;
+ 
   // try to use what was here before
-  do
+ do
   {
 	id = shmget((key_t) key, minsize, 0777); // just get the id
 	if (id != -1)
@@ -682,20 +682,20 @@ void grabsharedmemory(int size)
 		}
 		break;
 	}
-  } while (--pollution);
-  
-  if (!pollution)
+ } while (--pollution);
+ 
+ if (!pollution)
   {
 	I_Error("Sorry, system too polluted with stale "
 		"shared memory segments.\n");
 	}	
-  
-  X_shminfo.shmid = id;
-  
+ 
+ X_shminfo.shmid = id;
+ 
   // attach to the shared memory segment
-  image->data = X_shminfo.shmaddr = shmat(id, 0, 0);
-  
-  fprintf(stderr, "shared memory id=%d, addr=0x%x\n", id,
+ image->data = X_shminfo.shmaddr = shmat(id, 0, 0);
+ 
+ fprintf(stderr, "shared memory id=%d, addr=0x%x\n", id,
 		(int) (image->data));
 }
 
@@ -834,9 +834,9 @@ void I_InitGraphics(void)
 	valuemask = GCGraphicsExposures;
 	xgcvalues.graphics_exposures = False;
 	X_gc = XCreateGC(	X_display,
-  			X_mainWindow,
-  			valuemask,
-  			&xgcvalues );
+ 			X_mainWindow,
+ 			valuemask,
+ 			&xgcvalues );
 
 	// map the window
 	XMapWindow(X_display, X_mainWindow);
@@ -968,7 +968,7 @@ int	inited;
 void
 Expand4
 ( unsigned*	lineptr,
-  double*	xline )
+ double*	xline )
 {
 	double	dpixel;
 	unsigned	x;

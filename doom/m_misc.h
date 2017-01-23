@@ -43,13 +43,13 @@ If you have questions concerning this license or the applicable additional terms
 boolean
 M_WriteFile
 ( char const*	name,
-  void*		source,
-  int		length );
+ void*		source,
+ int		length );
 
 int
 M_ReadFile
 ( char const*	name,
-  byte**	buffer );
+ byte**	buffer );
 
 void M_ScreenShot (void);
 
@@ -61,9 +61,9 @@ void M_SaveDefaults (void);
 int
 M_DrawText
 ( int		x,
-  int		y,
-  boolean	direct,
-  char*		string );
+ int		y,
+ boolean	direct,
+ char*		string );
 
 
 #endif
