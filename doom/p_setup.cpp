@@ -633,7 +633,7 @@ P_SetupLevel
 
 	// if working with a devlopment map, reload it
 	W_Reload ();			
-		 
+		
 	// find map name
 	if ( gamemode == commercial)
 	{

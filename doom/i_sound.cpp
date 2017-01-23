@@ -230,7 +230,7 @@ getsfx
 	// Debug.
 	// fprintf( stderr, "." );
 	//fprintf( stderr, " -loading  %s (lump %d, %d bytes)\n",
-	//		 sfxname, sfxlump, size );
+	//		sfxname, sfxlump, size );
 	//fflush( stderr );
 	
 	sfx = (unsigned char*)W_CacheLumpNum( sfxlump, PU_STATIC );
@@ -293,18 +293,18 @@ addsfx
 	// Chainsaw troubles.
 	// Play these sound effects only one at a time.
 	if ( sfxid == sfx_sawup
-	 || sfxid == sfx_sawidl
-	 || sfxid == sfx_sawful
-	 || sfxid == sfx_sawhit
-	 || sfxid == sfx_stnmov
-	 || sfxid == sfx_pistol	 )
+	|| sfxid == sfx_sawidl
+	|| sfxid == sfx_sawful
+	|| sfxid == sfx_sawhit
+	|| sfxid == sfx_stnmov
+	|| sfxid == sfx_pistol	)
 	{
 	// Loop all channels, check.
 	for (i=0 ; i<NUM_CHANNELS ; i++)
 	{
 		// Active, and using the same SFX?
 		if ( (channels[i])
-		 && (channelids[i] == sfxid) )
+		&& (channelids[i] == sfxid) )
 		{
 		// Reset.
 		channels[i] = 0;
@@ -781,7 +781,7 @@ I_InitSound()
   if (audio_fd<0)
 	fprintf(stderr, "Could not open /dev/dsp\n");
   
-					 
+					
   i = 11 | (2<<16);                                           
   myioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &i);
   myioctl(audio_fd, SNDCTL_DSP_RESET, 0);

@@ -48,7 +48,7 @@ static const char rcsid[] = "$Id: d_net.c,v 1.3 1997/02/03 22:01:47 b1 Exp $";
 #define	NCMD_RETRANSMIT		0x40000000
 #define	NCMD_SETUP		0x20000000
 #define	NCMD_KILL		0x10000000	// kill game
-#define	NCMD_CHECKSUM	 	0x0fffffff
+#define	NCMD_CHECKSUM		0x0fffffff
 
  
 doomcom_t*	doomcom;	
@@ -183,8 +183,8 @@ HSendPacket
 		realretrans = -1;
 
 	fprintf (debugfile,"send (%i + %i, R %i) [%i] ",
-		 ExpandTics(netbuffer->starttic),
-		 netbuffer->numtics, realretrans, doomcom->datalength);
+		ExpandTics(netbuffer->starttic),
+		netbuffer->numtics, realretrans, doomcom->datalength);
 	
 	for (i=0 ; i<doomcom->datalength ; i++)
 		fprintf (debugfile,"%i ",((byte *)netbuffer)[i]);
@@ -250,9 +250,9 @@ boolean HGetPacket (void)
 		realretrans = -1;
 		
 		fprintf (debugfile,"get %i = (%i + %i, R %i)[%i] ",
-			 doomcom->remotenode,
-			 ExpandTics(netbuffer->starttic),
-			 netbuffer->numtics, realretrans, doomcom->datalength);
+			doomcom->remotenode,
+			ExpandTics(netbuffer->starttic),
+			netbuffer->numtics, realretrans, doomcom->datalength);
 
 		for (i=0 ; i<doomcom->datalength ; i++)
 		fprintf (debugfile,"%i ",((byte *)netbuffer)[i]);
@@ -275,7 +275,7 @@ void GetPackets (void)
 	ticcmd_t	*src, *dest;
 	int		realend;
 	int		realstart;
-				 
+				
 	while ( HGetPacket() )
 	{
 	if (netbuffer->checksum & NCMD_SETUP)
@@ -312,7 +312,7 @@ void GetPackets (void)
 	
 	// check for retransmit request
 	if ( resendcount[netnode] <= 0 
-		 && (netbuffer->checksum & NCMD_RETRANSMIT) )
+		&& (netbuffer->checksum & NCMD_RETRANSMIT) )
 	{
 		resendto[netnode] = ExpandTics(netbuffer->retransmitfrom);
 		if (debugfile)
@@ -330,8 +330,8 @@ void GetPackets (void)
 	{
 		if (debugfile)
 		fprintf (debugfile,
-			 "out of order packet (%i + %i)\n" ,
-			 realstart,netbuffer->numtics);
+			"out of order packet (%i + %i)\n" ,
+			realstart,netbuffer->numtics);
 		continue;
 	}
 	
@@ -341,8 +341,8 @@ void GetPackets (void)
 		// stop processing until the other system resends the missed tics
 		if (debugfile)
 		fprintf (debugfile,
-			 "missed tics from %i (%i - %i)\n",
-			 netnode, realstart, nettics[netnode]);
+			"missed tics from %i (%i - %i)\n",
+			netnode, realstart, nettics[netnode]);
 		remoteresend[netnode] = true;
 		continue;
 	}
@@ -569,7 +569,7 @@ void D_CheckNetGame (void)
 	for (i=0 ; i<MAXNETNODES ; i++)
 	{
 	nodeingame[i] = false;
-		 	nettics[i] = 0;
+			nettics[i] = 0;
 	remoteresend[i] = false;	// set when local needs tics
 	resendto[i] = 0;		// which tic to start sending
 	}
@@ -690,8 +690,8 @@ void TryRunTics (void)
 
 	if (debugfile)
 	fprintf (debugfile,
-		 "=======real: %i  avail: %i  game: %i\n",
-		 realtics, availabletics,counts);
+		"=======real: %i  avail: %i  game: %i\n",
+		realtics, availabletics,counts);
 
 	if (!demoplayback)
 	{	

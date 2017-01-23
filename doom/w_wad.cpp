@@ -104,8 +104,8 @@ ExtractFileBase
 	
 	// back up until a \ or the start
 	while (src != path
-		 && *(src-1) != '\\'
-		 && *(src-1) != '/')
+		&& *(src-1) != '\\'
+		&& *(src-1) != '/')
 	{
 	src--;
 	}
@@ -198,7 +198,7 @@ void W_AddFile (char *filename)
 		if (strncmp(header.identification,"PWAD",4))
 		{
 		I_Error ("Wad file %s doesn't have IWAD "
-			 "or PWAD id\n", filename);
+			"or PWAD id\n", filename);
 		}
 		
 		// ???modifiedgame = true;		
@@ -271,8 +271,8 @@ void W_Reload (void)
 	lump_p = &lumpinfo[reloadlump];
 	
 	for (i=reloadlump ;
-	 i<reloadlump+lumpcount ;
-	 i++,lump_p++, fileinfo++)
+	i<reloadlump+lumpcount ;
+	i++,lump_p++, fileinfo++)
 	{
 	if (lumpcache[i])
 		Z_Free (lumpcache[i]);
@@ -389,7 +389,7 @@ int W_CheckNumForName (char* name)
 	while (lump_p-- != lumpinfo)
 	{
 	if ( *(int *)lump_p->name == v1
-		 && *(int *)&lump_p->name[4] == v2)
+		&& *(int *)&lump_p->name[4] == v2)
 	{
 		return lump_p - lumpinfo;
 	}
@@ -468,7 +468,7 @@ W_ReadLump
 
 	if (c < l->size)
 	I_Error ("W_ReadLump: only read %i of %i on lump %i",
-		 c,l->size,lump);	
+		c,l->size,lump);	
 
 	if (l->handle == -1)
 	close (handle);

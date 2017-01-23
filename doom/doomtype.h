@@ -25,7 +25,7 @@ If you have questions concerning this license or the applicable additional terms
 
 // DESCRIPTION:
 //	Simple basic typedefs, isolated here to make it easier
-//	 separating modules.
+//	separating modules.
 //    
 //-----------------------------------------------------------------------------
 

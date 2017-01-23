@@ -26,8 +26,8 @@ If you have questions concerning this license or the applicable additional terms
 // DESCRIPTION:
 //      Zone Memory Allocation, perhaps NeXT ObjectiveC inspired.
 //	Remark: this was the only stuff that, according
-//	 to John Carmack, might have been useful for
-//	 Quake.
+//	to John Carmack, might have been useful for
+//	Quake.
 //
 //---------------------------------------------------------------------
 

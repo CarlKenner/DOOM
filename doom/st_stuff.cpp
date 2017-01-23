@@ -249,8 +249,8 @@ rcsid[] = "$Id: st_stuff.c,v 1.6 1997/02/03 22:45:13 b1 Exp $";
 
 //Incoming messages window location
 //UNUSED
-// #define ST_MSGTEXTX		 (viewwindowx)
-// #define ST_MSGTEXTY		 (viewwindowy+viewheight-18)
+// #define ST_MSGTEXTX		(viewwindowx)
+// #define ST_MSGTEXTY		(viewwindowy+viewheight-18)
 #define ST_MSGTEXTX			0
 #define ST_MSGTEXTY			0
 // Dimensions given in characters.
@@ -1327,10 +1327,10 @@ void ST_createWidgets(void)
 	for(i=0;i<6;i++)
 	{
 	STlib_initMultIcon(&w_arms[i],
-				 ST_ARMSX+(i%3)*ST_ARMSXSPACE,
-				 ST_ARMSY+(i/3)*ST_ARMSYSPACE,
-				 arms[i], (int *) &plyr->weaponowned[i+1],
-				 &st_armson);
+				ST_ARMSX+(i%3)*ST_ARMSXSPACE,
+				ST_ARMSY+(i/3)*ST_ARMSYSPACE,
+				arms[i], (int *) &plyr->weaponowned[i+1],
+				&st_armson);
 	}
 
 	// frags sum
@@ -1344,11 +1344,11 @@ void ST_createWidgets(void)
 
 	// faces
 	STlib_initMultIcon(&w_faces,
-				 ST_FACESX,
-				 ST_FACESY,
-				 faces,
-				 &st_faceindex,
-				 &st_statusbaron);
+				ST_FACESX,
+				ST_FACESY,
+				faces,
+				&st_faceindex,
+				&st_statusbaron);
 
 	// armor percentage - should be colored later
 	STlib_initPercent(&w_armor,
@@ -1360,25 +1360,25 @@ void ST_createWidgets(void)
 
 	// keyboxes 0-2
 	STlib_initMultIcon(&w_keyboxes[0],
-				 ST_KEY0X,
-				 ST_KEY0Y,
-				 keys,
-				 &keyboxes[0],
-				 &st_statusbaron);
+				ST_KEY0X,
+				ST_KEY0Y,
+				keys,
+				&keyboxes[0],
+				&st_statusbaron);
 	
 	STlib_initMultIcon(&w_keyboxes[1],
-				 ST_KEY1X,
-				 ST_KEY1Y,
-				 keys,
-				 &keyboxes[1],
-				 &st_statusbaron);
+				ST_KEY1X,
+				ST_KEY1Y,
+				keys,
+				&keyboxes[1],
+				&st_statusbaron);
 
 	STlib_initMultIcon(&w_keyboxes[2],
-				 ST_KEY2X,
-				 ST_KEY2Y,
-				 keys,
-				 &keyboxes[2],
-				 &st_statusbaron);
+				ST_KEY2X,
+				ST_KEY2Y,
+				keys,
+				&keyboxes[2],
+				&st_statusbaron);
 
 	// ammo count (all four kinds)
 	STlib_initNum(&w_ammo[0],

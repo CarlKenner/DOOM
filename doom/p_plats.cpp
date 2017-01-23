@@ -76,7 +76,7 @@ void T_PlatRaise(plat_t* plat)
 	{
 		if (!(leveltime&7))
 		S_StartSound((mobj_t *)&plat->sector->soundorg,
-				 sfx_stnmov);
+				sfx_stnmov);
 	}
 	
 				
@@ -85,7 +85,7 @@ void T_PlatRaise(plat_t* plat)
 		plat->count = plat->wait;
 		plat->status = down;
 		S_StartSound((mobj_t *)&plat->sector->soundorg,
-			 sfx_pstart);
+			sfx_pstart);
 	}
 	else
 	{
@@ -94,7 +94,7 @@ void T_PlatRaise(plat_t* plat)
 		plat->count = plat->wait;
 		plat->status = waiting;
 		S_StartSound((mobj_t *)&plat->sector->soundorg,
-				 sfx_pstop);
+				sfx_pstop);
 
 		switch(plat->type)
 		{

@@ -27,7 +27,7 @@ If you have questions concerning this license or the applicable additional terms
 //
 // DESCRIPTION:
 //	Rendering main loop and setup functions,
-//	 utility functions (BSP, geometry, trigonometry).
+//	utility functions (BSP, geometry, trigonometry).
 //	See tables.c, too.
 
 ===========================================================================
@@ -375,7 +375,7 @@ R_PointToAngle
 		}
 		else
 		{
-		 // octant 5
+		// octant 5
 		return ANG270-1-tantoangle[ SlopeDiv(x,y)];
 		}
 	}

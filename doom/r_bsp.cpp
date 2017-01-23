@@ -513,8 +513,8 @@ void R_Subsector (int num)
 #ifdef RANGECHECK
 	if (num>=numsubsectors)
 	I_Error ("R_Subsector: ss %i with numss = %i",
-		 num,
-		 numsubsectors);
+		num,
+		numsubsectors);
 #endif
 
 	sscount++;

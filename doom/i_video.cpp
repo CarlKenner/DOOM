@@ -307,7 +307,7 @@ createnullcursor
 	dummycolour.red = 0;
 	dummycolour.flags = 04;
 	cursor = XCreatePixmapCursor(display, cursormask, cursormask,
-				 &dummycolour,&dummycolour, 0,0);
+				&dummycolour,&dummycolour, 0,0);
 	XFreePixmap(display,cursormask);
 	XFreeGC(display,gc);
 	return cursor;
@@ -802,7 +802,7 @@ void I_InitGraphics(void)
 
 	// create the colormap
 	X_cmap = XCreateColormap(X_display, RootWindow(X_display,
-							 X_screen), X_visual, AllocAll);
+							X_screen), X_visual, AllocAll);
 
 	// setup attributes for main window
 	attribmask = CWEventMask | CWColormap | CWBorderPixel;
@@ -856,9 +856,9 @@ void I_InitGraphics(void)
 	// grabs the pointer so it is restricted to this window
 	if (grabMouse)
 	XGrabPointer(X_display, X_mainWindow, True,
-			 ButtonPressMask|ButtonReleaseMask|PointerMotionMask,
-			 GrabModeAsync, GrabModeAsync,
-			 X_mainWindow, None, CurrentTime);
+			ButtonPressMask|ButtonReleaseMask|PointerMotionMask,
+			GrabModeAsync, GrabModeAsync,
+			X_mainWindow, None, CurrentTime);
 
 	if (doShm)
 	{

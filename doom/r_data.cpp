@@ -262,8 +262,8 @@ void R_GenerateComposite (int texnum)
 	patch = texture->patches;
 		
 	for (i=0 , patch = texture->patches;
-	 i<texture->patchcount;
-	 i++, patch++)
+	i<texture->patchcount;
+	i++, patch++)
 	{
 	realpatch = W_CacheLumpNum (patch->patch, PU_CACHE);
 	x1 = patch->originx;
@@ -286,9 +286,9 @@ void R_GenerateComposite (int texnum)
 		patchcol = (column_t *)((byte *)realpatch
 					+ LONG(realpatch->columnofs[x-x1]));
 		R_DrawColumnInCache (patchcol,
-				 block + colofs[x],
-				 patch->originy,
-				 texture->height);
+				block + colofs[x],
+				patch->originy,
+				texture->height);
 	}
 						
 	}
@@ -334,8 +334,8 @@ void R_GenerateLookup (int texnum)
 	patch = texture->patches;
 		
 	for (i=0 , patch = texture->patches;
-	 i<texture->patchcount;
-	 i++, patch++)
+	i<texture->patchcount;
+	i++, patch++)
 	{
 	realpatch = W_CacheLumpNum (patch->patch, PU_CACHE);
 	x1 = patch->originx;
@@ -375,7 +375,7 @@ void R_GenerateLookup (int texnum)
 		if (texturecompositesize[texnum] > 0x10000-texture->height)
 		{
 		I_Error ("R_GenerateLookup: texture %i is >64k",
-			 texnum);
+			texnum);
 		}
 		
 		texturecompositesize[texnum] += texture->height;
@@ -552,7 +552,7 @@ void R_InitTextures (void)
 		if (patch->patch == -1)
 		{
 		I_Error ("R_InitTextures: Missing patch in texture %s",
-			 texture->name);
+			texture->name);
 		}
 	}		
 	texturecolumnlump[i] = Z_Malloc (texture->width*2, PU_STATIC,0);
@@ -734,7 +734,7 @@ int	R_TextureNumForName (char* name)
 	if (i==-1)
 	{
 	I_Error ("R_TextureNumForName: %s not found",
-		 name);
+		name);
 	}
 	return i;
 }

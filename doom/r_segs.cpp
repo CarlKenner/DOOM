@@ -726,7 +726,7 @@ R_StoreWallRange
 	
 	// save sprite clipping info
 	if ( ((ds_p->silhouette & SIL_TOP) || maskedtexture)
-	 && !ds_p->sprtopclip)
+	&& !ds_p->sprtopclip)
 	{
 	memcpy (lastopening, ceilingclip+start, 2*(rw_stopx-start));
 	ds_p->sprtopclip = lastopening - start;
@@ -734,7 +734,7 @@ R_StoreWallRange
 	}
 	
 	if ( ((ds_p->silhouette & SIL_BOTTOM) || maskedtexture)
-	 && !ds_p->sprbottomclip)
+	&& !ds_p->sprbottomclip)
 	{
 	memcpy (lastopening, floorclip+start, 2*(rw_stopx-start));
 	ds_p->sprbottomclip = lastopening - start;

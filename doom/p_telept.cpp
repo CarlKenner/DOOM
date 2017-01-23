@@ -88,8 +88,8 @@ EV_Teleport
 	{
 		thinker = thinkercap.next;
 		for (thinker = thinkercap.next;
-		 thinker != &thinkercap;
-		 thinker = thinker->next)
+		thinker != &thinkercap;
+		thinker = thinker->next)
 		{
 		// not a mobj
 		if (thinker->function.acp1 != (actionf_p1)P_MobjThinker)
@@ -122,7 +122,7 @@ EV_Teleport
 		S_StartSound (fog, sfx_telept);
 		an = m->angle >> ANGLETOFINESHIFT;
 		fog = P_SpawnMobj (m->x+20*finecosine[an], m->y+20*finesine[an]
-					 , thing->z, MT_TFOG);
+					, thing->z, MT_TFOG);
 
 		// emit sound, where?
 		S_StartSound (fog, sfx_telept);

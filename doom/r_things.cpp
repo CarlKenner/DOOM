@@ -133,11 +133,11 @@ R_InstallSpriteLump
 	// the lump should be used for all rotations
 	if (sprtemp[frame].rotate == false)
 		I_Error ("R_InitSprites: Sprite %s frame %c has "
-			 "multip rot=0 lump", spritename, 'A'+frame);
+			"multip rot=0 lump", spritename, 'A'+frame);
 
 	if (sprtemp[frame].rotate == true)
 		I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
-			 "and a rot=0 lump", spritename, 'A'+frame);
+			"and a rot=0 lump", spritename, 'A'+frame);
 			
 	sprtemp[frame].rotate = false;
 	for (r=0 ; r<8 ; r++)
@@ -151,7 +151,7 @@ R_InstallSpriteLump
 	// the lump is only used for one rotation
 	if (sprtemp[frame].rotate == false)
 	I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
-		 "and a rot=0 lump", spritename, 'A'+frame);
+		"and a rot=0 lump", spritename, 'A'+frame);
 		
 	sprtemp[frame].rotate = true;
 
@@ -159,8 +159,8 @@ R_InstallSpriteLump
 	rotation--;		
 	if (sprtemp[frame].lump[rotation] != -1)
 	I_Error ("R_InitSprites: Sprite %s : %c : %c "
-		 "has two lumps mapped to it",
-		 spritename, 'A'+frame, '1'+rotation);
+		"has two lumps mapped to it",
+		spritename, 'A'+frame, '1'+rotation);
 		
 	sprtemp[frame].lump[rotation] = lump - firstspritelump;
 	sprtemp[frame].flip[rotation] = (byte)flipped;
@@ -263,7 +263,7 @@ void R_InitSpriteDefs (char** namelist)
 			case -1:
 		// no rotations were found for that frame at all
 		I_Error ("R_InitSprites: No patches found "
-			 "for %s frame %c", namelist[i], frame+'A');
+			"for %s frame %c", namelist[i], frame+'A');
 		break;
 		
 			case 0:
@@ -275,8 +275,8 @@ void R_InitSpriteDefs (char** namelist)
 		for (rotation=0 ; rotation<8 ; rotation++)
 			if (sprtemp[frame].lump[rotation] == -1)
 			I_Error ("R_InitSprites: Sprite %s frame %c "
-				 "is missing rotations",
-				 namelist[i], frame+'A');
+				"is missing rotations",
+				namelist[i], frame+'A');
 		break;
 		}
 	}
@@ -445,7 +445,7 @@ R_DrawVisSprite
 		I_Error ("R_DrawSpriteRange: bad texturecolumn");
 #endif
 	column = (column_t *) ((byte *)patch +
-					 LONG(patch->columnofs[texturecolumn]));
+					LONG(patch->columnofs[texturecolumn]));
 	R_DrawMaskedColumn (column);
 	}
 
@@ -516,13 +516,13 @@ void R_ProjectSprite (mobj_t* thing)
 #ifdef RANGECHECK
 	if ((unsigned)thing->sprite >= numsprites)
 	I_Error ("R_ProjectSprite: invalid sprite number %i ",
-		 thing->sprite);
+		thing->sprite);
 #endif
 	sprdef = &sprites[thing->sprite];
 #ifdef RANGECHECK
 	if ( (thing->frame&FF_FRAMEMASK) >= sprdef->numframes )
 	I_Error ("R_ProjectSprite: invalid sprite frame %i : %i ",
-		 thing->sprite, thing->frame);
+		thing->sprite, thing->frame);
 #endif
 	sprframe = &sprdef->spriteframes[ thing->frame & FF_FRAMEMASK];
 
@@ -669,13 +669,13 @@ void R_DrawPSprite (pspdef_t* psp)
 #ifdef RANGECHECK
 	if ( (unsigned)psp->state->sprite >= numsprites)
 	I_Error ("R_ProjectSprite: invalid sprite number %i ",
-		 psp->state->sprite);
+		psp->state->sprite);
 #endif
 	sprdef = &sprites[psp->state->sprite];
 #ifdef RANGECHECK
 	if ( (psp->state->frame & FF_FRAMEMASK)  >= sprdef->numframes)
 	I_Error ("R_ProjectSprite: invalid sprite frame %i : %i ",
-		 psp->state->sprite, psp->state->frame);
+		psp->state->sprite, psp->state->frame);
 #endif
 	sprframe = &sprdef->spriteframes[ psp->state->frame & FF_FRAMEMASK ];
 
@@ -777,8 +777,8 @@ void R_DrawPlayerSprites (void)
 	
 	// add all active psprites
 	for (i=0, psp=viewplayer->psprites;
-	 i<NUMPSPRITES;
-	 i++,psp++)
+	i<NUMPSPRITES;
+	i++,psp++)
 	{
 	if (psp->state)
 		R_DrawPSprite (psp);
@@ -895,7 +895,7 @@ void R_DrawSprite (vissprite_t* spr)
 		
 	if (scale < spr->scale
 		|| ( lowscale < spr->scale
-		 && !R_PointOnSegSide (spr->gx, spr->gy, ds->curline) ) )
+		&& !R_PointOnSegSide (spr->gx, spr->gy, ds->curline) ) )
 	{
 		// masked mid texture?
 		if (ds->maskedtexturecol)	
@@ -976,8 +976,8 @@ void R_DrawMasked (void)
 	{
 	// draw all vissprites back to front
 	for (spr = vsprsortedhead.next ;
-		 spr != &vsprsortedhead ;
-		 spr=spr->next)
+		spr != &vsprsortedhead ;
+		spr=spr->next)
 	{
 		
 		R_DrawSprite (spr);

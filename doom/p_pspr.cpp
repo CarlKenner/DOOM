@@ -199,18 +199,18 @@ boolean P_CheckAmmo (player_t* player)
 		player->pendingweapon = wp_plasma;
 	}
 	else if (player->weaponowned[wp_supershotgun] 
-		 && player->ammo[am_shell]>2
-		 && (gamemode == commercial) )
+		&& player->ammo[am_shell]>2
+		&& (gamemode == commercial) )
 	{
 		player->pendingweapon = wp_supershotgun;
 	}
 	else if (player->weaponowned[wp_chaingun]
-		 && player->ammo[am_clip])
+		&& player->ammo[am_clip])
 	{
 		player->pendingweapon = wp_chaingun;
 	}
 	else if (player->weaponowned[wp_shotgun]
-		 && player->ammo[am_shell])
+		&& player->ammo[am_shell])
 	{
 		player->pendingweapon = wp_shotgun;
 	}
@@ -223,13 +223,13 @@ boolean P_CheckAmmo (player_t* player)
 		player->pendingweapon = wp_chainsaw;
 	}
 	else if (player->weaponowned[wp_missile]
-		 && player->ammo[am_misl])
+		&& player->ammo[am_misl])
 	{
 		player->pendingweapon = wp_missile;
 	}
 	else if (player->weaponowned[wp_bfg]
-		 && player->ammo[am_cell]>40
-		 && (gamemode != shareware) )
+		&& player->ammo[am_cell]>40
+		&& (gamemode != shareware) )
 	{
 		player->pendingweapon = wp_bfg;
 	}
@@ -325,8 +325,8 @@ A_WeaponReady
 	if (player->cmd.buttons & BT_ATTACK)
 	{
 	if ( !player->attackdown
-		 || (player->readyweapon != wp_missile
-		 && player->readyweapon != wp_bfg) )
+		|| (player->readyweapon != wp_missile
+		&& player->readyweapon != wp_bfg) )
 	{
 		player->attackdown = true;
 		P_FireWeapon (player);		
@@ -358,8 +358,8 @@ void A_ReFire
 	// check for fire
 	//  (if a weaponchange is pending, let it go through instead)
 	if ( (player->cmd.buttons & BT_ATTACK) 
-	 && player->pendingweapon == wp_nochange
-	 && player->health)
+	&& player->pendingweapon == wp_nochange
+	&& player->health)
 	{
 	player->refire++;
 	P_FireWeapon (player);
@@ -498,9 +498,9 @@ A_Punch
 	{
 	S_StartSound (player->mo, sfx_punch);
 	player->mo->angle = R_PointToAngle2 (player->mo->x,
-						 player->mo->y,
-						 linetarget->x,
-						 linetarget->y);
+						player->mo->y,
+						linetarget->x,
+						linetarget->y);
 	}
 }
 
@@ -534,7 +534,7 @@ A_Saw
 	
 	// turn to face target
 	angle = R_PointToAngle2 (player->mo->x, player->mo->y,
-				 linetarget->x, linetarget->y);
+				linetarget->x, linetarget->y);
 	if (angle - player->mo->angle > ANG180)
 	{
 	if (angle - player->mo->angle < -ANG90/20)
@@ -808,9 +808,9 @@ void A_BFGSpray (mobj_t* mo)
 		continue;
 
 	P_SpawnMobj (linetarget->x,
-			 linetarget->y,
-			 linetarget->z + (linetarget->height>>2),
-			 MT_EXTRABFG);
+			linetarget->y,
+			linetarget->z + (linetarget->height>>2),
+			MT_EXTRABFG);
 	
 	damage = 0;
 	for (j=0;j<15;j++)

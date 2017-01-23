@@ -28,7 +28,7 @@ If you have questions concerning this license or the applicable additional terms
 // DESCRIPTION:
 //	The actual span/column drawing functions.
 //	Here find the main potential for optimization,
-//	 e.g. inline assembly, different algorithms.
+//	e.g. inline assembly, different algorithms.
 
 ===========================================================================
 */
@@ -117,14 +117,14 @@ void R_DrawColumn (void)
 	int			count; 
 	byte*		dest; 
 	fixed_t		frac;
-	fixed_t		fracstep;	 
+	fixed_t		fracstep;	
  
 	count = dc_yh - dc_yl; 
 
 	// Zero length, column does not exceed a pixel.
 	if (count < 0) 
 	return; 
-				 
+				
 #ifdef RANGECHECK 
 	if ((unsigned)dc_x >= SCREENWIDTH
 	|| dc_yl < 0
@@ -173,14 +173,14 @@ void R_DrawColumn (void)
 	unsigned		fracstep;
 	unsigned		fracstep2;
 	unsigned		fracstep3;
-	unsigned		fracstep4;	 
+	unsigned		fracstep4;	
  
 	count = dc_yh - dc_yl + 1; 
 
 	source = dc_source;
-	colormap = dc_colormap;		 
+	colormap = dc_colormap;		
 	dest = ylookup[dc_yl] + columnofs[dc_x];  
-	 
+	
 	fracstep = dc_iscale<<9; 
 	frac = (dc_texturemid + (dc_yl-centery)*dc_iscale)<<9; 
  
@@ -224,14 +224,14 @@ void R_DrawColumnLow (void)
 	byte*		dest; 
 	byte*		dest2;
 	fixed_t		frac;
-	fixed_t		fracstep;	 
+	fixed_t		fracstep;	
  
 	count = dc_yh - dc_yl; 
 
 	// Zero length.
 	if (count < 0) 
 	return; 
-				 
+				
 #ifdef RANGECHECK 
 	if ((unsigned)dc_x >= SCREENWIDTH
 	|| dc_yl < 0
@@ -297,7 +297,7 @@ void R_DrawFuzzColumn (void)
 	int			count; 
 	byte*		dest; 
 	fixed_t		frac;
-	fixed_t		fracstep;	 
+	fixed_t		fracstep;	
 
 	// Adjust borders. Low... 
 	if (!dc_yl) 
@@ -306,7 +306,7 @@ void R_DrawFuzzColumn (void)
 	// .. and high.
 	if (dc_yh == viewheight-1) 
 	dc_yh = viewheight - 2; 
-		 
+		
 	count = dc_yh - dc_yl; 
 
 	// Zero length.
@@ -319,7 +319,7 @@ void R_DrawFuzzColumn (void)
 	|| dc_yl < 0 || dc_yh >= SCREENHEIGHT)
 	{
 	I_Error ("R_DrawFuzzColumn: %i to %i at %i",
-		 dc_yl, dc_yh, dc_x);
+		dc_yl, dc_yh, dc_x);
 	}
 #endif
 
@@ -397,12 +397,12 @@ void R_DrawTranslatedColumn (void)
 	int			count; 
 	byte*		dest; 
 	fixed_t		frac;
-	fixed_t		fracstep;	 
+	fixed_t		fracstep;	
  
 	count = dc_yh - dc_yl; 
 	if (count < 0) 
 	return; 
-				 
+				
 #ifdef RANGECHECK 
 	if ((unsigned)dc_x >= SCREENWIDTH
 	|| dc_yl < 0
@@ -534,7 +534,7 @@ void R_DrawSpan (void)
 	byte*		dest; 
 	int			count;
 	int			spot; 
-	 
+	
 #ifdef RANGECHECK 
 	if (ds_x2 < ds_x1
 	|| ds_x1<0
@@ -542,7 +542,7 @@ void R_DrawSpan (void)
 	|| (unsigned)ds_y>SCREENHEIGHT)
 	{
 	I_Error( "R_DrawSpan: %i to %i at %i",
-		 ds_x1,ds_x2,ds_y);
+		ds_x1,ds_x2,ds_y);
 	}
 //	dscount++; 
 #endif 
@@ -550,7 +550,7 @@ void R_DrawSpan (void)
 	
 	xfrac = ds_xfrac; 
 	yfrac = ds_yfrac; 
-	 
+	
 	dest = ylookup[ds_y] + columnofs[ds_x1];
 
 	// We do not check for zero spans here?
@@ -597,7 +597,7 @@ void R_DrawSpan (void)
 		
 	source = ds_source;
 	colormap = ds_colormap;
-	dest = ylookup[ds_y] + columnofs[ds_x1];	 
+	dest = ylookup[ds_y] + columnofs[ds_x1];	
 	count = ds_x2 - ds_x1 + 1; 
 	
 	while (count >= 4) 
@@ -657,7 +657,7 @@ void R_DrawSpanLow (void)
 	byte*		dest; 
 	int			count;
 	int			spot; 
-	 
+	
 #ifdef RANGECHECK 
 	if (ds_x2 < ds_x1
 	|| ds_x1<0
@@ -665,11 +665,11 @@ void R_DrawSpanLow (void)
 	|| (unsigned)ds_y>SCREENHEIGHT)
 	{
 	I_Error( "R_DrawSpan: %i to %i at %i",
-		 ds_x1,ds_x2,ds_y);
+		ds_x1,ds_x2,ds_y);
 	}
 //	dscount++; 
 #endif 
-	 
+	
 	xfrac = ds_xfrac; 
 	yfrac = ds_yfrac; 
 
@@ -764,7 +764,7 @@ void R_FillBackScreen (void)
 	
 	src = W_CacheLumpName (name, PU_CACHE); 
 	dest = screens[1]; 
-	 
+	
 	for (y=0 ; y<SCREENHEIGHT-SBARHEIGHT ; y++) 
 	{ 
 	for (x=0 ; x<SCREENWIDTH/64 ; x++) 
@@ -800,24 +800,24 @@ void R_FillBackScreen (void)
 
 	// Draw beveled edge. 
 	V_DrawPatch (viewwindowx-8,
-		 viewwindowy-8,
-		 1,
-		 W_CacheLumpName ("brdr_tl",PU_CACHE));
+		viewwindowy-8,
+		1,
+		W_CacheLumpName ("brdr_tl",PU_CACHE));
 	
 	V_DrawPatch (viewwindowx+scaledviewwidth,
-		 viewwindowy-8,
-		 1,
-		 W_CacheLumpName ("brdr_tr",PU_CACHE));
+		viewwindowy-8,
+		1,
+		W_CacheLumpName ("brdr_tr",PU_CACHE));
 	
 	V_DrawPatch (viewwindowx-8,
-		 viewwindowy+viewheight,
-		 1,
-		 W_CacheLumpName ("brdr_bl",PU_CACHE));
+		viewwindowy+viewheight,
+		1,
+		W_CacheLumpName ("brdr_bl",PU_CACHE));
 	
 	V_DrawPatch (viewwindowx+scaledviewwidth,
-		 viewwindowy+viewheight,
-		 1,
-		 W_CacheLumpName ("brdr_br",PU_CACHE));
+		viewwindowy+viewheight,
+		1,
+		W_CacheLumpName ("brdr_br",PU_CACHE));
 } 
  
 

@@ -814,7 +814,7 @@ void WI_drawShowNextLoc(void)
 
 	// draws which level you are entering..
 	if ( (gamemode != commercial)
-	 || wbs->next != 30)
+	|| wbs->next != 30)
 	WI_drawEL();  
 
 }
@@ -1583,7 +1583,7 @@ void WI_loadData(void)
 	{
 	NUMCMAPS = 32;								
 	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMCMAPS,
-						 PU_STATIC, 0);
+						PU_STATIC, 0);
 	for (i=0 ; i<NUMCMAPS ; i++)
 	{								
 		sprintf(name, "CWILV%2.2d", i);
@@ -1593,7 +1593,7 @@ void WI_loadData(void)
 	else
 	{
 	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMMAPS,
-						 PU_STATIC, 0);
+						PU_STATIC, 0);
 	for (i=0 ; i<NUMMAPS ; i++)
 	{
 		sprintf(name, "WILV%d%d", wbs->epsd, i);
@@ -1638,7 +1638,7 @@ void WI_loadData(void)
 
 	for (i=0;i<10;i++)
 	{
-	 // numbers 0-9
+	// numbers 0-9
 	sprintf(name, "WINUM%d", i);     
 	num[i] = W_CacheLumpName(name, PU_STATIC);
 	}
@@ -1658,7 +1658,7 @@ void WI_loadData(void)
 	// "scrt"
 	secret = W_CacheLumpName("WIOSTS", PU_STATIC);
 
-	 // "secret"
+	// "secret"
 	sp_secret = W_CacheLumpName("WISCRT2", PU_STATIC);
 
 	// Yuck. 

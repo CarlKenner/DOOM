@@ -26,8 +26,8 @@ If you have questions concerning this license or the applicable additional terms
 // DESCRIPTION:  none
 //	Implements special effects:
 //	Texture animation, height or lighting changes
-//	 according to adjacent sectors, respective
-//	 utility functions, etc.
+//	according to adjacent sectors, respective
+//	utility functions, etc.
 
 ===========================================================================
 */
@@ -435,7 +435,7 @@ typedef struct
 	int		timer;
 	sector_t*	frontsector;
 	sector_t*	backsector;
-	sd_e	 status;
+	sd_e	status;
 
 } slidedoor_t;
 
@@ -572,7 +572,7 @@ typedef enum
 	raiseFloor24AndChange,
 	raiseFloorCrush,
 
-	 // raise to next highest floor, turbo-speed
+	// raise to next highest floor, turbo-speed
 	raiseFloorTurbo,       
 	donutRaise,
 	raiseFloor512

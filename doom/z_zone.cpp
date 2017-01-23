@@ -312,8 +312,8 @@ Z_FreeTags
 	memblock_t*	next;
 	
 	for (block = mainzone->blocklist.next ;
-	 block != &mainzone->blocklist ;
-	 block = next)
+	block != &mainzone->blocklist ;
+	block = next)
 	{
 	// get link before freeing
 	next = block->next;
@@ -382,7 +382,7 @@ void Z_FileDumpHeap (FILE* f)
 	for (block = mainzone->blocklist.next ; ; block = block->next)
 	{
 	fprintf (f,"block:%p    size:%7i    user:%p    tag:%3i\n",
-		 block, block->size, block->user, block->tag);
+		block, block->size, block->user, block->tag);
 		
 	if (block->next == &mainzone->blocklist)
 	{
@@ -466,8 +466,8 @@ int Z_FreeMemory (void)
 	free = 0;
 	
 	for (block = mainzone->blocklist.next ;
-	 block != &mainzone->blocklist;
-	 block = block->next)
+	block != &mainzone->blocklist;
+	block = block->next)
 	{
 	if (!block->user || block->tag >= PU_PURGELEVEL)
 		free += block->size;

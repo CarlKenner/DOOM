@@ -280,8 +280,8 @@ S_StartSoundAtVolume
   
   // Debug.
   /*fprintf( stderr,
-  		 "S_StartSoundAtVolume: playing sound %d (%s)\n",
-  		 sfx_id, S_sfx[sfx_id].name );*/
+  		"S_StartSoundAtVolume: playing sound %d (%s)\n",
+  		sfx_id, S_sfx[sfx_id].name );*/
   
   // check for bogus sound #
   if (sfx_id < 1 || sfx_id > NUMSFX)
@@ -314,13 +314,13 @@ S_StartSoundAtVolume
   if (origin && origin != players[consoleplayer].mo)
   {
 	rc = S_AdjustSoundParams(players[consoleplayer].mo,
-				 origin,
-				 &volume,
-				 &sep,
-				 &pitch);
+				origin,
+				&volume,
+				&sep,
+				&pitch);
 	
 	if ( origin->x == players[consoleplayer].mo->x
-	 && origin->y == players[consoleplayer].mo->y)
+	&& origin->y == players[consoleplayer].mo->y)
 	{	
 		sep 	= NORM_SEP;
 	}
@@ -345,7 +345,7 @@ S_StartSoundAtVolume
 		pitch = 255;
   }
   else if (sfx_id != sfx_itemup
-		 && sfx_id != sfx_tink)
+		&& sfx_id != sfx_tink)
   {
 	pitch += 16 - (M_Random()&31);
 	
@@ -379,12 +379,12 @@ S_StartSoundAtVolume
   if (!sfx->data)
   {
 	fprintf( stderr,
-		 "S_StartSoundAtVolume: 16bit and not pre-cached - wtf?\n");
+		"S_StartSoundAtVolume: 16bit and not pre-cached - wtf?\n");
 
 	// DOS remains, 8bit handling
 	//sfx->data = (void *) W_CacheLumpNum(sfx->lumpnum, PU_MUSIC);
 	// fprintf( stderr,
-	//		 "S_StartSoundAtVolume: loading %d (lump %d) : 0x%x\n",
+	//		"S_StartSoundAtVolume: loading %d (lump %d) : 0x%x\n",
 	//       sfx_id, sfx->lumpnum, (int)sfx->data );
 	
   }
@@ -397,11 +397,11 @@ S_StartSoundAtVolume
   // Assigns the handle to one of the channels in the
   //  mix/output buffer.
   channels[cnum].handle = I_StartSound(sfx_id,
-						 /*sfx->data,*/
-						 volume,
-						 sep,
-						 pitch,
-						 priority);
+						/*sfx->data,*/
+						volume,
+						sep,
+						pitch,
+						priority);
 }	
 
 void
@@ -665,7 +665,7 @@ S_ChangeMusic
 	char		namebuf[9];
 
 	if ( (musicnum <= mus_None)
-	 || (musicnum >= NUMMUSIC) )
+	|| (musicnum >= NUMMUSIC) )
 	{
 	I_Error("Bad music number %d", musicnum);
 	}

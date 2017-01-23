@@ -224,7 +224,7 @@ boolean P_CheckMissileRange (mobj_t* actor)
 		
 	// OPTIMIZE: get this from a global checksight
 	dist = P_AproxDistance ( actor->x-actor->target->x,
-				 actor->y-actor->target->y) - 64*FRACUNIT;
+				actor->y-actor->target->y) - 64*FRACUNIT;
 	
 	if (!actor->info->meleestate)
 	dist -= 128*FRACUNIT;	// no melee attack, so fire more
@@ -1059,9 +1059,9 @@ void A_Tracer (mobj_t* actor)
 	
 	// change angle	
 	exact = R_PointToAngle2 (actor->x,
-				 actor->y,
-				 dest->x,
-				 dest->y);
+				actor->y,
+				dest->x,
+				dest->y);
 
 	if (exact != actor->angle)
 	{
@@ -1153,7 +1153,7 @@ boolean PIT_VileCheck (mobj_t*	thing)
 	maxdist = thing->info->radius + mobjinfo[MT_VILE].radius;
 	
 	if ( abs(thing->x - viletryx) > maxdist
-	 || abs(thing->y - viletryy) > maxdist )
+	|| abs(thing->y - viletryy) > maxdist )
 	return true;		// not actually touching
 		
 	corpsehit = thing;
@@ -1302,8 +1302,8 @@ void A_VileTarget (mobj_t*	actor)
 	A_FaceTarget (actor);
 
 	fog = P_SpawnMobj (actor->target->x,
-				 actor->target->x,
-				 actor->target->z, MT_FIRE);
+				actor->target->x,
+				actor->target->z, MT_FIRE);
 	
 	actor->tracer = fog;
 	fog->target = actor;
@@ -1831,8 +1831,8 @@ void A_BrainAwake (mobj_t* mo)
 	
 	thinker = thinkercap.next;
 	for (thinker = thinkercap.next ;
-	 thinker != &thinkercap ;
-	 thinker = thinker->next)
+	thinker != &thinkercap ;
+	thinker = thinker->next)
 	{
 	if (thinker->function.acp1 != (actionf_p1)P_MobjThinker)
 		continue;	// not a mobj

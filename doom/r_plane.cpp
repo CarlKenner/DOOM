@@ -27,7 +27,7 @@ If you have questions concerning this license or the applicable additional terms
 //
 // DESCRIPTION:
 //	Here is a core component: drawing the floors and ceilings,
-//	 while maintaining a per column clipping list only.
+//	while maintaining a per column clipping list only.
 //	Moreover, the sky areas have to be determined.
 
 ===========================================================================
@@ -385,15 +385,15 @@ void R_DrawPlanes (void)
 #ifdef RANGECHECK
 	if (ds_p - drawsegs > MAXDRAWSEGS)
 	I_Error ("R_DrawPlanes: drawsegs overflow (%i)",
-		 ds_p - drawsegs);
+		ds_p - drawsegs);
 	
 	if (lastvisplane - visplanes > MAXVISPLANES)
 	I_Error ("R_DrawPlanes: visplane overflow (%i)",
-		 lastvisplane - visplanes);
+		lastvisplane - visplanes);
 	
 	if (lastopening - openings > MAXOPENINGS)
 	I_Error ("R_DrawPlanes: opening overflow (%i)",
-		 lastopening - openings);
+		lastopening - openings);
 #endif
 
 	for (pl = visplanes ; pl < lastvisplane ; pl++)
@@ -431,8 +431,8 @@ void R_DrawPlanes (void)
 	
 	// regular flat
 	ds_source = W_CacheLumpNum(firstflat +
-					 flattranslation[pl->picnum],
-					 PU_STATIC);
+					flattranslation[pl->picnum],
+					PU_STATIC);
 	
 	planeheight = abs(pl->height-viewz);
 	light = (pl->lightlevel >> LIGHTSEGSHIFT)+extralight;

@@ -25,7 +25,7 @@ If you have questions concerning this license or the applicable additional terms
 
 // DESCRIPTION:
 //	Typedefs related to to textures etc.,
-//	 isolated here to make it easier separating modules.
+//	isolated here to make it easier separating modules.
 //    
 //-----------------------------------------------------------------------------
 

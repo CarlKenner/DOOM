@@ -174,7 +174,7 @@ void D_ProcessEvents (void)
 	
 	// IF STORE DEMO, DO NOT ACCEPT INPUT
 	if ( ( gamemode == commercial )
-	 && (W_CheckNumForName("map01")<0) )
+	&& (W_CheckNumForName("map01")<0) )
 		return;
 	
 	for ( ; eventtail != eventhead ; eventtail = (++eventtail)&(MAXEVENTS-1) )
@@ -347,7 +347,7 @@ void D_Display (void)
 	} while (!tics);
 	wipestart = nowtime;
 	done = wipe_ScreenWipe(wipe_Melt
-					 , 0, 0, SCREENWIDTH, SCREENHEIGHT, tics);
+					, 0, 0, SCREENWIDTH, SCREENHEIGHT, tics);
 	I_UpdateNoBlit ();
 	M_Drawer ();                            // menu is drawn even on top of wipes
 	I_FinishUpdate ();                      // page flip or blit buffer
@@ -605,7 +605,7 @@ void IdentifyVersion (void)
 	doom1wad = malloc(strlen(doomwaddir)+1+9+1);
 	sprintf(doom1wad, "%s/doom1.wad", doomwaddir);
 
-	 // Bug, dear Shawn.
+	// Bug, dear Shawn.
 	// Insufficient malloc, caused spurious realloc errors.
 	plutoniawad = malloc(strlen(doomwaddir)+1+/*9*/12+1);
 	sprintf(plutoniawad, "%s/plutonia.wad", doomwaddir);
@@ -828,54 +828,54 @@ void D_DoomMain (void)
 	{
 		case retail:
 	sprintf (title,
-		 "                         "
-		 "The Ultimate DOOM Startup v%i.%i"
-		 "                           ",
-		 VERSION/100,VERSION%100);
+		"                         "
+		"The Ultimate DOOM Startup v%i.%i"
+		"                           ",
+		VERSION/100,VERSION%100);
 	break;
 		case shareware:
 	sprintf (title,
-		 "                            "
-		 "DOOM Shareware Startup v%i.%i"
-		 "                           ",
-		 VERSION/100,VERSION%100);
+		"                            "
+		"DOOM Shareware Startup v%i.%i"
+		"                           ",
+		VERSION/100,VERSION%100);
 	break;
 		case registered:
 	sprintf (title,
-		 "                            "
-		 "DOOM Registered Startup v%i.%i"
-		 "                           ",
-		 VERSION/100,VERSION%100);
+		"                            "
+		"DOOM Registered Startup v%i.%i"
+		"                           ",
+		VERSION/100,VERSION%100);
 	break;
 		case commercial:
 	sprintf (title,
-		 "                         "
-		 "DOOM 2: Hell on Earth v%i.%i"
-		 "                           ",
-		 VERSION/100,VERSION%100);
+		"                         "
+		"DOOM 2: Hell on Earth v%i.%i"
+		"                           ",
+		VERSION/100,VERSION%100);
 	break;
 /*FIXME
-		 case pack_plut:
+		case pack_plut:
 	sprintf (title,
-		 "                   "
-		 "DOOM 2: Plutonia Experiment v%i.%i"
-		 "                           ",
-		 VERSION/100,VERSION%100);
+		"                   "
+		"DOOM 2: Plutonia Experiment v%i.%i"
+		"                           ",
+		VERSION/100,VERSION%100);
 	break;
 		case pack_tnt:
 	sprintf (title,
-		 "                     "
-		 "DOOM 2: TNT - Evilution v%i.%i"
-		 "                           ",
-		 VERSION/100,VERSION%100);
+		"                     "
+		"DOOM 2: TNT - Evilution v%i.%i"
+		"                           ",
+		VERSION/100,VERSION%100);
 	break;
 */
 		default:
 	sprintf (title,
-		 "                     "
-		 "Public DOOM - v%i.%i"
-		 "                           ",
-		 VERSION/100,VERSION%100);
+		"                     "
+		"Public DOOM - v%i.%i"
+		"                           ",
+		VERSION/100,VERSION%100);
 	break;
 	}
 	
@@ -928,9 +928,9 @@ void D_DoomMain (void)
 		case retail:
 		case registered:
 		sprintf (file,"~"DEVMAPS"E%cM%c.wad",
-			 myargv[p+1][0], myargv[p+2][0]);
+			myargv[p+1][0], myargv[p+2][0]);
 		printf("Warping to Episode %s, Map %s.\n",
-			 myargv[p+1],myargv[p+2]);
+			myargv[p+1],myargv[p+2]);
 		break;
 		
 		case commercial:

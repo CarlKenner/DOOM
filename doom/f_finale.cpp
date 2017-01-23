@@ -685,7 +685,7 @@ void F_BunnyScroll (void)
 	if (finalecount < 1180)
 	{
 	V_DrawPatch ((SCREENWIDTH-13*8)/2,
-			 (SCREENHEIGHT-8*8)/2,0, W_CacheLumpName ("END0",PU_CACHE));
+			(SCREENHEIGHT-8*8)/2,0, W_CacheLumpName ("END0",PU_CACHE));
 	laststage = 0;
 	return;
 	}
@@ -724,10 +724,10 @@ void F_Drawer (void)
 		case 1:
 		if ( gamemode == retail )
 			V_DrawPatch (0,0,0,
-			 W_CacheLumpName("CREDIT",PU_CACHE));
+			W_CacheLumpName("CREDIT",PU_CACHE));
 		else
 			V_DrawPatch (0,0,0,
-			 W_CacheLumpName("HELP2",PU_CACHE));
+			W_CacheLumpName("HELP2",PU_CACHE));
 		break;
 		case 2:
 		V_DrawPatch(0,0,0,
@@ -738,7 +738,7 @@ void F_Drawer (void)
 		break;
 		case 4:
 		V_DrawPatch (0,0,0,
-			 W_CacheLumpName("ENDPIC",PU_CACHE));
+			W_CacheLumpName("ENDPIC",PU_CACHE));
 		break;
 	}
 	}

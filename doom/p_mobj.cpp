@@ -271,11 +271,11 @@ void P_ZMovement (mobj_t* mo)
 	mo->z += mo->momz;
 	
 	if ( mo->flags & MF_FLOAT
-	 && mo->target)
+	&& mo->target)
 	{
 	// float down towards target if too close
 	if ( !(mo->flags & MF_SKULLFLY)
-		 && !(mo->flags & MF_INFLOAT) )
+		&& !(mo->flags & MF_INFLOAT) )
 	{
 		dist = P_AproxDistance (mo->x - mo->target->x,
 					mo->y - mo->target->y);
@@ -321,7 +321,7 @@ void P_ZMovement (mobj_t* mo)
 	mo->z = mo->floorz;
 
 	if ( (mo->flags & MF_MISSILE)
-		 && !(mo->flags & MF_NOCLIP) )
+		&& !(mo->flags & MF_NOCLIP) )
 	{
 		P_ExplodeMissile (mo);
 		return;
@@ -350,7 +350,7 @@ void P_ZMovement (mobj_t* mo)
 	}
 	
 	if ( (mo->flags & MF_MISSILE)
-		 && !(mo->flags & MF_NOCLIP) )
+		&& !(mo->flags & MF_NOCLIP) )
 	{
 		P_ExplodeMissile (mo);
 		return;
@@ -436,7 +436,7 @@ void P_MobjThinker (mobj_t* mobj)
 		return;		// mobj was removed
 	}
 	if ( (mobj->z != mobj->floorz)
-	 || mobj->momz )
+	|| mobj->momz )
 	{
 	P_ZMovement (mobj);
 	
@@ -767,8 +767,8 @@ void P_SpawnMapThing (mapthing_t* mthing)
 	
 	if (i==NUMMOBJTYPES)
 	I_Error ("P_SpawnMapThing: Unknown type %i at (%i, %i)",
-		 mthing->type,
-		 mthing->x, mthing->y);
+		mthing->type,
+		mthing->x, mthing->y);
 		
 	// don't spawn keycards and players in deathmatch
 	if (deathmatch && mobjinfo[i].flags & MF_NOTDMATCH)
@@ -777,7 +777,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
 	// don't spawn any monsters if -nomonsters
 	if (nomonsters
 	&& ( i == MT_SKULL
-		 || (mobjinfo[i].flags & MF_COUNTKILL)) )
+		|| (mobjinfo[i].flags & MF_COUNTKILL)) )
 	{
 	return;
 	}
@@ -988,9 +988,9 @@ P_SpawnPlayerMissile
 	th->target = source;
 	th->angle = an;
 	th->momx = FixedMul( th->info->speed,
-			 finecosine[an>>ANGLETOFINESHIFT]);
+			finecosine[an>>ANGLETOFINESHIFT]);
 	th->momy = FixedMul( th->info->speed,
-			 finesine[an>>ANGLETOFINESHIFT]);
+			finesine[an>>ANGLETOFINESHIFT]);
 	th->momz = FixedMul( th->info->speed, slope);
 
 	P_CheckMissileSpawn (th);

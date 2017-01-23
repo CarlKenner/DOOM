@@ -449,9 +449,9 @@ void HU_Start(void)
 
 	// create the map title widget
 	HUlib_initTextLine(&w_title,
-				 HU_TITLEX, HU_TITLEY,
-				 hu_font,
-				 HU_FONTSTART);
+				HU_TITLEX, HU_TITLEY,
+				hu_font,
+				HU_FONTSTART);
 	
 	switch ( gamemode )
 	{
@@ -472,8 +472,8 @@ void HU_Start(void)
 	
 		case commercial:
 		default:
-	 s = HU_TITLE2;
-	 break;
+	s = HU_TITLE2;
+	break;
 	}
 	
 	while (*s)

@@ -318,7 +318,7 @@ void P_LineOpening (line_t* linedef)
 	openrange = 0;
 	return;
 	}
-	 
+	
 	front = linedef->frontsector;
 	back = linedef->backsector;
 	
@@ -528,17 +528,17 @@ P_BlockThingsIterator
 	mobj_t*		mobj;
 	
 	if ( x<0
-	 || y<0
-	 || x>=bmapwidth
-	 || y>=bmapheight)
+	|| y<0
+	|| x>=bmapwidth
+	|| y>=bmapheight)
 	{
 	return true;
 	}
 	
 
 	for (mobj = blocklinks[y*bmapwidth+x] ;
-	 mobj ;
-	 mobj = mobj->bnext)
+	mobj ;
+	mobj = mobj->bnext)
 	{
 	if (!func( mobj ) )
 		return false;
@@ -578,9 +578,9 @@ PIT_AddLineIntercepts (line_t* ld)
 	
 	// avoid precision problems with two routines
 	if ( trace.dx > FRACUNIT*16
-	 || trace.dy > FRACUNIT*16
-	 || trace.dx < -FRACUNIT*16
-	 || trace.dy < -FRACUNIT*16)
+	|| trace.dy > FRACUNIT*16
+	|| trace.dx < -FRACUNIT*16
+	|| trace.dy < -FRACUNIT*16)
 	{
 	s1 = P_PointOnDivlineSide (ld->v1->x, ld->v1->y, &trace);
 	s2 = P_PointOnDivlineSide (ld->v2->x, ld->v2->y, &trace);

@@ -56,8 +56,8 @@ rcsid[] = "$Id: p_doors.c,v 1.4 1997/02/03 16:47:53 b1 Exp $";
 slidename_t	slideFrameNames[MAXSLIDEDOORS] =
 {
 	{"GDOORF1","GDOORF2","GDOORF3","GDOORF4",	// front
-	 "GDOORB1","GDOORB2","GDOORB3","GDOORB4"},	// back
-	 
+	"GDOORB1","GDOORB2","GDOORB3","GDOORB4"},	// back
+	
 	{"\0","\0","\0","\0"}
 };
 #endif
@@ -85,19 +85,19 @@ void T_VerticalDoor (vldoor_t* door)
 			case blazeRaise:
 		door->direction = -1; // time to go back down
 		S_StartSound((mobj_t *)&door->sector->soundorg,
-				 sfx_bdcls);
+				sfx_bdcls);
 		break;
 		
 			case normal:
 		door->direction = -1; // time to go back down
 		S_StartSound((mobj_t *)&door->sector->soundorg,
-				 sfx_dorcls);
+				sfx_dorcls);
 		break;
 		
 			case close30ThenOpen:
 		door->direction = 1;
 		S_StartSound((mobj_t *)&door->sector->soundorg,
-				 sfx_doropn);
+				sfx_doropn);
 		break;
 		
 			default:
@@ -116,7 +116,7 @@ void T_VerticalDoor (vldoor_t* door)
 		door->direction = 1;
 		door->type = normal;
 		S_StartSound((mobj_t *)&door->sector->soundorg,
-				 sfx_doropn);
+				sfx_doropn);
 		break;
 		
 			default:
@@ -140,7 +140,7 @@ void T_VerticalDoor (vldoor_t* door)
 		door->sector->specialdata = NULL;
 		P_RemoveThinker (&door->thinker);  // unlink and free
 		S_StartSound((mobj_t *)&door->sector->soundorg,
-				 sfx_bdcls);
+				sfx_bdcls);
 		break;
 		
 			case normal:
@@ -169,7 +169,7 @@ void T_VerticalDoor (vldoor_t* door)
 			default:
 		door->direction = 1;
 		S_StartSound((mobj_t *)&door->sector->soundorg,
-				 sfx_doropn);
+				sfx_doropn);
 		break;
 		}
 	}
@@ -309,7 +309,7 @@ EV_DoDoor
 		door->direction = -1;
 		door->speed = VDOORSPEED * 4;
 		S_StartSound((mobj_t *)&door->sector->soundorg,
-			 sfx_bdcls);
+			sfx_bdcls);
 		break;
 		
 		case close:
@@ -317,14 +317,14 @@ EV_DoDoor
 		door->topheight -= 4*FRACUNIT;
 		door->direction = -1;
 		S_StartSound((mobj_t *)&door->sector->soundorg,
-			 sfx_dorcls);
+			sfx_dorcls);
 		break;
 		
 		case close30ThenOpen:
 		door->topheight = sec->ceilingheight;
 		door->direction = -1;
 		S_StartSound((mobj_t *)&door->sector->soundorg,
-			 sfx_dorcls);
+			sfx_dorcls);
 		break;
 		
 		case blazeRaise:
@@ -335,7 +335,7 @@ EV_DoDoor
 		door->speed = VDOORSPEED * 4;
 		if (door->topheight != sec->ceilingheight)
 		S_StartSound((mobj_t *)&door->sector->soundorg,
-				 sfx_bdopn);
+				sfx_bdopn);
 		break;
 		
 		case normal:
@@ -345,7 +345,7 @@ EV_DoDoor
 		door->topheight -= 4*FRACUNIT;
 		if (door->topheight != sec->ceilingheight)
 		S_StartSound((mobj_t *)&door->sector->soundorg,
-				 sfx_doropn);
+				sfx_doropn);
 		break;
 		
 		default:

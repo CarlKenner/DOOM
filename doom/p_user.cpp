@@ -174,7 +174,7 @@ void P_MovePlayer (player_t* player)
 	P_Thrust (player, player->mo->angle-ANG90, cmd->sidemove*2048);
 
 	if ( (cmd->forwardmove || cmd->sidemove) 
-	 && player->mo->state == &states[S_PLAY] )
+	&& player->mo->state == &states[S_PLAY] )
 	{
 	P_SetMobjState (player->mo, S_PLAY_RUN1);
 	}
@@ -210,9 +210,9 @@ void P_DeathThink (player_t* player)
 	if (player->attacker && player->attacker != player->mo)
 	{
 	angle = R_PointToAngle2 (player->mo->x,
-				 player->mo->y,
-				 player->attacker->x,
-				 player->attacker->y);
+				player->mo->y,
+				player->attacker->x,
+				player->attacker->y);
 	
 	delta = angle - player->mo->angle;
 	
@@ -300,7 +300,7 @@ void P_PlayerThink (player_t* player)
 	if (newweapon == wp_fist
 		&& player->weaponowned[wp_chainsaw]
 		&& !(player->readyweapon == wp_chainsaw
-		 && player->powers[pw_strength]))
+		&& player->powers[pw_strength]))
 	{
 		newweapon = wp_chainsaw;
 	}
@@ -320,7 +320,7 @@ void P_PlayerThink (player_t* player)
 		// Do not go to plasma or BFG in shareware,
 		//  even if cheated.
 		if ((newweapon != wp_plasma
-		 && newweapon != wp_bfg)
+		&& newweapon != wp_bfg)
 		|| (gamemode != shareware) )
 		{
 		player->pendingweapon = newweapon;

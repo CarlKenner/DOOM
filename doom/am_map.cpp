@@ -1003,9 +1003,9 @@ AM_drawFline
 
 	// For debugging only
 	if (      fl->a.x < 0 || fl->a.x >= f_w
-		 || fl->a.y < 0 || fl->a.y >= f_h
-		 || fl->b.x < 0 || fl->b.x >= f_w
-		 || fl->b.y < 0 || fl->b.y >= f_h)
+		|| fl->a.y < 0 || fl->a.y >= f_h
+		|| fl->b.x < 0 || fl->b.x >= f_w
+		|| fl->b.y < 0 || fl->b.y >= f_h)
 	{
 	fprintf(stderr, "fuck %d \r", fuck++);
 	return;
@@ -1155,11 +1155,11 @@ void AM_drawWalls(void)
 			else AM_drawMline(&l, WALLCOLORS+lightlev);
 		}
 		else if (lines[i].backsector->floorheight
-				 != lines[i].frontsector->floorheight) {
+				!= lines[i].frontsector->floorheight) {
 			AM_drawMline(&l, FDWALLCOLORS + lightlev); // floor level change
 		}
 		else if (lines[i].backsector->ceilingheight
-				 != lines[i].frontsector->ceilingheight) {
+				!= lines[i].frontsector->ceilingheight) {
 			AM_drawMline(&l, CDWALLCOLORS+lightlev); // ceiling level change
 		}
 		else if (cheating) {
@@ -1260,11 +1260,11 @@ void AM_drawPlayers(void)
 	if (cheating)
 		AM_drawLineCharacter
 		(cheat_player_arrow, NUMCHEATPLYRLINES, 0,
-		 plr->mo->angle, WHITE, plr->mo->x, plr->mo->y);
+		plr->mo->angle, WHITE, plr->mo->x, plr->mo->y);
 	else
 		AM_drawLineCharacter
 		(player_arrow, NUMPLYRLINES, 0, plr->mo->angle,
-		 WHITE, plr->mo->x, plr->mo->y);
+		WHITE, plr->mo->x, plr->mo->y);
 	return;
 	}
 
@@ -1286,7 +1286,7 @@ void AM_drawPlayers(void)
 	
 	AM_drawLineCharacter
 		(player_arrow, NUMPLYRLINES, 0, p->mo->angle,
-		 color, p->mo->x, p->mo->y);
+		color, p->mo->x, p->mo->y);
 	}
 
 }
@@ -1306,7 +1306,7 @@ AM_drawThings
 	{
 		AM_drawLineCharacter
 		(thintriangle_guy, NUMTHINTRIANGLEGUYLINES,
-		 16<<FRACBITS, t->angle, colors+lightlev, t->x, t->y);
+		16<<FRACBITS, t->angle, colors+lightlev, t->x, t->y);
 		t = t->snext;
 	}
 	}

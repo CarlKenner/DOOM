@@ -812,10 +812,10 @@ void M_DrawSound(void)
 	V_DrawPatchDirect (60,38,0,W_CacheLumpName("M_SVOL",PU_CACHE));
 
 	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sfx_vol+1),
-		 16,snd_SfxVolume);
+		16,snd_SfxVolume);
 
 	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(music_vol+1),
-		 16,snd_MusicVolume);
+		16,snd_MusicVolume);
 }
 
 void M_Sound(int choice)
@@ -929,7 +929,7 @@ void M_ChooseSkill(int choice)
 void M_Episode(int choice)
 {
 	if ( (gamemode == shareware)
-	 && choice)
+	&& choice)
 	{
 	M_StartMessage(SWSTRING,NULL,false);
 	M_SetupNextMenu(&ReadDef1);
@@ -938,13 +938,13 @@ void M_Episode(int choice)
 
 	// Yet another hack...
 	if ( (gamemode == registered)
-	 && (choice > 2))
+	&& (choice > 2))
 	{
 		fprintf( stderr,
-			 "M_Episode: 4th episode requires UltimateDOOM\n");
+			"M_Episode: 4th episode requires UltimateDOOM\n");
 		choice = 0;
 	}
-	 
+	
 	epi = choice;
 	M_SetupNextMenu(&NewDef);
 }
@@ -963,16 +963,16 @@ void M_DrawOptions(void)
 	V_DrawPatchDirect (108,15,0,W_CacheLumpName("M_OPTTTL",PU_CACHE));
 	
 	V_DrawPatchDirect (OptionsDef.x + 175,OptionsDef.y+LINEHEIGHT*detail,0,
-				 W_CacheLumpName(detailNames[detailLevel],PU_CACHE));
+				W_CacheLumpName(detailNames[detailLevel],PU_CACHE));
 
 	V_DrawPatchDirect (OptionsDef.x + 120,OptionsDef.y+LINEHEIGHT*messages,0,
-				 W_CacheLumpName(msgNames[showMessages],PU_CACHE));
+				W_CacheLumpName(msgNames[showMessages],PU_CACHE));
 
 	M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(mousesens+1),
-		 10,mouseSensitivity);
+		10,mouseSensitivity);
 	
 	M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(scrnsize+1),
-		 9,screenSize);
+		9,screenSize);
 }
 
 void M_Options(int choice)
@@ -1210,7 +1210,7 @@ M_DrawThermo
 	V_DrawPatchDirect (xx,y,0,W_CacheLumpName("M_THERMR",PU_CACHE));
 
 	V_DrawPatchDirect ((x+8) + thermDot*8,y,
-				 0,W_CacheLumpName("M_THERMO",PU_CACHE));
+				0,W_CacheLumpName("M_THERMO",PU_CACHE));
 }
 
 
@@ -1221,7 +1221,7 @@ M_DrawEmptyCell
   int		item )
 {
 	V_DrawPatchDirect (menu->x - 10,        menu->y+item*LINEHEIGHT - 1, 0,
-				 W_CacheLumpName("M_CELL1",PU_CACHE));
+				W_CacheLumpName("M_CELL1",PU_CACHE));
 }
 
 void
@@ -1230,7 +1230,7 @@ M_DrawSelCell
   int		item )
 {
 	V_DrawPatchDirect (menu->x - 10,        menu->y+item*LINEHEIGHT - 1, 0,
-				 W_CacheLumpName("M_CELL2",PU_CACHE));
+				W_CacheLumpName("M_CELL2",PU_CACHE));
 }
 
 
@@ -1803,7 +1803,7 @@ void M_Drawer (void)
 	{
 	if (currentMenu->menuitems[i].name[0])
 		V_DrawPatchDirect (x,y,0,
-					 W_CacheLumpName(currentMenu->menuitems[i].name ,PU_CACHE));
+					W_CacheLumpName(currentMenu->menuitems[i].name ,PU_CACHE));
 	y += LINEHEIGHT;
 	}
 

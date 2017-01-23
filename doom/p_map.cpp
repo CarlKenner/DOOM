@@ -98,7 +98,7 @@ boolean PIT_StompThing (mobj_t* thing)
 	blockdist = thing->radius + tmthing->radius;
 	
 	if ( abs(thing->x - tmx) >= blockdist
-	 || abs(thing->y - tmy) >= blockdist )
+	|| abs(thing->y - tmy) >= blockdist )
 	{
 	// didn't hit it
 	return true;
@@ -271,7 +271,7 @@ boolean PIT_CheckThing (mobj_t* thing)
 	blockdist = thing->radius + tmthing->radius;
 
 	if ( abs(thing->x - tmx) >= blockdist
-	 || abs(thing->y - tmy) >= blockdist )
+	|| abs(thing->y - tmy) >= blockdist )
 	{
 	// didn't hit it
 	return true;	
@@ -481,15 +481,15 @@ P_TryMove
 	floatok = true;
 	
 	if ( !(thing->flags&MF_TELEPORT) 
-		 &&tmceilingz - thing->z < thing->height)
+		&&tmceilingz - thing->z < thing->height)
 		return false;	// mobj must lower itself to fit
 
 	if ( !(thing->flags&MF_TELEPORT)
-		 && tmfloorz - thing->z > 24*FRACUNIT )
+		&& tmfloorz - thing->z > 24*FRACUNIT )
 		return false;	// too big a step up
 
 	if ( !(thing->flags&(MF_DROPOFF|MF_FLOAT))
-		 && tmfloorz - tmdropoffz > 24*FRACUNIT )
+		&& tmfloorz - tmdropoffz > 24*FRACUNIT )
 		return false;	// don't stand over a dropoff
 	}
 	
@@ -746,11 +746,11 @@ void P_SlideMove (mobj_t* mo)
 	bestslidefrac = FRACUNIT+1;
 	
 	P_PathTraverse ( leadx, leady, leadx+mo->momx, leady+mo->momy,
-			 PT_ADDLINES, PTR_SlideTraverse );
+			PT_ADDLINES, PTR_SlideTraverse );
 	P_PathTraverse ( trailx, leady, trailx+mo->momx, leady+mo->momy,
-			 PT_ADDLINES, PTR_SlideTraverse );
+			PT_ADDLINES, PTR_SlideTraverse );
 	P_PathTraverse ( leadx, traily, leadx+mo->momx, traily+mo->momy,
-			 PT_ADDLINES, PTR_SlideTraverse );
+			PT_ADDLINES, PTR_SlideTraverse );
 	
 	// move up to the wall
 	if (bestslidefrac == FRACUNIT+1)
@@ -1053,9 +1053,9 @@ P_AimLineAttack
 	linetarget = NULL;
 	
 	P_PathTraverse ( t1->x, t1->y,
-			 x2, y2,
-			 PT_ADDLINES|PT_ADDTHINGS,
-			 PTR_AimTraverse );
+			x2, y2,
+			PT_ADDLINES|PT_ADDTHINGS,
+			PTR_AimTraverse );
 		
 	if (linetarget)
 	return aimslope;
@@ -1090,9 +1090,9 @@ P_LineAttack
 	aimslope = slope;
 		
 	P_PathTraverse ( t1->x, t1->y,
-			 x2, y2,
-			 PT_ADDLINES|PT_ADDTHINGS,
-			 PTR_ShootTraverse );
+			x2, y2,
+			PT_ADDLINES|PT_ADDTHINGS,
+			PTR_ShootTraverse );
 }
  
 

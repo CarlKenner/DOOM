@@ -185,7 +185,7 @@ P_GiveWeapon
 	
 	if (netgame
 	&& (deathmatch!=2)
-	 && !dropped )
+	&& !dropped )
 	{
 	// leave placed weapons forever on net games
 	if (player->weaponowned[weapon])
@@ -828,9 +828,9 @@ P_DamageMobj
 
 	// make fall forwards sometimes
 	if ( damage < 40
-		 && damage > target->health
-		 && target->z - inflictor->z > 64*FRACUNIT
-		 && (P_Random ()&1) )
+		&& damage > target->health
+		&& target->z - inflictor->z > 64*FRACUNIT
+		&& (P_Random ()&1) )
 	{
 		ang += ANG180;
 		thrust *= 4;
@@ -855,7 +855,7 @@ P_DamageMobj
 	// Below certain threshold,
 	// ignore damage in GOD mode, or with INVUL power.
 	if ( damage < 1000
-		 && ( (player->cheats&CF_GODMODE)
+		&& ( (player->cheats&CF_GODMODE)
 			|| player->powers[pw_invulnerability] ) )
 	{
 		return;
@@ -902,7 +902,7 @@ P_DamageMobj
 	}
 
 	if ( (P_Random () < target->info->painchance)
-	 && !(target->flags&MF_SKULLFLY) )
+	&& !(target->flags&MF_SKULLFLY) )
 	{
 	target->flags |= MF_JUSTHIT;	// fight back!
 	
@@ -912,8 +912,8 @@ P_DamageMobj
 	target->reactiontime = 0;		// we're awake now...	
 
 	if ( (!target->threshold || target->type == MT_VILE)
-	 && source && source != target
-	 && source->type != MT_VILE)
+	&& source && source != target
+	&& source->type != MT_VILE)
 	{
 	// if not intent on another player,
 	// chase after this one

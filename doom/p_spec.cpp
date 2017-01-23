@@ -28,8 +28,8 @@ If you have questions concerning this license or the applicable additional terms
 // DESCRIPTION:
 //	Implements special effects:
 //	Texture animation, height or lighting changes
-//	 according to adjacent sectors, respective
-//	 utility functions, etc.
+//	according to adjacent sectors, respective
+//	utility functions, etc.
 //	Line Tag handling. Line and Sector triggers.
 
 ===========================================================================
@@ -187,8 +187,8 @@ void P_InitPicAnims (void)
 
 	if (lastanim->numpics < 2)
 		I_Error ("P_InitPicAnims: bad cycle from %s to %s",
-			 animdefs[i].startname,
-			 animdefs[i].endname);
+			animdefs[i].startname,
+			animdefs[i].endname);
 	
 	lastanim->speed = animdefs[i].speed;
 	lastanim++;
@@ -365,7 +365,7 @@ P_FindNextHighestFloor
 	if ( h >= MAX_ADJOINING_SECTORS )
 	{
 		fprintf( stderr,
-			 "Sector with more than 20 adjoining sectors\n" );
+			"Sector with more than 20 adjoining sectors\n" );
 		break;
 	}
 	}
@@ -1074,8 +1074,8 @@ void P_PlayerInSpecialSector (player_t* player)
 			
 		default:
 	I_Error ("P_PlayerInSpecialSector: "
-		 "unknown special %i",
-		 sector->special);
+		"unknown special %i",
+		sector->special);
 	break;
 	};
 }
