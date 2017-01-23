@@ -23,23 +23,19 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	System specific interface stuff.
-
 ===========================================================================
 */
-
 
 #ifndef __I_VIDEO__
 #define __I_VIDEO__
 
 
 #include "doomtype.h"
+#include "d_event.h"
 
 #ifdef __GNUG__
 #pragma interface
 #endif
-
 
 // Called by D_DoomMain,
 // determines the hardware configuration
@@ -63,7 +59,18 @@ void I_ReadScreen (byte* scr);
 void I_BeginRead (void);
 void I_EndRead (void);
 
+void I_InitInput (void);
 
+void I_ShutdownInput() ;
+void I_InputFrame();
+
+void I_UpdateControllerState(void);
+struct controller_t;
+int I_PollMouseInputEvents( controller_t * ) ;
+int I_ReturnMouseInputEvent( const int n, event_t* e);
+int I_PollJoystickInputEvents( controller_t * ) ;
+int I_ReturnJoystickInputEvent( const int n, event_t* e);
+void I_EndJoystickInputEvents();
 
 #endif
 

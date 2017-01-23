@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//   Setup a game, startup stuff.
-
 ===========================================================================
 */
-
 
 #ifndef __P_SETUP__
 #define __P_SETUP__
@@ -43,9 +39,9 @@ If you have questions concerning this license or the applicable additional terms
 void
 P_SetupLevel
 ( int		episode,
- int		map,
- int		playermask,
- skill_t	skill);
+  int		map,
+  int		playermask,
+  skill_t	skill);
 
 // Called by startup code.
 void P_Init (void);

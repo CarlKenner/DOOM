@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	Typedefs related to to textures etc.,
-//	isolated here to make it easier separating modules.
-//    
-//-----------------------------------------------------------------------------
-
+===========================================================================
+*/
 
 #ifndef __D_TEXTUR__
 #define __D_TEXTUR__
@@ -44,18 +40,13 @@ If you have questions concerning this license or the applicable additional terms
 // a pic is an unmasked block of pixels
 typedef struct
 {
-	byte		width;
-	byte		height;
-	byte		data;
+    byte		width;
+    byte		height;
+    byte		data;
 } pic_t;
 
 
 
 
 #endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
 
-===========================================================================
-*/

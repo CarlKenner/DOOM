@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	Items: key cards, artifacts, weapon, ammunition.
-
 ===========================================================================
 */
-
 
 #ifndef __D_ITEMS__
 #define __D_ITEMS__
@@ -43,16 +39,16 @@ If you have questions concerning this license or the applicable additional terms
 // Weapon info: sprite frames, ammunition use.
 typedef struct
 {
-	ammotype_t	ammo;
-	int		upstate;
-	int		downstate;
-	int		readystate;
-	int		atkstate;
-	int		flashstate;
+    ammotype_t	ammo;
+    int		upstate;
+    int		downstate;
+    int		readystate;
+    int		atkstate;
+    int		flashstate;
 
 } weaponinfo_t;
 
-extern  weaponinfo_t    weaponinfo[NUMWEAPONS];
+extern  const weaponinfo_t    weaponinfo[NUMWEAPONS];
 
 #endif
 

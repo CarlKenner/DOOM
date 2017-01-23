@@ -23,20 +23,11 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//  Sky rendering. The DOOM sky is a texture map like any
-//  wall, wrapping around. A 1024 columns equal 360 degrees.
-//  The default sky map is 256 columns and repeats 4 times
-//  on a 320 screen?
-//  
-
 ===========================================================================
 */
 
-static const char
-rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
+#include "Precompiled.h"
+#include "globaldata.h"
 
 
 // Needed for FRACUNIT.
@@ -54,9 +45,6 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 //
 // sky mapping
 //
-int			skyflatnum;
-int			skytexture;
-int			skytexturemid;
 
 
 
@@ -66,7 +54,8 @@ int			skytexturemid;
 //
 void R_InitSkyMap (void)
 {
-  // skyflatnum = R_FlatNumForName ( SKYFLATNAME );
-	skytexturemid = 100*FRACUNIT;
+  // ::g->skyflatnum = R_FlatNumForName ( SKYFLATNAME );
+    ::g->skytexturemid = 100*FRACUNIT;
 }
+
 

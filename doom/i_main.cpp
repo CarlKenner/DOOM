@@ -23,33 +23,9 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//	Main program, simply calls D_DoomMain high level loop.
-
 ===========================================================================
 */
 
-static const char
-rcsid[] = "$Id: i_main.c,v 1.4 1997/02/03 22:45:10 b1 Exp $";
+#include "Precompiled.h"
+#include "globaldata.h"
 
-
-
-#include "doomdef.h"
-
-#include "m_argv.h"
-#include "d_main.h"
-
-int
-main
-( int		argc,
- char**	argv ) 
-{ 
-	myargc = argc; 
-	myargv = argv; 
- 
-	D_DoomMain (); 
-
-	return 0;
-} 

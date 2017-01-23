@@ -23,11 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//
-//    
-//-----------------------------------------------------------------------------
-
+===========================================================================
+*/
 
 #ifndef __F_FINALE__
 #define __F_FINALE__
@@ -40,7 +37,7 @@ If you have questions concerning this license or the applicable additional terms
 //
 
 // Called by main loop.
-boolean F_Responder (event_t* ev);
+qboolean F_Responder (event_t* ev);
 
 // Called by main loop.
 void F_Ticker (void);
@@ -55,9 +52,4 @@ void F_StartFinale (void);
 
 
 #endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
 
-===========================================================================
-*/

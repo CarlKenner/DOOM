@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	System specific interface stuff.
-
 ===========================================================================
 */
-
 
 #ifndef __D_TICCMD__
 #define __D_TICCMD__
@@ -45,12 +41,12 @@ If you have questions concerning this license or the applicable additional terms
 // plus a checksum for internal state consistency.
 typedef struct
 {
-	char	forwardmove;	// *2048 for move
-	char	sidemove;	// *2048 for move
-	short	angleturn;	// <<16 for angle delta
-	short	consistancy;	// checks for net game
-	byte	chatchar;
-	byte	buttons;
+    char	forwardmove;	// *2048 for move
+    char	sidemove;	// *2048 for move
+    short	angleturn;	// <<16 for angle delta
+    short	consistancy;	// checks for net game
+    byte	buttons;
+	byte	nextPrevWeapon;
 } ticcmd_t;
 
 

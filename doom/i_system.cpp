@@ -23,15 +23,11 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-
 ===========================================================================
 */
 
-static const char
-rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
+#include "Precompiled.h"
+#include "globaldata.h"
 
 
 #include <stdlib.h>
@@ -39,8 +35,6 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #include <string.h>
 
 #include <stdarg.h>
-#include <sys/time.h>
-#include <unistd.h>
 
 #include "doomdef.h"
 #include "m_misc.h"
@@ -55,40 +49,22 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #endif
 #include "i_system.h"
 
+#include "Main.h"
+
+#if  1
 
 
 
-int	mb_used = 6;
-
-
-void
-I_Tactile
-( int	on,
- int	off,
- int	total )
-{
-  // UNUSED.
- on = off = total = 0;
-}
-
-ticcmd_t	emptycmd;
 ticcmd_t*	I_BaseTiccmd(void)
 {
-	return &emptycmd;
+    return &::g->emptycmd;
 }
 
 
 int  I_GetHeapSize (void)
 {
-	return mb_used*1024*1024;
+    return ::g->mb_used*1024*1024;
 }
-
-byte* I_ZoneBase (int*	size)
-{
-	*size = mb_used*1024*1024;
-	return (byte *) malloc (*size);
-}
-
 
 
 //
@@ -97,16 +73,12 @@ byte* I_ZoneBase (int*	size)
 //
 int  I_GetTime (void)
 {
-	struct timeval	tp;
-	struct timezone	tzp;
-	int			newtics;
-	static int		basetime=0;
- 
-	gettimeofday(&tp, &tzp);
-	if (!basetime)
-	basetime = tp.tv_sec;
-	newtics = (tp.tv_sec-basetime)*TICRATE + tp.tv_usec*TICRATE/1000000;
-	return newtics;
+	return ::g->current_time;
+}
+
+void I_SetTime( int time_in )
+{
+	::g->current_time = time_in;
 }
 
 
@@ -116,8 +88,8 @@ int  I_GetTime (void)
 //
 void I_Init (void)
 {
-	I_InitSound();
-	//  I_InitGraphics();
+    I_InitSound();
+    //  I_InitGraphics();
 }
 
 //
@@ -125,25 +97,21 @@ void I_Init (void)
 //
 void I_Quit (void)
 {
-	D_QuitNetGame ();
-	I_ShutdownSound();
-	I_ShutdownMusic();
-	M_SaveDefaults ();
-	I_ShutdownGraphics();
-	exit(0);
+    D_QuitNetGame ();
+    I_ShutdownSound();
+    I_ShutdownMusic();
+    M_SaveDefaults ();
+    I_ShutdownGraphics();
+//    exit(0);
+
+// Exceptions disabled by default on PS3
+//	throw;
 }
 
 void I_WaitVBL(int count)
 {
-#ifdef SGI
-	sginap(1);                                           
-#else
-#ifdef SUN
-	sleep(0);
-#else
-	usleep (count * (1000000/70) );                                
-#endif
-#endif
+	// PS3 fixme
+	//Sleep(0);
 }
 
 void I_BeginRead(void)
@@ -154,40 +122,68 @@ void I_EndRead(void)
 {
 }
 
-byte*	I_AllocLow(int length)
-{
-	byte*	mem;
-		
-	mem = (byte *)malloc (length);
-	memset (mem,0,length);
-	return mem;
-}
-
-
 //
 // I_Error
 //
-extern boolean demorecording;
-
-void I_Error (char *error, ...)
+extern bool debugOutput;
+void I_Printf(const char* msg, ...)
 {
-	va_list	argptr;
+	char pmsg[1024];
+    va_list	argptr;
 
-	// Message first.
-	va_start (argptr,error);
-	fprintf (stderr, "Error: ");
-	vfprintf (stderr,error,argptr);
-	fprintf (stderr, "\n");
-	va_end (argptr);
+    // Message first.
+	if( debugOutput ) {
+		va_start (argptr,msg);
+		vsprintf (pmsg, msg, argptr);
 
-	fflush( stderr );
+		safeOutputDebug(pmsg);
 
-	// Shutdown. Here might be other errors.
-	if (demorecording)
-	G_CheckDemoStatus();
-
-	D_QuitNetGame ();
-	I_ShutdownGraphics();
-	
-	exit(-1);
+		va_end (argptr);
+	}
 }
+
+
+void I_PrintfE(const char* msg, ...)
+{
+	char pmsg[1024];
+    va_list	argptr;
+
+    // Message first.
+	if( debugOutput ) {
+		va_start (argptr,msg);
+		vsprintf (pmsg, msg, argptr);
+
+		safeOutputDebug("ERROR: ");
+		safeOutputDebug(pmsg);
+
+	    va_end (argptr);
+	}
+}
+
+void I_Error(const char *error, ...)
+{
+	const int ERROR_MSG_SIZE = 1024;
+	char error_msg[ERROR_MSG_SIZE];
+    va_list	argptr;
+
+    // Message first.
+	if( debugOutput ) {
+		va_start (argptr,error);
+		idStr::vsnPrintf (error_msg, ERROR_MSG_SIZE, error, argptr);
+
+		safeOutputDebug("Error: ");
+		safeOutputDebug(error_msg);
+		safeOutputDebug("\n");
+
+		va_end (argptr);
+	}
+
+	// CRASH DUMP - enable this to get extra info on error from crash dumps
+	//*(int*)0x0 = 21;
+	DoomLib::Interface.QuitCurrentGame();
+	idLib::Printf( "DOOM Classic error: %s", error_msg );
+	common->SwitchToGame( DOOM3_BFG );
+}
+
+#endif
+

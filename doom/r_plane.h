@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	Refresh, visplane stuff (floor, ceilings).
-
 ===========================================================================
 */
-
 
 #ifndef __R_PLANE__
 #define __R_PLANE__
@@ -62,30 +58,30 @@ void R_ClearPlanes (void);
 void
 R_MapPlane
 ( int		y,
- int		x1,
- int		x2 );
+  int		x1,
+  int		x2 );
 
 void
 R_MakeSpans
 ( int		x,
- int		t1,
- int		b1,
- int		t2,
- int		b2 );
+  int		t1,
+  int		b1,
+  int		t2,
+  int		b2 );
 
 void R_DrawPlanes (void);
 
 visplane_t*
 R_FindPlane
 ( fixed_t	height,
- int		picnum,
- int		lightlevel );
+  int		picnum,
+  int		lightlevel );
 
 visplane_t*
 R_CheckPlane
 ( visplane_t*	pl,
- int		start,
- int		stop );
+  int		start,
+  int		stop );
 
 
 

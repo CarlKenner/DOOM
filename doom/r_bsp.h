@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	Refresh module, BSP traversal and handling.
-
 ===========================================================================
 */
-
 
 #ifndef __R_BSP__
 #define __R_BSP__
@@ -47,13 +43,13 @@ extern sector_t*	backsector;
 extern int		rw_x;
 extern int		rw_stopx;
 
-extern boolean		segtextured;
+extern qboolean		segtextured;
 
 // false if the back side is the same plane
-extern boolean		markfloor;		
-extern boolean		markceiling;
+extern qboolean		markfloor;		
+extern qboolean		markceiling;
 
-extern boolean		skymap;
+extern qboolean		skymap;
 
 extern drawseg_t	drawsegs[MAXDRAWSEGS];
 extern drawseg_t*	ds_p;

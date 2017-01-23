@@ -23,16 +23,11 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//    Nil.
-//    
-//-----------------------------------------------------------------------------
-
+===========================================================================
+*/
 
 #ifndef __M_BBOX__
 #define __M_BBOX__
-
-#include <values.h>
 
 #include "m_fixed.h"
 
@@ -40,10 +35,10 @@ If you have questions concerning this license or the applicable additional terms
 // Bounding box coordinate storage.
 enum
 {
-	BOXTOP,
-	BOXBOTTOM,
-	BOXLEFT,
-	BOXRIGHT
+    BOXTOP,
+    BOXBOTTOM,
+    BOXLEFT,
+    BOXRIGHT
 };	// bbox coordinates
 
 // Bounding box functions.
@@ -52,14 +47,9 @@ void M_ClearBox (fixed_t*	box);
 void
 M_AddToBox
 ( fixed_t*	box,
- fixed_t	x,
- fixed_t	y );
+  fixed_t	x,
+  fixed_t	y );
 
 
 #endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
 
-===========================================================================
-*/

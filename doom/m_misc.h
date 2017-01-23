@@ -23,11 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//
-//    
-//-----------------------------------------------------------------------------
-
+===========================================================================
+*/
 
 #ifndef __M_MISC__
 #define __M_MISC__
@@ -37,39 +34,33 @@ If you have questions concerning this license or the applicable additional terms
 //
 // MISC
 //
-
-
-
-boolean
+bool
 M_WriteFile
 ( char const*	name,
- void*		source,
- int		length );
+  void*		source,
+  int		length );
 
 int
-M_ReadFile
-( char const*	name,
- byte**	buffer );
+	M_ReadFile
+	( char const*	name,
+	byte**	buffer );
+
+qboolean M_WriteSaveGame( void* source, int length );
+int M_ReadSaveGame ( byte** buffer );
 
 void M_ScreenShot (void);
 
 void M_LoadDefaults (void);
-
 void M_SaveDefaults (void);
 
 
 int
 M_DrawText
 ( int		x,
- int		y,
- boolean	direct,
- char*		string );
+  int		y,
+  qboolean	direct,
+  char*		string );
 
 
 #endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
 
-===========================================================================
-*/

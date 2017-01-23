@@ -23,30 +23,12 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//	Lookup tables.
-//	Do not try to look them up :-).
-//	In the order of appearance: 
-//
-//	int finetangent[4096]	- Tangens LUT.
-//	Should work with BAM fairly well (12 of 16bit,
-//      effectively, by shifting).
-//
-//	int finesine[10240]		- Sine lookup.
-//	Guess what, serves as cosine, too.
-//	Remarkable thing is, how to use BAMs with this? 
-//
-//	int tantoangle[2049]	- ArcTan LUT,
-//		maps tan(angle) to angle fast. Gotta search.
-
 ===========================================================================
 */
 
+#include "Precompiled.h"
+#include "globaldata.h"
 
-static const char
-rcsid[] = "$Id: tables.c,v 1.4 1997/02/03 16:47:57 b1 Exp $";
 
 
 #include "tables.h"
@@ -72,7 +54,7 @@ SlopeDiv
 
 
 
-int finetangent[4096] =
+const int finetangent[4096] =
 {
     -170910304,-56965752,-34178904,-24413316,-18988036,-15535599,-13145455,-11392683,
     -10052327,-8994149,-8137527,-7429880,-6835455,-6329090,-5892567,-5512368,
@@ -589,7 +571,7 @@ int finetangent[4096] =
 };
 
 
-int finesine[10240] =
+const int finesine[10240] =
 {
     25,75,125,175,226,276,326,376,
     427,477,527,578,628,678,728,779,
@@ -1875,7 +1857,7 @@ int finesine[10240] =
 
 
 
-angle_t tantoangle[2049] =
+const angle_t tantoangle[2049] =
 {
     0,333772,667544,1001315,1335086,1668857,2002626,2336395,
     2670163,3003929,3337694,3671457,4005219,4338979,4672736,5006492,

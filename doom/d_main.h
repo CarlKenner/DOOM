@@ -23,14 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//	System specific interface stuff.
-
 ===========================================================================
 */
-
 
 #ifndef __D_MAIN__
 #define __D_MAIN__
@@ -41,12 +35,13 @@ If you have questions concerning this license or the applicable additional terms
 #pragma interface
 #endif
 
-
+extern const char*		extraWad;
 
 #define MAXWADFILES             20
-extern char*		wadfiles[MAXWADFILES];
+extern const char*		wadfiles[MAXWADFILES];
 
-void D_AddFile (char *file);
+void D_AddExtraWadFile( const char *file );
+void D_AddFile ( const char *file);
 
 
 
@@ -70,5 +65,11 @@ void D_PageTicker (void);
 void D_PageDrawer (void);
 void D_AdvanceDemo (void);
 void D_StartTitle (void);
+
+#define R_OK	0x01
+#define X_OK	0x02
+#define W_OK	0x04
+int access(char* name, int val);
+
 
 #endif

@@ -23,17 +23,11 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-//
-// $Log:$
-//
-// DESCRIPTION:
-//	Switches, buttons. Two-state animation. Exits.
-
 ===========================================================================
 */
 
-static const char
-rcsid[] = "$Id: p_switch.c,v 1.3 1997/01/28 22:08:29 b1 Exp $";
+#include "Precompiled.h"
+#include "globaldata.h"
 
 
 #include "i_system.h"
@@ -55,7 +49,7 @@ rcsid[] = "$Id: p_switch.c,v 1.3 1997/01/28 22:08:29 b1 Exp $";
 //
 // CHANGE THE TEXTURE OF A WALL SWITCH TO ITS OPPOSITE
 //
-switchlist_t alphSwitchList[] =
+const switchlist_t alphSwitchList[] =
 {
     // Doom shareware episode 1 switches
     {"SW1BRCOM",	"SW2BRCOM",	1},
@@ -106,9 +100,6 @@ switchlist_t alphSwitchList[] =
     {"\0",		"\0",		0}
 };
 
-int		switchlist[MAXSWITCHES * 2];
-int		numswitches;
-button_t        buttonlist[MAXBUTTONS];
 
 //
 // P_InitSwitchList
@@ -122,17 +113,17 @@ void P_InitSwitchList(void)
 	
     episode = 1;
 
-	if (gamemode == registered)
+	if (::g->gamemode == registered || ::g->gamemode == retail)
 		episode = 2;
-    else if ( gamemode == commercial )
+    else if ( ::g->gamemode == commercial )
 	    episode = 3;
 		
     for (index = 0,i = 0;i < MAXSWITCHES;i++)
     {
 		if (!alphSwitchList[i].episode)
 		{
-			numswitches = index/2;
-			switchlist[index] = -1;
+			::g->numswitches = index/2;
+			::g->switchlist[index] = -1;
 			break;
 		}
 		
@@ -150,8 +141,8 @@ void P_InitSwitchList(void)
 		    
 			value = R_TextureNumForName(alphSwitchList[i].name1);
 	#endif
-			switchlist[index++] = R_TextureNumForName(alphSwitchList[i].name1);
-			switchlist[index++] = R_TextureNumForName(alphSwitchList[i].name2);
+			::g->switchlist[index++] = R_TextureNumForName(alphSwitchList[i].name1);
+			::g->switchlist[index++] = R_TextureNumForName(alphSwitchList[i].name2);
 		}
     }
 }
@@ -172,8 +163,8 @@ P_StartButton
     // See if button is already pressed
     for (i = 0;i < MAXBUTTONS;i++)
     {
-	if (buttonlist[i].btimer
-	    && buttonlist[i].line == line)
+	if (::g->buttonlist[i].btimer
+	    && ::g->buttonlist[i].line == line)
 	{
 	    
 	    return;
@@ -184,13 +175,13 @@ P_StartButton
     
     for (i = 0;i < MAXBUTTONS;i++)
     {
-	if (!buttonlist[i].btimer)
+	if (!::g->buttonlist[i].btimer)
 	{
-	    buttonlist[i].line = line;
-	    buttonlist[i].where = w;
-	    buttonlist[i].btexture = texture;
-	    buttonlist[i].btimer = time;
-	    buttonlist[i].soundorg = (mobj_t *)&line->frontsector->soundorg;
+	    ::g->buttonlist[i].line = line;
+	    ::g->buttonlist[i].where = w;
+	    ::g->buttonlist[i].btexture = texture;
+	    ::g->buttonlist[i].btimer = time;
+	    ::g->buttonlist[i].degensoundorg = &line->frontsector->soundorg;
 	    return;
 	}
     }
@@ -220,9 +211,9 @@ P_ChangeSwitchTexture
     if (!useAgain)
 	line->special = 0;
 
-    texTop = sides[line->sidenum[0]].toptexture;
-    texMid = sides[line->sidenum[0]].midtexture;
-    texBot = sides[line->sidenum[0]].bottomtexture;
+    texTop = ::g->sides[line->sidenum[0]].toptexture;
+    texMid = ::g->sides[line->sidenum[0]].midtexture;
+    texBot = ::g->sides[line->sidenum[0]].bottomtexture;
 	
     sound = sfx_swtchn;
 
@@ -230,39 +221,39 @@ P_ChangeSwitchTexture
     if (line->special == 11)                
 	sound = sfx_swtchx;
 	
-    for (i = 0;i < numswitches*2;i++)
+    for (i = 0;i < ::g->numswitches*2;i++)
     {
-	if (switchlist[i] == texTop)
+	if (::g->switchlist[i] == texTop)
 	{
-	    S_StartSound(buttonlist->soundorg,sound);
-	    sides[line->sidenum[0]].toptexture = switchlist[i^1];
+	    S_StartSound(::g->buttonlist->soundorg,sound);
+	    ::g->sides[line->sidenum[0]].toptexture = ::g->switchlist[i^1];
 
 	    if (useAgain)
-		P_StartButton(line,top,switchlist[i],BUTTONTIME);
+		P_StartButton(line,top,::g->switchlist[i],BUTTONTIME);
 
 	    return;
 	}
 	else
 	{
-	    if (switchlist[i] == texMid)
+	    if (::g->switchlist[i] == texMid)
 	    {
-		S_StartSound(buttonlist->soundorg,sound);
-		sides[line->sidenum[0]].midtexture = switchlist[i^1];
+		S_StartSound(::g->buttonlist->soundorg,sound);
+		::g->sides[line->sidenum[0]].midtexture = ::g->switchlist[i^1];
 
 		if (useAgain)
-		    P_StartButton(line, middle,switchlist[i],BUTTONTIME);
+		    P_StartButton(line, middle,::g->switchlist[i],BUTTONTIME);
 
 		return;
 	    }
 	    else
 	    {
-		if (switchlist[i] == texBot)
+		if (::g->switchlist[i] == texBot)
 		{
-		    S_StartSound(buttonlist->soundorg,sound);
-		    sides[line->sidenum[0]].bottomtexture = switchlist[i^1];
+		    S_StartSound(::g->buttonlist->soundorg,sound);
+		    ::g->sides[line->sidenum[0]].bottomtexture = ::g->switchlist[i^1];
 
 		    if (useAgain)
-			P_StartButton(line, bottom,switchlist[i],BUTTONTIME);
+			P_StartButton(line, bottom,::g->switchlist[i],BUTTONTIME);
 
 		    return;
 		}
@@ -279,9 +270,9 @@ P_ChangeSwitchTexture
 //
 // P_UseSpecialLine
 // Called when a thing uses a special line.
-// Only the front sides of ::g->lines are usable.
+// Only the front ::g->sides of ::g->lines are usable.
 //
-boolean
+qboolean
 P_UseSpecialLine
 ( mobj_t*	thing,
   line_t*	line,
@@ -289,7 +280,7 @@ P_UseSpecialLine
 {               
 
     // Err...
-    // Use the back sides of VERY SPECIAL lines...
+    // Use the back ::g->sides of VERY SPECIAL ::g->lines...
     if (side)
     {
 	switch(line->special)
@@ -367,8 +358,11 @@ P_UseSpecialLine
 	
       case 11:
 	// Exit level
+	// DHM - Nerve :: Not in deathmatch, stay in level until timelimit or fraglimit
+	if ( !::g->deathmatch && ::g->gameaction != ga_completed ) {
 		P_ChangeSwitchTexture(line,0);
 		G_ExitLevel ();
+	}
 	break;
 	
       case 14:
@@ -433,14 +427,16 @@ P_UseSpecialLine
 	
       case 50:
 	// Close Door
-	if (EV_DoDoor(line,close))
+	if (EV_DoDoor(line,closed))
 	    P_ChangeSwitchTexture(line,0);
 	break;
 	
       case 51:
 	// Secret EXIT
+	if ( !::g->deathmatch && ::g->gameaction != ga_completed ) {
 		P_ChangeSwitchTexture(line,0);
 		G_SecretExitLevel ();
+	}
 	break;
 	
       case 55:
@@ -463,7 +459,7 @@ P_UseSpecialLine
 	
       case 103:
 	// Open Door
-	if (EV_DoDoor(line,open))
+	if (EV_DoDoor(line,opened))
 	    P_ChangeSwitchTexture(line,0);
 	break;
 	
@@ -522,7 +518,7 @@ P_UseSpecialLine
 	// BUTTONS
       case 42:
 	// Close Door
-	if (EV_DoDoor(line,close))
+	if (EV_DoDoor(line,closed))
 	    P_ChangeSwitchTexture(line,1);
 	break;
 	
@@ -546,7 +542,7 @@ P_UseSpecialLine
 	
       case 61:
 	// Open Door
-	if (EV_DoDoor(line,open))
+	if (EV_DoDoor(line,opened))
 	    P_ChangeSwitchTexture(line,1);
 	break;
 	

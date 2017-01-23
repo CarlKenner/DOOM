@@ -23,20 +23,12 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//	Implements special effects:
-//	Texture animation, height or lighting changes
-//	according to adjacent sectors, respective
-//	utility functions, etc.
-//	Line Tag handling. Line and Sector triggers.
-
 ===========================================================================
 */
 
-static const char
-rcsid[] = "$Id: p_spec.c,v 1.6 1997/02/03 22:45:12 b1 Exp $";
+#include "Precompiled.h"
+#include "globaldata.h"
+#include "Main.h"
 
 #include <stdlib.h>
 
@@ -62,38 +54,21 @@ rcsid[] = "$Id: p_spec.c,v 1.6 1997/02/03 22:45:12 b1 Exp $";
 // Data.
 #include "sounds.h"
 
+#include "../../neo/d3xp/Game_local.h"
 
 //
 // Animating textures and planes
-// There is another anim_t used in wi_stuff, unrelated.
+// There is another anim_t used in wi_stuff, unrelated. BLAH!
+// we now use anim_t2
 //
-typedef struct
-{
-	boolean	istexture;
-	int		picnum;
-	int		basepic;
-	int		numpics;
-	int		speed;
-	
-} anim_t;
 
 //
 //      source animation definition
 //
-typedef struct
-{
-	boolean	istexture;	// if false, it is a flat
-	char	endname[9];
-	char	startname[9];
-	int		speed;
-} animdef_t;
 
 
 
-#define MAXANIMS                32
 
-extern anim_t	anims[MAXANIMS];
-extern anim_t*	lastanim;
 
 //
 // P_InitPicAnims
@@ -108,7 +83,7 @@ extern anim_t*	lastanim;
 //  and end entry, in the order found in
 //  the WAD file.
 //
-animdef_t		animdefs[] =
+const animdef_t		animdefs[] =
 {
 	{false,	"NUKAGE3",	"NUKAGE1",	8},
 	{false,	"FWATER4",	"FWATER1",	8},
@@ -141,17 +116,12 @@ animdef_t		animdefs[] =
 	{-1}
 };
 
-anim_t		anims[MAXANIMS];
-anim_t*		lastanim;
 
 
 //
 //      Animating line specials
 //
-#define MAXLINEANIMS            64
 
-extern  short	numlinespecials;
-extern  line_t*	linespeciallist[MAXLINEANIMS];
 
 
 
@@ -161,8 +131,8 @@ void P_InitPicAnims (void)
 
 
 	//	Init animation
-	lastanim = anims;
-	for (i=0 ; animdefs[i].istexture != -1 ; i++)
+	::g->lastanim = ::g->anims;
+	for (i=0 ; animdefs[i].istexture != (qboolean)-1 ; i++)
 	{
 		if (animdefs[i].istexture)
 		{
@@ -170,28 +140,28 @@ void P_InitPicAnims (void)
 			if (R_CheckTextureNumForName(animdefs[i].startname) == -1)
 				continue;	
 
-			lastanim->picnum = R_TextureNumForName (animdefs[i].endname);
-			lastanim->basepic = R_TextureNumForName (animdefs[i].startname);
+			::g->lastanim->picnum = R_TextureNumForName (animdefs[i].endname);
+			::g->lastanim->basepic = R_TextureNumForName (animdefs[i].startname);
 		}
 		else
 		{
 			if (W_CheckNumForName(animdefs[i].startname) == -1)
 				continue;
 
-			lastanim->picnum = R_FlatNumForName (animdefs[i].endname);
-			lastanim->basepic = R_FlatNumForName (animdefs[i].startname);
+			::g->lastanim->picnum = R_FlatNumForName (animdefs[i].endname);
+			::g->lastanim->basepic = R_FlatNumForName (animdefs[i].startname);
 		}
 
-		lastanim->istexture = animdefs[i].istexture;
-		lastanim->numpics = lastanim->picnum - lastanim->basepic + 1;
+		::g->lastanim->istexture = animdefs[i].istexture;
+		::g->lastanim->numpics = ::g->lastanim->picnum - ::g->lastanim->basepic + 1;
 
-		if (lastanim->numpics < 2)
+		if (::g->lastanim->numpics < 2)
 			I_Error ("P_InitPicAnims: bad cycle from %s to %s",
 			animdefs[i].startname,
 			animdefs[i].endname);
 
-		lastanim->speed = animdefs[i].speed;
-		lastanim++;
+		::g->lastanim->speed = animdefs[i].speed;
+		::g->lastanim++;
 	}
 
 }
@@ -216,7 +186,7 @@ getSide
  int		line,
  int		side )
 {
-	return &sides[ (sectors[currentSector].lines[line])->sidenum[side] ];
+	return &::g->sides[ (::g->sectors[currentSector].lines[line])->sidenum[side] ];
 }
 
 
@@ -232,7 +202,7 @@ getSector
  int		line,
  int		side )
 {
-	return sides[ (sectors[currentSector].lines[line])->sidenum[side] ].sector;
+	return ::g->sides[ (::g->sectors[currentSector].lines[line])->sidenum[side] ].sector;
 }
 
 
@@ -246,7 +216,7 @@ twoSided
 ( int	sector,
  int	line )
 {
-	return (sectors[sector].lines[line])->flags & ML_TWOSIDED;
+	return (::g->sectors[sector].lines[line])->flags & ML_TWOSIDED;
 }
 
 
@@ -332,8 +302,7 @@ fixed_t	P_FindHighestFloorSurrounding(sector_t *sec)
 // FIND NEXT HIGHEST FLOOR IN SURROUNDING SECTORS
 // Note: this should be doable w/o a fixed array.
 
-// 20 adjoining sectors max!
-#define MAX_ADJOINING_SECTORS    	20
+// 20 adjoining ::g->sectors max!
 
 fixed_t
 P_FindNextHighestFloor
@@ -364,7 +333,7 @@ P_FindNextHighestFloor
 		// Check for overflow. Exit.
 		if ( h >= MAX_ADJOINING_SECTORS )
 		{
-			fprintf( stderr, "Sector with more than 20 adjoining sectors\n" );
+			I_PrintfE("Sector with more than 20 adjoining sectors\n" );
 			break;
 		}
 	}
@@ -446,8 +415,8 @@ P_FindSectorFromLineTag
 {
 	int	i;
 
-	for (i = start+1; i < numsectors; i++)
-		if (sectors[i].tag == line->tag)
+	for (i = start+1; i < ::g->numsectors; i++)
+		if (::g->sectors[i].tag == line->tag)
 			return i;
 
 	return -1;
@@ -489,7 +458,7 @@ P_FindMinSurroundingLight
 //
 // EVENTS
 // Events are operations triggered by using, crossing,
-// or shooting special lines, or by timed thinkers.
+// or shooting special ::g->lines, or by timed thinkers.
 //
 
 //
@@ -506,7 +475,7 @@ P_CrossSpecialLine
 	line_t*	line;
 	int		ok;
 
-	line = &lines[linenum];
+	line = &::g->lines[linenum];
 
 	//	Triggers that other things can activate
 	if (!thing->player)
@@ -539,6 +508,9 @@ P_CrossSpecialLine
 			ok = 1;
 			break;
 		}
+		if (!ok)
+			return;
+	}
 
 
 	// Note: could use some const's here.
@@ -548,13 +520,13 @@ P_CrossSpecialLine
 		// All from here to RETRIGGERS.
 	case 2:
 		// Open Door
-		EV_DoDoor(line,open);
+		EV_DoDoor(line,opened);
 		line->special = 0;
 		break;
 
 	case 3:
 		// Close Door
-		EV_DoDoor(line,close);
+		EV_DoDoor(line,closed);
 		line->special = 0;
 		break;
 
@@ -682,7 +654,10 @@ P_CrossSpecialLine
 
 	case 52:
 		// EXIT!
-		G_ExitLevel ();
+		// DHM - Nerve :: Don't exit level in death match, timelimit and fraglimit only
+		if ( !::g->deathmatch && ::g->gameaction != ga_completed ) {
+			G_ExitLevel();
+		}
 		break;
 
 	case 53:
@@ -765,9 +740,11 @@ P_CrossSpecialLine
 
 	case 124:
 		// Secret EXIT
-		G_SecretExitLevel ();
+		if ( !::g->deathmatch && ::g->gameaction != ga_completed ) {
+			G_SecretExitLevel ();
+		}
 		break;
-	
+
 	case 125:
 		// TELEPORT MonsterONLY
 		if (!thing->player)
@@ -789,7 +766,7 @@ P_CrossSpecialLine
 		line->special = 0;
 		break;
 
-	// RETRIGGERS.  All from here till end.
+		// RETRIGGERS.  All from here till end.
 	case 72:
 		// Ceiling Crush
 		EV_DoCeiling( line, lowerAndCrush );
@@ -807,7 +784,7 @@ P_CrossSpecialLine
 
 	case 75:
 		// Close Door
-		EV_DoDoor(line,close);
+		EV_DoDoor(line,closed);
 		break;
 
 	case 76:
@@ -852,7 +829,7 @@ P_CrossSpecialLine
 
 	case 86:
 		// Open Door
-		EV_DoDoor(line,open);
+		EV_DoDoor(line,opened);
 		break;
 
 	case 87:
@@ -869,7 +846,7 @@ P_CrossSpecialLine
 		// Platform Stop
 		EV_StopPlat(line);
 		break;
-	
+
 	case 90:
 		// Raise Door
 		EV_DoDoor(line,normal);
@@ -978,9 +955,9 @@ P_ShootSpecialLine
 			// OPEN DOOR IMPACT
 			ok = 1;
 			break;
-	}
-	if (!ok)
-		return;
+		}
+		if (!ok)
+			return;
 	}
 
 	switch(line->special)
@@ -993,7 +970,7 @@ P_ShootSpecialLine
 
 	case 46:
 		// OPEN DOOR
-		EV_DoDoor(line,open);
+		EV_DoDoor(line,opened);
 		P_ChangeSwitchTexture(line,1);
 		break;
 
@@ -1028,14 +1005,14 @@ void P_PlayerInSpecialSector (player_t* player)
 	case 5:
 		// HELLSLIME DAMAGE
 		if (!player->powers[pw_ironfeet])
-			if (!(leveltime&0x1f))
+			if (!(::g->leveltime&0x1f))
 				P_DamageMobj (player->mo, NULL, NULL, 10);
 		break;
 
 	case 7:
 		// NUKAGE DAMAGE
 		if (!player->powers[pw_ironfeet])
-			if (!(leveltime&0x1f))
+			if (!(::g->leveltime&0x1f))
 				P_DamageMobj (player->mo, NULL, NULL, 5);
 		break;
 
@@ -1046,23 +1023,53 @@ void P_PlayerInSpecialSector (player_t* player)
 		if (!player->powers[pw_ironfeet]
 		|| (P_Random()<5) )
 		{
-		if (!(leveltime&0x1f))
-			P_DamageMobj (player->mo, NULL, NULL, 20);
-	}
-	break;
-			
-		case 9:
-	// SECRET SECTOR
-	player->secretcount++;
-	sector->special = 0;
-	break;
-			
-		case 11:
-	// EXIT SUPER DAMAGE! (for E1M8 finale)
-	player->cheats &= ~CF_GODMODE;
+			if (!(::g->leveltime&0x1f))
+				P_DamageMobj (player->mo, NULL, NULL, 20);
+		}
+		break;
 
-	if (!(leveltime&0x1f))
-		P_DamageMobj (player->mo, NULL, NULL, 20);
+	case 9:
+		// SECRET SECTOR
+		player->secretcount++;
+		sector->special = 0;
+
+
+		if ( !::g->demoplayback && ( ::g->usergame && !::g->netgame ) ) {
+			// DHM - Nerve :: Let's give achievements in real time in Doom 2
+			if ( !common->IsMultiplayer() ) {
+				switch( DoomLib::GetGameSKU() ) {
+					case GAME_SKU_DOOM1_BFG: {
+						// Removing trophies for DOOM and DOOM II BFG due to point limit.
+						//gameLocal->UnlockAchievement( Doom1BFG_Trophies::SCOUT_FIND_ANY_SECRET );
+						break;
+					}
+					case GAME_SKU_DOOM2_BFG: {
+						//gameLocal->UnlockAchievement( Doom2BFG_Trophies::IMPORTANT_LOOKING_DOOR_FIND_ANY_SECRET );
+						idAchievementManager::LocalUser_CompleteAchievement(ACHIEVEMENT_DOOM2_IMPORTANT_LOOKING_DOOR_FIND_ANY_SECRET );
+						break;
+					}
+					case GAME_SKU_DCC: {
+						// Not on PC.
+						//gameLocal->UnlockAchievement( DOOM_ACHIEVEMENT_FIND_SECRET );
+						break;
+					}
+					default: {
+						// No unlocks for other SKUs.
+						break;
+					}
+				}
+			}
+		}
+
+
+		break;
+
+	case 11:
+		// EXIT SUPER DAMAGE! (for E1M8 finale)
+		player->cheats &= ~CF_GODMODE;
+
+		if (!(::g->leveltime&0x1f))
+			P_DamageMobj (player->mo, NULL, NULL, 20);
 
 		if (player->health <= 10)
 			G_ExitLevel();
@@ -1083,48 +1090,76 @@ void P_PlayerInSpecialSector (player_t* player)
 // P_UpdateSpecials
 // Animate planes, scroll walls, etc.
 //
-boolean		levelTimer;
-int		levelTimeCount;
+int PlayerFrags( int playernum ) {
+	int	frags = 0;
+
+	for( int i=0 ; i<MAXPLAYERS ; i++) {
+		if ( i != playernum ) {
+			frags += ::g->players[playernum].frags[i];
+		}
+	}
+
+	frags -= ::g->players[playernum].frags[playernum];
+
+	return frags;
+}
 
 void P_UpdateSpecials (void)
 {
-	anim_t*	anim;
+	anim_t2*	anim;
 	int		pic;
 	int		i;
 	line_t*	line;
 
 
 	//	LEVEL TIMER
-	if (levelTimer == true)
+	if (::g->levelTimer == true)
 	{
-		levelTimeCount--;
-		if (!levelTimeCount)
+		::g->levelTimeCount--;
+		if (!::g->levelTimeCount)
 			G_ExitLevel();
 	}
 
+	// DHM - Nerve :: FRAG COUNT
+	if ( ::g->deathmatch && ::g->levelFragCount > 0 ) {
+		bool fragCountHit = false;
+
+		for ( int i=0; i<MAXPLAYERS; i++ ) {
+			if ( ::g->playeringame[i] ) {
+				if ( PlayerFrags(i) >= ::g->levelFragCount ) {
+					fragCountHit = true;
+				}
+			}
+		}
+
+		if ( fragCountHit ) {
+			G_ExitLevel();
+		}
+	}
+
 	//	ANIMATE FLATS AND TEXTURES GLOBALLY
-	for (anim = anims ; anim < lastanim ; anim++)
+	for (anim = ::g->anims ; anim < ::g->lastanim ; anim++)
 	{
 		for (i=anim->basepic ; i<anim->basepic+anim->numpics ; i++)
 		{
-			pic = anim->basepic + ( (leveltime/anim->speed + i)%anim->numpics );
+			pic = anim->basepic + ( (::g->leveltime/anim->speed + i)%anim->numpics );
 			if (anim->istexture)
-				texturetranslation[i] = pic;
+				::g->texturetranslation[i] = pic;
 			else
-				flattranslation[i] = pic;
+				::g->flattranslation[i] = pic;
 		}
 	}
 
 
 	//	ANIMATE LINE SPECIALS
-	for (i = 0; i < numlinespecials; i++)
+	for (i = 0; i < ::g->numlinespecials; i++)
 	{
-		line = linespeciallist[i];
+		line = ::g->linespeciallist[i];
 		switch(line->special)
 		{
 		case 48:
 			// EFFECT FIRSTCOL SCROLL +
-			sides[line->sidenum[0]].textureoffset += FRACUNIT;
+			::g->sides[line->sidenum[0]].textureoffset += FRACUNIT;
 			break;
 		}
 	}
@@ -1132,30 +1167,30 @@ void P_UpdateSpecials (void)
 
 	//	DO BUTTONS
 	for (i = 0; i < MAXBUTTONS; i++)
-		if (buttonlist[i].btimer)
+		if (::g->buttonlist[i].btimer)
 		{
-			buttonlist[i].btimer--;
-			if (!buttonlist[i].btimer)
+			::g->buttonlist[i].btimer--;
+			if (!::g->buttonlist[i].btimer)
 			{
-				switch(buttonlist[i].where)
+				switch(::g->buttonlist[i].where)
 				{
 				case top:
-					sides[buttonlist[i].line->sidenum[0]].toptexture =
-						buttonlist[i].btexture;
+					::g->sides[::g->buttonlist[i].line->sidenum[0]].toptexture =
+						::g->buttonlist[i].btexture;
 					break;
 
 				case middle:
-					sides[buttonlist[i].line->sidenum[0]].midtexture =
-						buttonlist[i].btexture;
+					::g->sides[::g->buttonlist[i].line->sidenum[0]].midtexture =
+						::g->buttonlist[i].btexture;
 					break;
 
 				case bottom:
-					sides[buttonlist[i].line->sidenum[0]].bottomtexture =
-						buttonlist[i].btexture;
+					::g->sides[::g->buttonlist[i].line->sidenum[0]].bottomtexture =
+						::g->buttonlist[i].btexture;
 					break;
 				}
-				S_StartSound((mobj_t *)&buttonlist[i].soundorg,sfx_swtchn);
-				memset(&buttonlist[i],0,sizeof(button_t));
+				S_StartSound((mobj_t *)&::g->buttonlist[i].soundorg,sfx_swtchn);
+				memset(&::g->buttonlist[i],0,sizeof(button_t));
 			}
 		}
 
@@ -1180,7 +1215,7 @@ int EV_DoDonut(line_t*	line)
 	rtn = 0;
 	while ((secnum = P_FindSectorFromLineTag(line,secnum)) >= 0)
 	{
-		s1 = &sectors[secnum];
+		s1 = &::g->sectors[secnum];
 
 		// ALREADY MOVING?  IF SO, KEEP GOING...
 		if (s1->specialdata)
@@ -1190,13 +1225,13 @@ int EV_DoDonut(line_t*	line)
 		s2 = getNextSector(s1->lines[0],s1);
 		for (i = 0;i < s2->linecount;i++)
 		{
-			if ((!s2->lines[i]->flags & ML_TWOSIDED) ||
+			if ((!(s2->lines[i]->flags & ML_TWOSIDED)) ||
 				(s2->lines[i]->backsector == s1))
 				continue;
 			s3 = s2->lines[i]->backsector;
 
 			//	Spawn rising slime
-			floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+			floor = (floormove_t*)DoomLib::Z_Malloc (sizeof(*floor), PU_LEVEL, 0);
 			P_AddThinker (&floor->thinker);
 			s2->specialdata = floor;
 			floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -1210,7 +1245,7 @@ int EV_DoDonut(line_t*	line)
 			floor->floordestheight = s3->floorheight;
 
 			//	Spawn lowering donut-hole
-			floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+			floor = (floormove_t*)DoomLib::Z_Malloc (sizeof(*floor), PU_LEVEL, 0);
 			P_AddThinker (&floor->thinker);
 			s1->specialdata = floor;
 			floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -1237,8 +1272,6 @@ int EV_DoDonut(line_t*	line)
 // After the map has been loaded, scan for specials
 //  that spawn thinkers
 //
-short		numlinespecials;
-line_t*		linespeciallist[MAXLINEANIMS];
 
 
 // Parses command line parameters.
@@ -1254,27 +1287,49 @@ void P_SpawnSpecials (void)
 
 
 	// See if -TIMER needs to be used.
-	levelTimer = false;
+	::g->levelTimer = false;
 
 	i = M_CheckParm("-avg");
-	if (i && deathmatch)
+	if (i && ::g->deathmatch)
 	{
-		levelTimer = true;
-		levelTimeCount = 20 * 60 * 35;
+		::g->levelTimer = true;
+		::g->levelTimeCount = 20 * 60 * TICRATE;
 	}
 
-	i = M_CheckParm("-timer");
-	if (i && deathmatch)
+	//i = M_CheckParm("-timer");
+	//if (i && ::g->deathmatch)
+#ifdef ID_ENABLE_DOOM_CLASSIC_NETWORKING
+	const int timeLimit = session->GetActingGameStateLobbyBase().GetMatchParms().gameTimeLimit;
+#else
+	const int timeLimit = 0;
+#endif
+	if (timeLimit != 0 && g->deathmatch)
 	{
 		int	time;
-	time = atoi(myargv[i+1]) * 60 * 35;
-	levelTimer = true;
-	levelTimeCount = time;
+		//time = atoi(::g->myargv[i+1]) * 60 * 35;
+		time = timeLimit * 60 * TICRATE;
+		::g->levelTimer = true;
+		::g->levelTimeCount = time;
 	}
-	
+
+	//i = M_CheckParm("-fraglimit");
+	//if (i && ::g->deathmatch)
+#ifdef ID_ENABLE_DOOM_CLASSIC_NETWORKING
+	const int fragLimit = gameLocal->GetMatchParms().GetScoreLimit();
+#else
+	const int fragLimit = 0;
+#endif
+	if (fragLimit != 0 && ::g->deathmatch)
+	{
+		//::g->levelFragCount = atoi(::g->myargv[i+1]);
+		::g->levelFragCount = fragLimit;
+	} else {
+		::g->levelFragCount = 0;
+	}
+
 	//	Init special SECTORs.
-	sector = sectors;
-	for (i=0 ; i < numsectors ; i++, sector++)
+	sector = ::g->sectors;
+	for (i=0 ; i < ::g->numsectors ; i++, sector++)
 	{
 		if (!sector->special)
 			continue;
@@ -1308,7 +1363,7 @@ void P_SpawnSpecials (void)
 			break;
 		case 9:
 			// SECRET SECTOR
-			totalsecret++;
+			::g->totalsecret++;
 			break;
 
 		case 10:
@@ -1339,15 +1394,15 @@ void P_SpawnSpecials (void)
 
 
 	//	Init line EFFECTs
-	numlinespecials = 0;
-	for (i = 0;i < numlines; i++)
+	::g->numlinespecials = 0;
+	for (i = 0;i < ::g->numlines; i++)
 	{
-		switch(lines[i].special)
+		switch(::g->lines[i].special)
 		{
 		case 48:
 			// EFFECT FIRSTCOL SCROLL+
-			linespeciallist[numlinespecials] = &lines[i];
-			numlinespecials++;
+			::g->linespeciallist[::g->numlinespecials] = &::g->lines[i];
+			::g->numlinespecials++;
 			break;
 		}
 	}
@@ -1355,13 +1410,13 @@ void P_SpawnSpecials (void)
 
 	//	Init other misc stuff
 	for (i = 0;i < MAXCEILINGS;i++)
-		activeceilings[i] = NULL;
+		::g->activeceilings[i] = NULL;
 
 	for (i = 0;i < MAXPLATS;i++)
-		activeplats[i] = NULL;
+		::g->activeplats[i] = NULL;
 
 	for (i = 0;i < MAXBUTTONS;i++)
-		memset(&buttonlist[i],0,sizeof(button_t));
+		memset(&::g->buttonlist[i],0,sizeof(button_t));
 
 	// UNUSED: no horizonal sliders.
 	//	P_InitSlidingDoorFrames();

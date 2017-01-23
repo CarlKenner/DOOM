@@ -23,18 +23,12 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//	Rendering main loop and setup functions,
-//	utility functions (BSP, geometry, trigonometry).
-//	See tables.c, too.
-
 ===========================================================================
 */
 
+#include "Precompiled.h"
+#include "globaldata.h"
 
-static const char rcsid[] = "$Id: r_main.c,v 1.5 1997/02/03 22:45:12 b1 Exp $";
 
 
 #include <stdlib.h>
@@ -48,67 +42,43 @@ static const char rcsid[] = "$Id: r_main.c,v 1.5 1997/02/03 22:45:12 b1 Exp $";
 
 #include "r_local.h"
 #include "r_sky.h"
+#include "i_system.h"
 
 
 
 
 // Fineangles in the SCREENWIDTH wide window.
-#define FIELDOFVIEW		2048	
 
 
 
-int			viewangleoffset;
 
 // increment every time a check is made
-int			validcount = 1;		
 
 
-lighttable_t*		fixedcolormap;
-extern lighttable_t**	walllights;
 
-int			centerx;
-int			centery;
 
-fixed_t			centerxfrac;
-fixed_t			centeryfrac;
-fixed_t			projection;
 
 // just for profiling purposes
-int			framecount;	
 
-int			sscount;
-int			linecount;
-int			loopcount;
 
-fixed_t			viewx;
-fixed_t			viewy;
-fixed_t			viewz;
 
-angle_t			viewangle;
 
-fixed_t			viewcos;
-fixed_t			viewsin;
 
-player_t*		viewplayer;
 
 // 0 = high, 1 = low
-int			detailshift;	
 
 //
 // precalculated math tables
 //
-angle_t			clipangle;
 
 // The ::g->viewangletox[::g->viewangle + FINEANGLES/4] lookup
 // maps the visible view angles to screen X coordinates,
 // flattening the arc to a flat ::g->projection plane.
 // There will be many angles mapped to the same X. 
-int			viewangletox[FINEANGLES/2];
 
 // The xtoviewangleangle[] table maps a screen pixel
 // to the lowest ::g->viewangle that maps back to x ranges
 // from ::g->clipangle to -::g->clipangle.
-angle_t			xtoviewangle[SCREENWIDTH+1];
 
 
 // UNUSED.
@@ -118,23 +88,31 @@ angle_t			xtoviewangle[SCREENWIDTH+1];
 // fixed_t		finetangent[FINEANGLES/2];
 
 // fixed_t		finesine[5*FINEANGLES/4];
-fixed_t*		finecosine = &finesine[FINEANGLES/4];
+const fixed_t*		finecosine = &finesine[FINEANGLES/4];
 
 
-lighttable_t*		scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
-lighttable_t*		scalelightfixed[MAXLIGHTSCALE];
-lighttable_t*		zlight[LIGHTLEVELS][MAXLIGHTZ];
 
 // bumped light from gun blasts
-int			extralight;			
 
 
 
-void (*colfunc) (void);
-void (*basecolfunc) (void);
-void (*fuzzcolfunc) (void);
-void (*transcolfunc) (void);
-void (*spanfunc) (void);
+void (*colfunc) (lighttable_t * dc_colormap,
+				 byte * dc_source);
+void (*basecolfunc) (lighttable_t * dc_colormap,
+						byte * dc_source);
+void (*fuzzcolfunc) (lighttable_t * dc_colormap,
+						byte * dc_source);
+void (*transcolfunc) (lighttable_t * dc_colormap,
+						byte * dc_source);
+void (*spanfunc) (fixed_t xfrac,
+	fixed_t yfrac,
+	fixed_t ds_y,
+	int ds_x1,
+	int ds_x2,
+	fixed_t ds_xstep,
+	fixed_t ds_ystep,
+	lighttable_t * ds_colormap,
+	byte * ds_source);
 
 
 
@@ -301,9 +279,10 @@ R_PointToAngle
 ( fixed_t	x,
  fixed_t	y )
 {	
-	x -= viewx;
-	y -= viewy;
-	
+	extern fixed_t GetViewX(); extern fixed_t GetViewY();
+	x -= GetViewX();
+	y -= GetViewY();
+
 	if ( (!x) && (!y) )
 		return 0;
 
@@ -333,7 +312,7 @@ R_PointToAngle
 			if (x>y)
 			{
 				// octant 8
-				return -tantoangle[SlopeDiv(y,x)];
+				return -tantoangle[SlopeDiv(y,x)]; // // ALANHACK UNSIGNED
 			}
 			else
 			{
@@ -389,9 +368,10 @@ R_PointToAngle2
  fixed_t	x2,
  fixed_t	y2 )
 {	
-	viewx = x1;
-	viewy = y1;
-	
+	extern void SetViewX( fixed_t ); extern void SetViewY( fixed_t );
+	SetViewX( x1 );
+	SetViewY( y1 );
+
 	return R_PointToAngle (x2, y2);
 }
 
@@ -406,10 +386,11 @@ R_PointToDist
 	fixed_t	dy;
 	fixed_t	temp;
 	fixed_t	dist;
-	
-	dx = abs(x - viewx);
-	dy = abs(y - viewy);
-	
+
+	extern fixed_t GetViewX(); extern fixed_t GetViewY();
+	dx = abs(x - GetViewX());
+	dy = abs(y - GetViewY());
+
 	if (dy>dx)
 	{
 		temp = dx;
@@ -461,8 +442,10 @@ void R_InitPointToAngle (void)
 fixed_t R_ScaleFromGlobalAngle (angle_t visangle)
 {
 	fixed_t		scale;
-	int			anglea;
-	int			angleb;
+	//int			anglea;
+	//int			angleb;
+	angle_t		anglea;
+	angle_t		angleb;
 	int			sinea;
 	int			sineb;
 	fixed_t		num;
@@ -476,25 +459,27 @@ fixed_t R_ScaleFromGlobalAngle (angle_t visangle)
 		fixed_t		sinv;
 		fixed_t		cosv;
 
-		sinv = finesine[(visangle-rw_normalangle)>>ANGLETOFINESHIFT];	
-		dist = FixedDiv (rw_distance, sinv);
-		cosv = finecosine[(viewangle-visangle)>>ANGLETOFINESHIFT];
+		sinv = finesine[(visangle-::g->rw_normalangle)>>ANGLETOFINESHIFT];	
+		dist = FixedDiv (::g->rw_distance, sinv);
+		cosv = finecosine[(::g->viewangle-visangle)>>ANGLETOFINESHIFT];
 		z = abs(FixedMul (dist, cosv));
-		scale = FixedDiv(projection, z);
+		scale = FixedDiv(::g->projection, z);
 		return scale;
 	}
 #endif
 
-	anglea = ANG90 + (visangle-viewangle);
-	angleb = ANG90 + (visangle-rw_normalangle);
+	extern angle_t GetViewAngle();
+	anglea = ANG90 + (visangle-GetViewAngle());
+	angleb = ANG90 + (visangle-::g->rw_normalangle);
 
 	// both sines are allways positive
 	sinea = finesine[anglea>>ANGLETOFINESHIFT];	
 	sineb = finesine[angleb>>ANGLETOFINESHIFT];
-	num = FixedMul(projection,sineb)<<detailshift;
-	den = FixedMul(rw_distance,sinea);
+	num = FixedMul(::g->projection,sineb) << ::g->detailshift;
+	den = FixedMul(::g->rw_distance,sinea);
 
-	if (den > num>>16)
+	// DHM - Nerve :: If the den is pretty much 0, don't try the divide
+	if (den>>8 > 0 && den > num>>16)
 	{
 		scale = FixedDiv (num, den);
 
@@ -562,7 +547,7 @@ void R_InitTextureMapping (void)
 	//
 	// Calc focallength
 	//  so FIELDOFVIEW angles covers SCREENWIDTH.
-	focallength = FixedDiv (centerxfrac,
+	focallength = FixedDiv (::g->centerxfrac,
 		finetangent[FINEANGLES/4+FIELDOFVIEW/2] );
 
 	for (i=0 ; i<FINEANGLES/2 ; i++)
@@ -570,73 +555,72 @@ void R_InitTextureMapping (void)
 		if (finetangent[i] > FRACUNIT*2)
 			t = -1;
 		else if (finetangent[i] < -FRACUNIT*2)
-			t = viewwidth+1;
+			t = ::g->viewwidth+1;
 		else
 		{
 			t = FixedMul (finetangent[i], focallength);
-			t = (centerxfrac - t+FRACUNIT-1)>>FRACBITS;
+			t = (::g->centerxfrac - t+FRACUNIT-1)>>FRACBITS;
 
 			if (t < -1)
 				t = -1;
-			else if (t>viewwidth+1)
-				t = viewwidth+1;
+			else if (t>::g->viewwidth+1)
+				t = ::g->viewwidth+1;
 		}
-		viewangletox[i] = t;
+		::g->viewangletox[i] = t;
 	}
 
 	// Scan ::g->viewangletox[] to generate ::g->xtoviewangle[]:
 	//  ::g->xtoviewangle will give the smallest view angle
 	//  that maps to x.	
-	for (x=0;x<=viewwidth;x++)
+	for (x=0;x<=::g->viewwidth;x++)
 	{
 		i = 0;
-		while (viewangletox[i]>x)
+		while (::g->viewangletox[i]>x)
 			i++;
-		xtoviewangle[x] = (i<<ANGLETOFINESHIFT)-ANG90;
+		::g->xtoviewangle[x] = (i<<ANGLETOFINESHIFT)-ANG90;
 	}
 
-	// Take out the fencepost cases from viewangletox.
+	// Take out the fencepost cases from ::g->viewangletox.
 	for (i=0 ; i<FINEANGLES/2 ; i++)
 	{
 		t = FixedMul (finetangent[i], focallength);
-		t = centerx - t;
+		t = ::g->centerx - t;
 
-		if (viewangletox[i] == -1)
-			viewangletox[i] = 0;
-		else if (viewangletox[i] == viewwidth+1)
-			viewangletox[i]  = viewwidth;
+		if (::g->viewangletox[i] == -1)
+			::g->viewangletox[i] = 0;
+		else if (::g->viewangletox[i] == ::g->viewwidth+1)
+			::g->viewangletox[i]  = ::g->viewwidth;
 	}
 
-	clipangle = xtoviewangle[0];
+	::g->clipangle = ::g->xtoviewangle[0];
 }
 
 
 
 //
 // R_InitLightTables
-// Only inits the zlight table,
-//  because the scalelight table changes with view size.
+// Only inits the ::g->zlight table,
+//  because the ::g->scalelight table changes with view size.
 //
-#define DISTMAP		2
 
 void R_InitLightTables (void)
 {
 	int		i;
 	int		j;
 	int		level;
-	int		startmap; 	
+	int		nocollide_startmap; 	
 	int		scale;
 
 	// Calculate the light levels to use
 	//  for each level / distance combination.
 	for (i=0 ; i< LIGHTLEVELS ; i++)
 	{
-		startmap = ((LIGHTLEVELS-1-i)*2)*NUMCOLORMAPS/LIGHTLEVELS;
+		nocollide_startmap = ((LIGHTLEVELS-1-i)*2)*NUMCOLORMAPS/LIGHTLEVELS;
 		for (j=0 ; j<MAXLIGHTZ ; j++)
 		{
 			scale = FixedDiv ((SCREENWIDTH/2*FRACUNIT), (j+1)<<LIGHTZSHIFT);
 			scale >>= LIGHTSCALESHIFT;
-			level = startmap - scale/DISTMAP;
+			level = nocollide_startmap - scale/DISTMAP;
 
 			if (level < 0)
 				level = 0;
@@ -644,7 +628,7 @@ void R_InitLightTables (void)
 			if (level >= NUMCOLORMAPS)
 				level = NUMCOLORMAPS-1;
 
-			zlight[i][j] = colormaps + level*256;
+			::g->zlight[i][j] = ::g->colormaps + level*256;
 		}
 	}
 }
@@ -657,9 +641,6 @@ void R_InitLightTables (void)
 //  because it might be in the middle of a refresh.
 // The change will take effect next refresh.
 //
-boolean		setsizeneeded;
-int		setblocks;
-int		setdetail;
 
 
 void
@@ -667,9 +648,9 @@ R_SetViewSize
 ( int		blocks,
  int		detail )
 {
-	setsizeneeded = true;
-	setblocks = blocks;
-	setdetail = detail;
+	::g->setsizeneeded = true;
+	::g->setblocks = blocks;
+	::g->setdetail = detail;
 }
 
 
@@ -683,31 +664,35 @@ void R_ExecuteSetViewSize (void)
 	int		i;
 	int		j;
 	int		level;
-	int		startmap; 	
+	int		nocollide_startmap; 	
 
-	setsizeneeded = false;
+	::g->setsizeneeded = false;
 
-	if (setblocks == 11)
+	if (::g->setblocks == 11)
 	{
-		scaledviewwidth = SCREENWIDTH;
-		viewheight = SCREENWIDTH;
+		::g->scaledviewwidth = ORIGINAL_WIDTH;
+		::g->viewheight = ORIGINAL_HEIGHT;
 	}
 	else
 	{
-		scaledviewwidth = setblocks*32;
-		viewheight = (setblocks*168/10)&~7;
+		::g->scaledviewwidth = ::g->setblocks*32;
+		::g->viewheight = (::g->setblocks*168/10)&~7;
 	}
-	
-	detailshift = setdetail;
-	viewwidth = scaledviewwidth>>detailshift;
 
-	centery = viewheight/2;
-	centerx = viewwidth/2;
-	centerxfrac = centerx<<FRACBITS;
-	centeryfrac = centery<<FRACBITS;
-	projection = centerxfrac;
+	// SMF - temp
+	::g->scaledviewwidth *= GLOBAL_IMAGE_SCALER;
+	::g->viewheight *= GLOBAL_IMAGE_SCALER;
 
-	if (!detailshift)
+	::g->detailshift = ::g->setdetail;
+	::g->viewwidth = ::g->scaledviewwidth>>::g->detailshift;
+
+	::g->centery = ::g->viewheight/2;
+	::g->centerx = ::g->viewwidth/2;
+	::g->centerxfrac = ::g->centerx<<FRACBITS;
+	::g->centeryfrac = ::g->centery<<FRACBITS;
+	::g->projection = ::g->centerxfrac;
+
+	if (!::g->detailshift)
 	{
 		colfunc = basecolfunc = R_DrawColumn;
 		fuzzcolfunc = R_DrawFuzzColumn;
@@ -722,30 +707,30 @@ void R_ExecuteSetViewSize (void)
 		spanfunc = R_DrawSpanLow;
 	}
 
-	R_InitBuffer (scaledviewwidth, viewheight);
+	R_InitBuffer (::g->scaledviewwidth, ::g->viewheight);
 
 	R_InitTextureMapping ();
 
 	// psprite scales
-	pspritescale = FRACUNIT*viewwidth/SCREENWIDTH;
-	pspriteiscale = FRACUNIT*SCREENWIDTH/viewwidth;
+	::g->pspritescale = FRACUNIT*::g->viewwidth/ORIGINAL_WIDTH;
+	::g->pspriteiscale = FRACUNIT*ORIGINAL_WIDTH/::g->viewwidth;
 
 	// thing clipping
-	for (i=0 ; i < viewwidth ; i++)
-		screenheightarray[i] = viewheight;
+	for (i=0 ; i < ::g->viewwidth ; i++)
+		::g->screenheightarray[i] = ::g->viewheight;
 
 	// planes
-	for (i=0 ; i < viewheight ; i++)
+	for (i=0 ; i < ::g->viewheight ; i++)
 	{
-		dy = ((i-viewheight/2)<<FRACBITS)+FRACUNIT/2;
+		dy = ((i-::g->viewheight/2)<<FRACBITS)+FRACUNIT/2;
 		dy = abs(dy);
-		yslope[i] = FixedDiv ( (viewwidth << detailshift)/2*FRACUNIT, dy);
+		::g->yslope[i] = FixedDiv ( (::g->viewwidth << ::g->detailshift)/2*FRACUNIT, dy);
 	}
 
-	for (i=0 ; i < viewwidth ; i++)
+	for (i=0 ; i < ::g->viewwidth ; i++)
 	{
-		cosadj = abs(finecosine[xtoviewangle[i]>>ANGLETOFINESHIFT]);
-		distscale[i] = FixedDiv (FRACUNIT,cosadj);
+		cosadj = abs(finecosine[::g->xtoviewangle[i]>>ANGLETOFINESHIFT]);
+		::g->distscale[i] = FixedDiv (FRACUNIT,cosadj);
 	}
 
 	// Calculate the light levels to use
@@ -755,7 +740,7 @@ void R_ExecuteSetViewSize (void)
 		nocollide_startmap = ((LIGHTLEVELS-1-i)*2)*NUMCOLORMAPS/LIGHTLEVELS;
 		for (j=0 ; j<MAXLIGHTSCALE ; j++)
 		{
-			level = startmap - j*SCREENWIDTH/(viewwidth << detailshift)/DISTMAP;
+			level = nocollide_startmap - j*SCREENWIDTH/(::g->viewwidth << ::g->detailshift)/DISTMAP;
 
 			if (level < 0)
 				level = 0;
@@ -763,7 +748,7 @@ void R_ExecuteSetViewSize (void)
 			if (level >= NUMCOLORMAPS)
 				level = NUMCOLORMAPS-1;
 
-			scalelight[i][j] = colormaps + level*256;
+			::g->scalelight[i][j] = ::g->colormaps + level*256;
 		}
 	}
 }
@@ -773,32 +758,30 @@ void R_ExecuteSetViewSize (void)
 //
 // R_Init
 //
-extern int	detailLevel;
-extern int	screenblocks;
 
 
 
 void R_Init (void)
 {
 	R_InitData ();
-	printf ("\nR_InitData");
+	I_Printf ("\nR_InitData");
 	R_InitPointToAngle ();
-	printf ("\nR_InitPointToAngle");
+	I_Printf ("\nR_InitPointToAngle");
 	R_InitTables ();
-	// viewwidth / viewheight / detailLevel are set by the defaults
-	printf ("\nR_InitTables");
+	// ::g->viewwidth / ::g->viewheight / ::g->detailLevel are set by the defaults
+	I_Printf ("\nR_InitTables");
 
-	R_SetViewSize (screenblocks, detailLevel);
+	R_SetViewSize (::g->screenblocks, ::g->detailLevel);
 	R_InitPlanes ();
-	printf ("\nR_InitPlanes");
+	I_Printf ("\nR_InitPlanes");
 	R_InitLightTables ();
-	printf ("\nR_InitLightTables");
+	I_Printf ("\nR_InitLightTables");
 	R_InitSkyMap ();
-	printf ("\nR_InitSkyMap");
+	I_Printf ("\nR_InitSkyMap");
 	R_InitTranslationTables ();
-	printf ("\nR_InitTranslationsTables");
+	I_Printf ("\nR_InitTranslationsTables");
 
-	framecount = 0;
+	::g->framecount = 0;
 }
 
 
@@ -815,19 +798,19 @@ R_PointInSubsector
 	int		nodenum;
 
 	// single subsector is a special case
-	if (!numnodes)				
-		return subsectors;
+	if (!::g->numnodes)				
+		return ::g->subsectors;
 
-	nodenum = numnodes-1;
+	nodenum = ::g->numnodes-1;
 
 	while (! (nodenum & NF_SUBSECTOR) )
 	{
-		node = &nodes[nodenum];
+		node = &::g->nodes[nodenum];
 		side = R_PointOnSide (x, y, node);
 		nodenum = node->children[side];
 	}
 
-	return &subsectors[nodenum & ~NF_SUBSECTOR];
+	return &::g->subsectors[nodenum & ~NF_SUBSECTOR];
 }
 
 
@@ -839,35 +822,38 @@ void R_SetupFrame (player_t* player)
 {		
 	int		i;
 
-	viewplayer = player;
-	viewx = player->mo->x;
-	viewy = player->mo->y;
-	viewangle = player->mo->angle + viewangleoffset;
-	extralight = player->extralight;
+	::g->viewplayer = player;
+	extern void SetViewX( fixed_t ); extern void SetViewY( fixed_t ); extern void SetViewAngle( angle_t );
+	SetViewX( player->mo->x );
+	SetViewY( player->mo->y );
+	SetViewAngle( player->mo->angle + ::g->viewangleoffset );
+	::g->extralight = player->extralight;
 
-	viewz = player->viewz;
-	
-	viewsin = finesine[viewangle>>ANGLETOFINESHIFT];
-	viewcos = finecosine[viewangle>>ANGLETOFINESHIFT];
-	
-	sscount = 0;
+	::g->viewz = player->viewz;
+
+	extern angle_t GetViewAngle();
+
+	::g->viewsin = finesine[GetViewAngle()>>ANGLETOFINESHIFT];
+	::g->viewcos = finecosine[GetViewAngle()>>ANGLETOFINESHIFT];
+
+	::g->sscount = 0;
 
 	if (player->fixedcolormap)
 	{
-		fixedcolormap =
-			colormaps
+		::g->fixedcolormap =
+			::g->colormaps
 			+ player->fixedcolormap*256*sizeof(lighttable_t);
 
-		walllights = scalelightfixed;
+		::g->walllights = ::g->scalelightfixed;
 
 		for (i=0 ; i<MAXLIGHTSCALE ; i++)
-			scalelightfixed[i] = fixedcolormap;
+			::g->scalelightfixed[i] = ::g->fixedcolormap;
 	}
 	else
-		fixedcolormap = 0;
+		::g->fixedcolormap = 0;
 
-	framecount++;
-	validcount++;
+	::g->framecount++;
+	::g->validcount++;
 }
 
 
@@ -876,7 +862,11 @@ void R_SetupFrame (player_t* player)
 // R_RenderView
 //
 void R_RenderPlayerView (player_t* player)
-{	
+{
+	if ( player->mo == NULL ) {
+		return;
+	}
+
 	R_SetupFrame (player);
 
 	// Clear buffers.
@@ -886,22 +876,22 @@ void R_RenderPlayerView (player_t* player)
 	R_ClearSprites ();
 
 	// check for new console commands.
-	NetUpdate ();
+	NetUpdate ( NULL );
 
 	// The head node is the last node output.
-	R_RenderBSPNode (numnodes-1);
+	R_RenderBSPNode (::g->numnodes-1);
 
 	// Check for new console commands.
-	NetUpdate ();
-	
+	NetUpdate ( NULL );
+
 	R_DrawPlanes ();
 
 	// Check for new console commands.
-	NetUpdate ();
-	
+	NetUpdate ( NULL );
+
 	R_DrawMasked ();
 
 	// Check for new console commands.
-	NetUpdate ();				
+	NetUpdate ( NULL );				
 }
 

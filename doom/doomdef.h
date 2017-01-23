@@ -23,10 +23,6 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//  Internally used data structures for virtually everything,
-//   key definitions, lots of other stuff.
-
 ===========================================================================
 */
 
@@ -36,35 +32,40 @@ If you have questions concerning this license or the applicable additional terms
 #include <stdio.h>
 #include <string.h>
 
+#include "../../neo/sys/sys_public.h"
+
 //
 // Global parameters/defines.
 //
 // DOOM version
-enum { VERSION =  110 };
+enum { VERSION =  111 };
 
 
 // Game mode handling - identify IWAD version
 //  to handle IWAD dependend animations etc.
 typedef enum
 {
- shareware,	// DOOM 1 shareware, E1, M9
- registered,	// DOOM 1 registered, E3, M27
- commercial,	// DOOM 2 retail, E1 M34
+  shareware,	// DOOM 1 shareware, E1, M9
+  registered,	// DOOM 1 registered, E3, M27
+  commercial,	// DOOM 2 retail, E1 M34
   // DOOM 2 german edition not handled
- retail,	// DOOM 1 retail, E4, M36
- indetermined	// Well, no IWAD found.
- 
+  retail,	// DOOM 1 retail, E4, M36
+  indetermined	// Well, no IWAD found.
+  
 } GameMode_t;
 
 
 // Mission packs - might be useful for TC stuff?
 typedef enum
 {
- doom,		// DOOM 1
- doom2,	// DOOM 2
- pack_tnt,	// TNT mission pack
- pack_plut,	// Plutonia pack
- none
+  doom,			// DOOM 1
+  doom2,		// DOOM 2
+  pack_tnt,		// TNT mission pack
+  pack_plut,	// Plutonia pack
+  pack_master,	// Master levels
+  pack_nerve,	// Nerve levels
+ 
+  none
 
 } GameMission_t;
 
@@ -72,17 +73,18 @@ typedef enum
 // Identify language to use, software localization.
 typedef enum
 {
- english,
- french,
- german,
- unknown
+  english,
+  german,
+  unknown
 
 } Language_t;
 
 
 // If rangecheck is undefined,
 // most parameter validation debugging code will not be compiled
+#ifdef _DEBUG
 #define RANGECHECK
+#endif
 
 // Do or do not use external soundserver.
 // The sndserver binary to be run separately
@@ -105,7 +107,7 @@ typedef enum
 // For resize of screen, at start of game.
 // It will not work dynamically, see visplanes.
 //
-#define	BASE_WIDTH		320
+//#define	BASE_WIDTH		320
 
 // It is educational but futile to change this
 //  scaling e.g. to 2. Drawing of status bar,
@@ -117,9 +119,9 @@ typedef enum
 // Defines suck. C sucks.
 // C++ might sucks for OOP, but it sure is a better C.
 // So there.
-#define SCREENWIDTH  320
+//#define SCREENWIDTH  320//320
 //SCREEN_MUL*BASE_WIDTH //320
-#define SCREENHEIGHT 200
+//#define SCREENHEIGHT 200//200
 //(int)(SCREEN_MUL*BASE_WIDTH*INV_ASPECT_RATIO) //200
 
 
@@ -136,10 +138,10 @@ typedef enum
 // the game final animation, or a demo. 
 typedef enum
 {
-	GS_LEVEL,
-	GS_INTERMISSION,
-	GS_FINALE,
-	GS_DEMOSCREEN
+    GS_LEVEL,
+    GS_INTERMISSION,
+    GS_FINALE,
+    GS_DEMOSCREEN
 } gamestate_t;
 
 //
@@ -156,11 +158,11 @@ typedef enum
 
 typedef enum
 {
-	sk_baby,
-	sk_easy,
-	sk_medium,
-	sk_hard,
-	sk_nightmare
+    sk_baby,
+    sk_easy,
+    sk_medium,
+    sk_hard,
+    sk_nightmare
 } skill_t;
 
 
@@ -171,15 +173,15 @@ typedef enum
 //
 typedef enum
 {
-	it_bluecard,
-	it_yellowcard,
-	it_redcard,
-	it_blueskull,
-	it_yellowskull,
-	it_redskull,
-	
-	NUMCARDS
-	
+    it_bluecard,
+    it_yellowcard,
+    it_redcard,
+    it_blueskull,
+    it_yellowskull,
+    it_redskull,
+    
+    NUMCARDS
+    
 } card_t;
 
 
@@ -189,20 +191,20 @@ typedef enum
 //  user has not changed weapon.
 typedef enum
 {
-	wp_fist,
-	wp_pistol,
-	wp_shotgun,
-	wp_chaingun,
-	wp_missile,
-	wp_plasma,
-	wp_bfg,
-	wp_chainsaw,
-	wp_supershotgun,
+    wp_fist,
+    wp_pistol,
+    wp_shotgun,
+    wp_chaingun,
+    wp_missile,
+    wp_plasma,
+    wp_bfg,
+    wp_chainsaw,
+    wp_supershotgun,
 
-	NUMWEAPONS,
-	
-	// No pending weapon change.
-	wp_nochange
+    NUMWEAPONS,
+    
+    // No pending weapon change.
+    wp_nochange
 
 } weapontype_t;
 
@@ -210,12 +212,12 @@ typedef enum
 // Ammunition types defined.
 typedef enum
 {
-	am_clip,	// Pistol / chaingun ammo.
-	am_shell,	// Shotgun / double barreled shotgun.
-	am_cell,	// Plasma rifle, BFG.
-	am_misl,	// Missile launcher.
-	NUMAMMO,
-	am_noammo	// Unlimited for chainsaw / fist.	
+    am_clip,	// Pistol / chaingun ammo.
+    am_shell,	// Shotgun / double barreled shotgun.
+    am_cell,	// Plasma rifle, BFG.
+    am_misl,	// Missile launcher.
+    NUMAMMO,
+    am_noammo	// Unlimited for chainsaw / fist.	
 
 } ammotype_t;
 
@@ -223,14 +225,14 @@ typedef enum
 // Power up artifacts.
 typedef enum
 {
-	pw_invulnerability,
-	pw_strength,
-	pw_invisibility,
-	pw_ironfeet,
-	pw_allmap,
-	pw_infrared,
-	NUMPOWERS
-	
+    pw_invulnerability,
+    pw_strength,
+    pw_invisibility,
+    pw_ironfeet,
+    pw_allmap,
+    pw_infrared,
+    NUMPOWERS
+    
 } powertype_t;
 
 
@@ -242,11 +244,11 @@ typedef enum
 //
 typedef enum
 {
-	INVULNTICS	= (30*TICRATE),
-	INVISTICS	= (60*TICRATE),
-	INFRATICS	= (120*TICRATE),
-	IRONTICS	= (60*TICRATE)
-	
+    INVULNTICS	= (30*TICRATE),
+    INVISTICS	= (60*TICRATE),
+    INFRATICS	= (120*TICRATE),
+    IRONTICS	= (60*TICRATE)
+    
 } powerduration_t;
 
 
@@ -257,41 +259,38 @@ typedef enum
 // This is the stuff configured by Setup.Exe.
 // Most key data are simple ascii (uppercased).
 //
-#define KEY_RIGHTARROW	0xae
-#define KEY_LEFTARROW	0xac
-#define KEY_UPARROW	0xad
-#define KEY_DOWNARROW	0xaf
-#define KEY_ESCAPE	27
-#define KEY_ENTER	13
-#define KEY_TAB		9
-#define KEY_F1		(0x80+0x3b)
-#define KEY_F2		(0x80+0x3c)
-#define KEY_F3		(0x80+0x3d)
-#define KEY_F4		(0x80+0x3e)
-#define KEY_F5		(0x80+0x3f)
-#define KEY_F6		(0x80+0x40)
-#define KEY_F7		(0x80+0x41)
-#define KEY_F8		(0x80+0x42)
-#define KEY_F9		(0x80+0x43)
-#define KEY_F10		(0x80+0x44)
-#define KEY_F11		(0x80+0x57)
-#define KEY_F12		(0x80+0x58)
+#define KEY_RIGHTARROW	K_RIGHTARROW
+#define KEY_LEFTARROW	K_LEFTARROW
+#define KEY_UPARROW		K_UPARROW
+#define KEY_DOWNARROW	K_DOWNARROW
+#define KEY_ESCAPE		K_ESCAPE
+#define KEY_ENTER		K_ENTER
+#define KEY_TAB			K_TAB
+#define KEY_F1		K_F1
+#define KEY_F2		K_F2
+#define KEY_F3		K_F3
+#define KEY_F4		K_F4
+#define KEY_F5		K_F5
+#define KEY_F6		K_F6
+#define KEY_F7		K_F7
+#define KEY_F8		K_F8
+#define KEY_F9		K_F9
+#define KEY_F10		K_F10
+#define KEY_F11		K_F11
+#define KEY_F12		K_F12
 
-#define KEY_BACKSPACE	127
+#define KEY_BACKSPACE	K_BACKSPACE
 #define KEY_PAUSE	0xff
 
-#define KEY_EQUALS	0x3d
-#define KEY_MINUS	0x2d
+#define KEY_EQUALS	K_EQUALS
+#define KEY_MINUS	K_MINUS
 
-#define KEY_RSHIFT	(0x80+0x36)
-#define KEY_RCTRL	(0x80+0x1d)
-#define KEY_RALT	(0x80+0x38)
+#define KEY_RSHIFT	K_RSHIFT
+#define KEY_RCTRL	K_RCTRL
+#define KEY_RALT	K_RALT
+#define KEY_LALT	K_LALT
 
-#define KEY_LALT	KEY_RALT
-
-
-
-// DOOM basic types (boolean),
+// DOOM basic types (qboolean),
 //  and max/min values.
 //#include "doomtype.h"
 
@@ -338,6 +337,9 @@ typedef enum
 //#include "sounds.h"
 
 
+#ifndef _WIN32
+#define MAX_PATH	260
+#endif
 
 
 #endif          // __DOOMDEF__

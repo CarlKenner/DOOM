@@ -23,14 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//  MapObj data. Map Objects or mobjs are actors, entities,
-//  thinker, take-your-pick... anything that moves, acts, or
-//  suffers state changes of more or less violent nature.
-
 ===========================================================================
 */
-
 
 #ifndef __D_THINK__
 #define __D_THINK__
@@ -40,23 +34,22 @@ If you have questions concerning this license or the applicable additional terms
 #pragma interface
 #endif
 
-
-
 //
 // Experimental stuff.
 // To compile this as "ANSI C with classes"
 //  we will need to handle the various
 //  action functions cleanly.
 //
+struct mobj_t;
 typedef  void (*actionf_v)();
-typedef  void (*actionf_p1)( void* );
+typedef  void (*actionf_p1)( mobj_t* );
 typedef  void (*actionf_p2)( void*, void* );
 
 typedef union
 {
- actionf_p1	acp1;
- actionf_v	acv;
- actionf_p2	acp2;
+  actionf_p1	acp1;
+  actionf_v	acv;
+  actionf_p2	acp2;
 
 } actionf_t;
 
@@ -73,10 +66,10 @@ typedef actionf_t  think_t;
 // Doubly linked list of actors.
 typedef struct thinker_s
 {
-	struct thinker_s*	prev;
-	struct thinker_s*	next;
-	think_t		function;
-	
+    struct thinker_s*	prev;
+    struct thinker_s*	next;
+    think_t		function;
+    
 } thinker_t;
 
 

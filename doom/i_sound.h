@@ -23,10 +23,6 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-//
-// DESCRIPTION:
-//	System interface, sound.
-
 ===========================================================================
 */
 
@@ -49,6 +45,7 @@ extern char* sndserver_filename;
 
 // Init at program start...
 void I_InitSound();
+void I_InitSoundHardware( int numOutputChannels_, int channelMask );
 
 // ... update sound buffer and audio device at runtime...
 void I_UpdateSound(void);
@@ -56,7 +53,7 @@ void I_SubmitSound(void);
 
 // ... shut down and relase at program termination.
 void I_ShutdownSound(void);
-
+void I_ShutdownSoundHardware();
 
 //
 //  SFX I/O
@@ -70,17 +67,11 @@ int I_GetSfxLumpNum (sfxinfo_t* sfxinfo );
 
 
 // Starts a sound in a particular sound channel.
-int
-I_StartSound
-( int		id,
- int		vol,
- int		sep,
- int		pitch,
- int		priority );
+int I_StartSound( int id, mobj_t *origin, mobj_t *listener_origin, int vol, int pitch, int priority );
 
 
 // Stops a sound channel.
-void I_StopSound(int handle);
+void I_StopSound(int handle, int player = -1);
 
 // Called by S_*() functions
 //  to see if a channel is still playing.
@@ -89,14 +80,9 @@ int I_SoundIsPlaying(int handle);
 
 // Updates the volume, separation,
 //  and pitch of a sound channel.
-void
-I_UpdateSoundParams
-( int		handle,
- int		vol,
- int		sep,
- int		pitch );
+void I_UpdateSoundParams( int handle, int vol, int sep, int pitch );
 
-
+void I_SetSfxVolume( int );
 //
 //  MUSIC I/O
 //
@@ -108,21 +94,20 @@ void I_SetMusicVolume(int volume);
 void I_PauseSong(int handle);
 void I_ResumeSong(int handle);
 // Registers a song handle to song data.
-int I_RegisterSong(void *data);
+int I_RegisterSong(void *data, int length);
 // Called by anything that wishes to start music.
 //  plays a song, and when the song is done,
 //  starts playing it again in an endless loop.
 // Horrible thing to do, considering.
-void
-I_PlaySong
-( int		handle,
- int		looping );
+void I_PlaySong( const char *songname, int looping );
 // Stops a song over 3 seconds.
 void I_StopSong(int handle);
 // See above (register), then think backwards
 void I_UnRegisterSong(int handle);
+// Update Music (XMP), check for notifications
+void I_UpdateMusic(void);
 
-
+int Mus2Midi(unsigned char* bytes, unsigned char* out, int* len);
 
 #endif
 

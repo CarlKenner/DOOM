@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	Networking stuff.
-
 ===========================================================================
 */
-
 
 #ifndef __D_NET__
 #define __D_NET__
@@ -56,12 +52,12 @@ If you have questions concerning this license or the applicable additional terms
 
 
 // Networking and tick handling related.
-#define BACKUPTICS		12
+#define BACKUPTICS		64
 
 typedef enum
 {
-	CMD_SEND	= 1,
-	CMD_GET	= 2
+    CMD_SEND	= 1,
+    CMD_GET	= 2
 
 } command_t;
 
@@ -71,83 +67,88 @@ typedef enum
 //
 typedef struct
 {
-	// High bit is retransmit request.
-	unsigned		checksum;
-	// Only valid if NCMD_RETRANSMIT.
-	byte		retransmitfrom;
+    // High bit is retransmit request.
+    unsigned		checksum;
+    // Only valid if NCMD_RETRANSMIT.
+    byte		retransmitfrom;
 	
-	byte		starttic;
-	byte		player;
-	byte		numtics;
-	ticcmd_t		cmds[BACKUPTICS];
+	byte		sourceDest;
+    
+    byte		starttic;
+    byte		player;
+    byte		numtics;
+    ticcmd_t		cmds[BACKUPTICS];
 
 } doomdata_t;
 
 
 
 
-typedef struct
+struct doomcom_t
 {
-	// Supposed to be DOOMCOM_ID?
-	long		id;
-	
-	// DOOM executes an int to execute commands.
-	short		intnum;		
-	// Communication between DOOM and the driver.
-	// Is CMD_SEND or CMD_GET.
-	short		command;
-	// Is dest for send, set by get (-1 = no packet).
-	short		remotenode;
-	
-	// Number of bytes in doomdata to be sent
-	short		datalength;
+    // Supposed to be DOOMCOM_ID?
+    long		id;
+    
+    // DOOM executes an int to execute commands.
+    short		intnum;		
+    // Communication between DOOM and the driver.
+    // Is CMD_SEND or CMD_GET.
+    short		command;
+    // Is dest for send, set by get (-1 = no packet).
+    short		remotenode;
+    
+    // Number of bytes in doomdata to be sent
+    short		datalength;
 
-	// Info common to all nodes.
-	// Console is allways node 0.
-	short		numnodes;
-	// Flag: 1 = no duplication, 2-5 = dup for slow nets.
-	short		ticdup;
-	// Flag: 1 = send a backup tic in every packet.
-	short		extratics;
-	// Flag: 1 = deathmatch.
-	short		deathmatch;
-	// Flag: -1 = new game, 0-5 = load savegame
-	short		savegame;
-	short		episode;	// 1-3
-	short		map;		// 1-9
-	short		skill;		// 1-5
+    // Info common to all nodes.
+    // Console is allways node 0.
+    short		numnodes;
+    // Flag: 1 = no duplication, 2-5 = dup for slow nets.
+    short		ticdup;
+    // Flag: 1 = send a backup tic in every packet.
+    short		extratics;
+    // Flag: 1 = deathmatch.
+    short		deathmatch;
+    // Flag: -1 = new game, 0-5 = load savegame
+    short		savegame;
+    short		episode;	// 1-3
+    short		map;		// 1-9
+    short		skill;		// 1-5
 
-	// Info specific to this node.
-	short		consoleplayer;
-	short		numplayers;
-	
-	// These are related to the 3-display mode,
-	//  in which two drones looking left and right
-	//  were used to render two additional views
-	//  on two additional computers.
-	// Probably not operational anymore.
-	// 1 = left, 0 = center, -1 = right
-	short		angleoffset;
-	// 1 = drone
-	short		drone;		
+    // Info specific to this node.
+    short		consoleplayer;
+    short		numplayers;
+    
+    // These are related to the 3-display mode,
+    //  in which two drones looking left and right
+    //  were used to render two additional views
+    //  on two additional computers.
+    // Probably not operational anymore.
+    // 1 = left, 0 = center, -1 = right
+    short		angleoffset;
+    // 1 = drone
+    short		drone;		
 
-	// The packet data to be sent.
-	doomdata_t		data;
-	
-} doomcom_t;
+    // The packet data to be sent.
+    doomdata_t		data;
+    
+} ;
 
 
+class idUserCmdMgr;
 
 // Create any new ticcmds and broadcast to other players.
-void NetUpdate (void);
+void NetUpdate ( idUserCmdMgr * userCmdMgr );
 
 // Broadcasts special packets to other players
 //  to notify of game exit
 void D_QuitNetGame (void);
 
 //? how many ticks to run?
-void TryRunTics (void);
+bool TryRunTics (void);
 
 
 #endif
+
+
 

@@ -23,17 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//   All the global variables that store the internal state.
-//   Theoretically speaking, the internal state of the engine
-//    should be found by looking at the variables collected
-//    here, and every relevant module will have to include
-//    this header file.
-//   In practice, things are a bit messy.
-
 ===========================================================================
 */
-
 
 #ifndef __D_STATE__
 #define __D_STATE__
@@ -56,11 +47,11 @@ If you have questions concerning this license or the applicable additional terms
 // ------------------------
 // Command line parameters.
 //
-extern  boolean	nomonsters;	// checkparm of -nomonsters
-extern  boolean	respawnparm;	// checkparm of -respawn
-extern  boolean	fastparm;	// checkparm of -fast
+extern  qboolean	nomonsters;	// checkparm of -nomonsters
+extern  qboolean	respawnparm;	// checkparm of -respawn
+extern  qboolean	fastparm;	// checkparm of -fast
 
-extern  boolean	devparm;	// DEBUG: launched with -devparm
+extern  qboolean	devparm;	// DEBUG: launched with -devparm
 
 
 
@@ -68,10 +59,10 @@ extern  boolean	devparm;	// DEBUG: launched with -devparm
 // Game Mode - identify IWAD as shareware, retail etc.
 //
 extern GameMode_t	gamemode;
-extern GameMission_t	gamemission;
+extern int	gamemission;
 
 // Set if homebrew PWAD stuff has been added.
-extern  boolean	modifiedgame;
+extern  qboolean	modifiedgame;
 
 
 // -------------------------------------------
@@ -88,7 +79,7 @@ extern  skill_t		startskill;
 extern  int             startepisode;
 extern	int		startmap;
 
-extern  boolean		autostart;
+extern  qboolean		autostart;
 
 // Selected by user. 
 extern  skill_t         gameskill;
@@ -96,14 +87,14 @@ extern  int		gameepisode;
 extern  int		gamemap;
 
 // Nightmare mode flag, single player.
-extern  boolean         respawnmonsters;
+extern  qboolean         respawnmonsters;
 
 // Netgame? Only true if >1 player.
-extern  boolean	netgame;
+extern  qboolean	netgame;
 
 // Flag: true only if started as net deathmatch.
 // An enum might handle altdeath/cooperative better.
-extern  boolean	deathmatch;	
+extern  qboolean	deathmatch;	
 	
 // -------------------------
 // Internal parameters for sound rendering.
@@ -111,13 +102,6 @@ extern  boolean	deathmatch;
 //  but are not (yet) supported with Linux
 //  (e.g. no sound volume adjustment with menu.
 
-// These are not used, but should be (menu).
-// From m_menu.c:
-//  Sound FX volume has default, 0 - 15
-//  Music volume has default, 0 - 15
-// These are multiplied by 8.
-extern int snd_SfxVolume;      // maximum volume for sound
-extern int snd_MusicVolume;    // maximum volume for music
 
 // Current music/sfx card - index useless
 //  w/o a reference LUT in a sound module.
@@ -137,17 +121,17 @@ extern int snd_DesiredSfxDevice;
 // Depending on view size - no status bar?
 // Note that there is no way to disable the
 //  status bar explicitely.
-extern  boolean statusbaractive;
+extern  qboolean statusbaractive;
 
-extern  boolean automapactive;	// In AutoMap mode?
-extern  boolean	menuactive;	// Menu overlayed?
-extern  boolean	paused;		// Game Pause?
+extern  qboolean automapactive;	// In AutoMap mode?
+extern  qboolean	menuactive;	// Menu overlayed?
+extern  qboolean	paused;		// Game Pause?
 
 
-extern  boolean		viewactive;
+extern  qboolean		viewactive;
 
-extern  boolean		nodrawers;
-extern  boolean		noblit;
+extern  qboolean		nodrawers;
+extern  qboolean		noblit;
 
 extern	int		viewwindowx;
 extern	int		viewwindowy;
@@ -187,14 +171,13 @@ extern  int	leveltime;	// tics in game play for par
 // DEMO playback/recording related stuff.
 // No demo, there is a human player in charge?
 // Disable save/end game?
-extern  boolean	usergame;
+extern  qboolean	usergame;
 
 //?
-extern  boolean	demoplayback;
-extern  boolean	demorecording;
+extern  qboolean	demoplayback;
 
 // Quit after playing a demo from cmdline.
-extern  boolean		singledemo;	
+extern  qboolean		singledemo;	
 
 
 
@@ -222,7 +205,7 @@ extern	int		gametic;
 extern	player_t	players[MAXPLAYERS];
 
 // Alive? Disconnected?
-extern  boolean		playeringame[MAXPLAYERS];
+extern  qboolean		playeringame[MAXPLAYERS];
 
 
 // Player spawn spots for deathmatch.
@@ -240,7 +223,7 @@ extern  wbstartstruct_t		wminfo;
 
 // LUT of ammunition limits for each kind.
 // This doubles with BackPack powerup item.
-extern  int		maxammo[NUMAMMO];
+const extern  int		maxammo[NUMAMMO];
 
 
 
@@ -255,7 +238,7 @@ extern	char		basedefault[1024];
 extern  FILE*		debugfile;
 
 // if true, load all graphics at level load
-extern  boolean         precache;
+extern  qboolean         precache;
 
 
 // wipegamestate can be set to -1
@@ -265,7 +248,7 @@ extern  gamestate_t     wipegamestate;
 extern  int             mouseSensitivity;
 //?
 // debug flag to cancel adaptiveness
-extern  boolean         singletics;	
+extern  qboolean         singletics;	
 
 extern  int             bodyqueslot;
 
@@ -281,7 +264,7 @@ extern int		skyflatnum;
 // Netgame stuff (buffers and pointers, i.e. indices).
 
 // This is ???
-extern  doomcom_t*	doomcom;
+extern  doomcom_t	doomcom;
 
 // This points inside doomcom.
 extern  doomdata_t*	netbuffer;	

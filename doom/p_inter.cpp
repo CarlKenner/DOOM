@@ -23,19 +23,12 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//	Handling interactions (i.e., collisions).
-
 ===========================================================================
 */
 
 #include "Precompiled.h"
 #include "globaldata.h"
 
-static const char
-rcsid[] = "$Id: p_inter.c,v 1.4 1997/02/03 22:45:11 b1 Exp $";
 
 // Data.
 #include "doomdef.h"
@@ -58,15 +51,16 @@ rcsid[] = "$Id: p_inter.c,v 1.4 1997/02/03 22:45:11 b1 Exp $";
 #endif
 #include "p_inter.h"
 
+#include "Main.h"
 
-#define BONUSADD	6
+#include "sys/sys_signin.h"
 
 #include "../../neo/d3xp/Game_local.h"
 
 // a weapon is found with two clip loads,
 // a big item has five clip loads
-int	maxammo[NUMAMMO] = {200, 50, 300, 50};
-int	clipammo[NUMAMMO] = {10, 4, 20, 1};
+const int	maxammo[NUMAMMO] = {200, 50, 300, 50};
+const int	clipammo[NUMAMMO] = {10, 4, 20, 1};
 
 
 //
@@ -80,7 +74,7 @@ int	clipammo[NUMAMMO] = {10, 4, 20, 1};
 // Returns false if the ammo can't be picked up at all
 //
 
-boolean
+qboolean
 P_GiveAmmo
 ( player_t*	player,
  ammotype_t	ammo,
@@ -102,8 +96,8 @@ P_GiveAmmo
 	else
 		num = clipammo[ammo]/2;
 
-	if (gameskill == sk_baby
-		|| gameskill == sk_nightmare)
+	if (::g->gameskill == sk_baby
+		|| ::g->gameskill == sk_nightmare)
 	{
 		// give double ammo in trainer mode,
 		// you'll need in nightmare
@@ -174,17 +168,17 @@ P_GiveAmmo
 // P_GiveWeapon
 // The weapon name may have a MF_DROPPED flag ored in.
 //
-boolean
+qboolean
 P_GiveWeapon
 ( player_t*	player,
  weapontype_t	weapon,
- boolean	dropped )
+ qboolean	dropped )
 {
-	boolean	gaveammo;
-	boolean	gaveweapon;
-	
-	if (netgame
-		&& (deathmatch!=2)
+	qboolean	gaveammo;
+	qboolean	gaveweapon;
+
+	if (::g->netgame
+		&& (::g->deathmatch!=2)
 		&& !dropped )
 	{
 		// leave placed weapons forever on net games
@@ -194,14 +188,14 @@ P_GiveWeapon
 		player->bonuscount += BONUSADD;
 		player->weaponowned[weapon] = true;
 
-		if (deathmatch)
+		if (::g->deathmatch)
 			P_GiveAmmo (player, weaponinfo[weapon].ammo, 5);
 		else
 			P_GiveAmmo (player, weaponinfo[weapon].ammo, 2);
 		player->pendingweapon = weapon;
 
-		if (player == &players[consoleplayer])
-			S_StartSound (NULL, sfx_wpnup);
+		if (player == &::g->players[::g->consoleplayer])
+			S_StartSound (player->mo, sfx_wpnup);
 		return false;
 	}
 
@@ -258,7 +252,7 @@ P_GiveBody
 // Returns false if the armor is worse
 // than the current armor.
 //
-boolean
+qboolean
 P_GiveArmor
 ( player_t*	player,
  int		armortype )
@@ -280,23 +274,36 @@ P_GiveArmor
 //
 // P_GiveCard
 //
-void
-P_GiveCard
-( player_t*	player,
- card_t	card )
-{
-	if (player->cards[card])
-	return;
-	
-	player->bonuscount = BONUSADD;
-	player->cards[card] = 1;
+void P_GiveCard( player_t* player, card_t card, const char *pickup_message ) {
+
+	if ( ( ::g->demoplayback && ::g->netgame ) || common->IsMultiplayer() ) {
+		for ( int i=0; i < MAXPLAYERS; i++ ) {
+			if ( ::g->playeringame[i] ) {
+				player_t *thePlayer = &::g->players[i];
+
+				if (thePlayer->cards[card])
+					continue;
+
+				thePlayer->bonuscount = BONUSADD;
+				thePlayer->message = pickup_message;
+				thePlayer->cards[card] = 1;
+			}
+		}
+	} else {
+		if (player->cards[card])
+			return;
+
+		player->bonuscount = BONUSADD;
+		player->message = pickup_message;
+		player->cards[card] = 1;
+	}
 }
 
 
 //
 // P_GivePower
 //
-boolean
+qboolean
 P_GivePower
 ( player_t*	player,
  int /*powertype_t*/	power )
@@ -417,7 +424,7 @@ P_TouchSpecialThing
 		break;
 
 	case SPR_MEGA:
-		if (gamemode != commercial)
+		if (::g->gamemode != commercial)
 			return;
 		player->health = 200;
 		player->mo->health = player->health;
@@ -432,7 +439,7 @@ P_TouchSpecialThing
 		//if (!player->cards[it_bluecard])
 			//player->message = GOTBLUECARD;
 		P_GiveCard (player, it_bluecard, GOTBLUECARD);
-		if (!netgame)
+		if (!::g->netgame)
 			break;
 		return;
 
@@ -440,7 +447,7 @@ P_TouchSpecialThing
 		//if (!player->cards[it_yellowcard])
 			//player->message = GOTYELWCARD;
 		P_GiveCard (player, it_yellowcard, GOTYELWCARD);
-		if (!netgame)
+		if (!::g->netgame)
 			break;
 		return;
 
@@ -448,7 +455,7 @@ P_TouchSpecialThing
 		//if (!player->cards[it_redcard])
 			//player->message = GOTREDCARD;
 		P_GiveCard (player, it_redcard, GOTREDCARD);
-		if (!netgame)
+		if (!::g->netgame)
 			break;
 		return;
 
@@ -456,7 +463,7 @@ P_TouchSpecialThing
 		//if (!player->cards[it_blueskull])
 			//player->message = GOTBLUESKUL;
 		P_GiveCard (player, it_blueskull, GOTBLUESKUL);
-		if (!netgame)
+		if (!::g->netgame)
 			break;
 		return;
 
@@ -464,7 +471,7 @@ P_TouchSpecialThing
 		//if (!player->cards[it_yellowskull])
 			//player->message = GOTYELWSKUL;
 		P_GiveCard (player, it_yellowskull, GOTYELWSKUL);
-		if (!netgame)
+		if (!::g->netgame)
 			break;
 		return;
 
@@ -472,7 +479,7 @@ P_TouchSpecialThing
 		//if (!player->cards[it_redskull])
 			//player->message = GOTREDSKULL;
 		P_GiveCard (player, it_redskull, GOTREDSKULL);
-		if (!netgame)
+		if (!::g->netgame)
 			break;
 		return;
 
@@ -681,10 +688,43 @@ P_TouchSpecialThing
 		player->itemcount++;
 	P_RemoveMobj (special);
 	player->bonuscount += BONUSADD;
-	if (player == &players[consoleplayer])
-		S_StartSound (NULL, sound);
+	if (player == &::g->players[::g->consoleplayer])
+		S_StartSound (player->mo, sound);
 }
 
+//
+// IsOnlineDeathmatchWithLocalProfile
+//
+// Helper to simplify the online frag stat tracking. Returns the
+// master user's profile if successful, NULL if not.
+// 
+idPlayerProfile * IsOnlineDeathmatchWithLocalProfile() {
+	if ( !MatchTypeIsOnline( session->GetGameLobbyBase().GetMatchParms().matchFlags ) ) {
+		return NULL;
+	}
+
+	if ( !::g ) {
+		return NULL;
+	}
+
+	if ( !::g->deathmatch ) {
+		return NULL;
+	}
+
+	// Assume that the master local user is the one playing.
+	idLocalUser * user = session->GetSignInManager().GetMasterLocalUser();
+	if ( user == NULL ) {
+		return NULL;
+	}
+
+	idPlayerProfile * profile = user->GetProfile();
+
+	if ( profile == NULL ) {
+		return NULL;
+	}
+	
+	return profile;
+}
 
 //
 // KillMobj
@@ -712,28 +752,105 @@ P_KillMobj
 			source->player->killcount++;	
 
 		if (target->player) {
-			source->player->frags[target->player-players]++;
+			source->player->frags[target->player-::g->players]++;
 
+			// Keep track of the local player's total frags for trophy awards.
+
+			// Make sure the killing player is the local player
+			if ( source->player == &(::g->players[::g->consoleplayer]) ) {
+				// Make sure this is an online game.
+				// TODO: PC
+			}
+		}
+
+		// DHM - Nerve :: Check for killing cyberdemon with fists achievement
+		// JAF TROPHY int port = gameLocal->GetPortForPlayer( DoomLib::GetPlayer() );
+
+		if ( source->player->readyweapon == wp_fist && target->type == MT_CYBORG && !common->IsMultiplayer() ) {
+			switch( DoomLib::GetGameSKU() ) {
+				case GAME_SKU_DOOM2_BFG: {
+					// Removing trophies for DOOM and DOOM II BFG due to point limit.
+					//gameLocal->UnlockAchievement( Doom2BFG_Trophies::YOU_HAVE_HUGE_GUTS_KILL_CYBERDEMON_WITH_FISTS );
+					break;
+				}
+				case GAME_SKU_DCC: {
+					// Not for PC.
+					//session->GetAchievementSystem().AchievementUnlock( session->GetSignInManager().GetMasterLocalUser(), DOOM_ACHIEVEMENT_KILL_CYBER_DEMON_WITH_FISTS );
+					break;
+				}
+				default: {
+					// No unlocks for other SKUs.
+					break;
+				}
+			}
+		}
+
+		// DHM - Nerve :: Chainsaw kills
+		if ( source->player->readyweapon == wp_chainsaw && !common->IsMultiplayer() ) {
+			source->player->chainsawKills++;
+			if ( source->player->chainsawKills == 20 ) {
+				switch( DoomLib::GetGameSKU() ) {
+					case GAME_SKU_DOOM2_BFG: {
+						// Removing trophies for DOOM and DOOM II BFG due to point limit.
+						//gameLocal->UnlockAchievement( Doom2BFG_Trophies::GREAT_COMMUNICATOR_20_CHAINSAW_KILLS );
+						break;
+					}
+					case GAME_SKU_DCC: {
+						// Not for PC.
+						//gameLocal->UnlockAchievement( DOOM_ACHIEVEMENT_20KILLS_CHAINSAW );
+						break;
+					}
+					default: {
+						// No unlocks for other SKUs.
+						break;
+					}
+				}
+			}
+		}
+
+		// DHM - Nerve :: Berserker kills
+		if ( source->player->readyweapon == wp_fist && source->player->powers[pw_strength] && !common->IsMultiplayer()) {
+			source->player->berserkKills++;
+			idLib::Printf( "Player has %d berserk kills\n", source->player->berserkKills );
+			if ( source->player->berserkKills == 20 ) {
+				switch( DoomLib::GetGameSKU() ) {
+					case GAME_SKU_DOOM2_BFG: {
+						// Removing trophies for DOOM and DOOM II BFG due to point limit.
+						//gameLocal->UnlockAchievement( Doom2BFG_Trophies::MAN_AND_A_HALF_20_BERSERK_KILLS );
+						break;
+					}
+					case GAME_SKU_DCC: {
+						// Not for PC.
+						//gameLocal->UnlockAchievement( DOOM_ACHIEVEMENT_20KILLS_BERSERKER );
+						break;
+					}
+					default: {
+						// No unlocks for other SKUs.
+						break;
+					}
+				}				
+			}
+		}
 	}
-	else if (!netgame && (target->flags & MF_COUNTKILL) )
+	else if (!::g->netgame && (target->flags & MF_COUNTKILL) )
 	{
 		// count all monster deaths,
 		// even those caused by other monsters
-		players[0].killcount++;
+		::g->players[0].killcount++;
 	}
 
 	if (target->player)
 	{
 		// count environment kills against you
 		if (!source)	
-			target->player->frags[target->player-players]++;
+			target->player->frags[target->player-::g->players]++;
 
 		target->flags &= ~MF_SOLID;
 		target->player->playerstate = PST_DEAD;
 		P_DropWeapon (target->player);
 
-		if (target->player == &players[consoleplayer]
-		&& automapactive)
+		if (target->player == &::g->players[::g->consoleplayer]
+		&& ::g->automapactive)
 		{
 			// don't die in auto map,
 			// switch view prior to dying
@@ -788,7 +905,7 @@ P_KillMobj
 
 //
 // P_DamageMobj
-// Damages both enemies and players
+// Damages both enemies and ::g->players
 // "inflictor" is the thing that caused the damage
 //  creature or missile, can be NULL (slime, etc)
 // "source" is the thing to target after taking damage
@@ -822,7 +939,7 @@ P_DamageMobj
 	}
 
 	player = target->player;
-	if (player && gameskill == sk_baby)
+	if (player && ::g->gameskill == sk_baby)
 		damage >>= 1; 	// take half damage in trainer mode
 
 
@@ -859,54 +976,65 @@ P_DamageMobj
 
 	// player specific
 	if (player)
-	{
-	// end of game hell hack
-	if (target->subsector->sector->special == 11
-		&& damage >= target->health)
-	{
-		damage = target->health - 1;
-	}
-	
+	{	
 
-	// Below certain threshold,
-	// ignore damage in GOD mode, or with INVUL power.
-	if ( damage < 1000
-		&& ( (player->cheats&CF_GODMODE)
-			|| player->powers[pw_invulnerability] ) )
-	{
-		return;
-	}
-	
-	if (player->armortype)
-	{
-		if (player->armortype == 1)
-		saved = damage/3;
-		else
-		saved = damage/2;
-		
-		if (player->armorpoints <= saved)
+		// end of game hell hack
+		if (target->subsector->sector->special == 11
+			&& damage >= target->health)
 		{
-		// armor is used up
-		saved = player->armorpoints;
-		player->armortype = 0;
+			damage = target->health - 1;
 		}
-		player->armorpoints -= saved;
-		damage -= saved;
-	}
-	player->health -= damage; 	// mirror mobj health here for Dave
-	if (player->health < 0)
-		player->health = 0;
-	
-	player->attacker = source;
-	player->damagecount += damage;	// add damage after armor / invuln
 
-	if (player->damagecount > 100)
-		player->damagecount = 100;	// teleport stomp does 10k points...
-	
-	temp = damage < 100 ? damage : 100;
+		float baseShake_High = 0.5f;
+		int baseShake_High_Dur = 100;
+		float baseShake_Low = 0.5f;
+		int baseShake_Low_Dur = 100;
+		int damageClamp = Min( damage, 100 ); 
+		float damageFloat = std::min( (float)damageClamp / 100.0f, 100.0f );
+		float additional = 0.5f * damageFloat;
+		int additional_time = 500.0f * damageFloat;
 
-	if (player == &players[consoleplayer])
-		I_Tactile (40,10,40+temp*2);
+		if( ::g->plyr == player ) {
+		}
+
+
+		// Below certain threshold,
+		// ignore damage in GOD mode, or with INVUL power.
+		if ( damage < 1000
+			&& ( (player->cheats&CF_GODMODE)
+			|| player->powers[pw_invulnerability] ) )
+		{
+			return;
+		}
+
+
+		if (player->armortype)
+		{
+			if (player->armortype == 1)
+				saved = damage/3;
+			else
+				saved = damage/2;
+
+			if (player->armorpoints <= saved)
+			{
+				// armor is used up
+				saved = player->armorpoints;
+				player->armortype = 0;
+			}
+			player->armorpoints -= saved;
+			damage -= saved;
+		}
+		player->health -= damage; 	// mirror mobj health here for Dave
+		if (player->health < 0)
+			player->health = 0;
+
+		player->attacker = source;
+		player->damagecount += damage;	// add damage after armor / invuln
+
+		if (player->damagecount > 100)
+			player->damagecount = 100;	// teleport stomp does 10k points...
+
+		temp = damage < 100 ? damage : 100;
 	}
 
 	// do the damage	
@@ -922,7 +1050,7 @@ P_DamageMobj
 	{
 		target->flags |= MF_JUSTHIT;	// fight back!
 
-		P_SetMobjState (target, target->info->painstate);
+		P_SetMobjState (target, (statenum_t)target->info->painstate);
 	}
 
 	target->reactiontime = 0;		// we're awake now...	
@@ -935,9 +1063,9 @@ P_DamageMobj
 		// chase after this one
 		target->target = source;
 		target->threshold = BASETHRESHOLD;
-		if (target->state == &states[target->info->spawnstate]
+		if (target->state == &::g->states[target->info->spawnstate]
 		&& target->info->seestate != S_NULL)
-			P_SetMobjState (target, target->info->seestate);
+			P_SetMobjState (target, (statenum_t)target->info->seestate);
 	}
 
 }

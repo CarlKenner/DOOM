@@ -23,10 +23,6 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	Printed strings for translation.
-//	English language support (default).
-
 ===========================================================================
 */
 
@@ -46,7 +42,7 @@ If you have questions concerning this license or the applicable additional terms
 //
 //	M_Menu.C
 //
-#define PRESSKEY 	"press a key."
+#define PRESSKEY 	"press any button."
 #define PRESSYN 	"press y or n."
 #define QUITMSG	"are you sure you want to\nquit this great game?"
 #define LOADNET 	"you can't do load while in a net game!\n\n"PRESSKEY
@@ -73,7 +69,7 @@ If you have questions concerning this license or the applicable additional terms
 #define NETEND	"you can't end a netgame!\n\n"PRESSKEY
 #define ENDGAME	"are you sure you want to end the game?\n\n"PRESSYN
 
-#define DOSY		"(press y to quit)"
+#define DOSY		"(press A to quit)"
 
 #define DETAILHI	"High detail"
 #define DETAILLO	"Low detail"
@@ -82,7 +78,8 @@ If you have questions concerning this license or the applicable additional terms
 #define GAMMALVL2	"Gamma correction level 2"
 #define GAMMALVL3	"Gamma correction level 3"
 #define GAMMALVL4	"Gamma correction level 4"
-#define EMPTYSTRING	"empty slot"
+//#define EMPTYSTRING	"empty slot"
+#define EMPTYSTRING	"---"
 
 //
 //	P_inter.C
@@ -199,7 +196,7 @@ If you have questions concerning this license or the applicable additional terms
 #define HUSTR_8	"level 8: tricks and traps"
 #define HUSTR_9	"level 9: the pit"
 #define HUSTR_10	"level 10: refueling base"
-#define HUSTR_11	"level 11: 'o' of destruction!"
+#define HUSTR_11	"level 11: circle of death"
 
 #define HUSTR_12	"level 12: the factory"
 #define HUSTR_13	"level 13: downtown"
@@ -222,8 +219,9 @@ If you have questions concerning this license or the applicable additional terms
 #define HUSTR_29	"level 29: the living end"
 #define HUSTR_30	"level 30: icon of sin"
 
-#define HUSTR_31	"level 31: wolfenstein"
-#define HUSTR_32	"level 32: grosse"
+#define HUSTR_31	"level 31: idkfa"
+#define HUSTR_32	"level 32: keen"
+#define HUSTR_33	"level 33: betray"
 
 #define PHUSTR_1	"level 1: congo"
 #define PHUSTR_2	"level 2: well of souls"
@@ -533,6 +531,26 @@ If you have questions concerning this license or the applicable additional terms
 "SUPER SECRET LEVEL!  YOU'D BETTER\n"\
 "BLAZE THROUGH THIS ONE!\n"
 
+
+#define C7TEXT \
+"TROUBLE WAS BREWING AGAIN IN YOUR FAVORITE\n"\
+"VACATION SPOT... HELL. SOME CYBERDEMON\n"\
+"PUNK THOUGHT HE COULD TURN HELL INTO A\n"\
+"PERSONAL AMUSEMENT PARK, AND MAKE EARTH\nTHE TICKET BOOTH.\n\n"\
+"WELL THAT HALF-ROBOT FREAK SHOW DIDN'T\n"\
+"KNOW WHO WAS COMING TO THE FAIR. THERE'S\n"\
+"NOTHING LIKE A SHOOTING GALLERY FULL OF\n"\
+"HELLSPAWN TO GET THE BLOOD PUMPING...\n\n"\
+"NOW THE WALLS OF THE DEMON'S LABYRINTH\n"\
+"ECHO WITH THE SOUND OF HIS METALLIC LIMBS\n"\
+"HITTING THE FLOOR. HIS DEATH MOAN GURGLES\n" \
+"OUT THROUGH THE MESS YOU LEFT OF HIS FACE.\n\n" \
+"THIS RIDE IS CLOSED."
+
+
+#define C8TEXT \
+"CONGRATULATIONS YOU HAVE FINISHED... \n\n"\
+"THE MASTER LEVELS\n"
 
 // after map 06	
 

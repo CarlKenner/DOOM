@@ -23,16 +23,11 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//	Put all global tate variables here.
-
 ===========================================================================
 */
 
-static const char
-rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
+#include "Precompiled.h"
+#include "globaldata.h"
 
 
 #ifdef __GNUG__
@@ -42,14 +37,11 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 
 
 // Game Mode - identify IWAD as shareware, retail etc.
-GameMode_t gamemode = indetermined;
-GameMission_t	gamemission = doom;
 
 // Language.
-Language_t   language = english;
 
 // Set if homebrew PWAD stuff has been added.
-boolean	modifiedgame;
+
 
 
 

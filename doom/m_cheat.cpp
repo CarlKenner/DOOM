@@ -23,17 +23,11 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//	Cheat sequence checking.
-
 ===========================================================================
 */
 
-
-static const char
-rcsid[] = "$Id: m_cheat.c,v 1.1 1997/02/03 21:24:34 b1 Exp $";
+#include "Precompiled.h"
+#include "globaldata.h"
 
 #include "m_cheat.h"
 
@@ -41,8 +35,6 @@ rcsid[] = "$Id: m_cheat.c,v 1.1 1997/02/03 21:24:34 b1 Exp $";
 // CHEAT SEQUENCE PACKAGE
 //
 
-static int		firsttime = 1;
-static unsigned char	cheat_xlate_table[256];
 
 
 //
@@ -52,60 +44,84 @@ static unsigned char	cheat_xlate_table[256];
 int
 cht_CheckCheat
 ( cheatseq_t*	cht,
- char		key )
+  char		key )
 {
-	int i;
-	int rc = 0;
+	return 0; // ALAN : Checking the cheats CRASHES??
+    int i;
+    int rc = 0;
 
-	if (firsttime)
-	{
-	firsttime = 0;
-	for (i=0;i<256;i++) cheat_xlate_table[i] = SCRAMBLE(i);
-	}
+    if (::g->firsttime)
+    {
+	::g->firsttime = 0;
+	for (i=0;i<256;i++) ::g->cheat_xlate_table[i] = SCRAMBLE(i);
+    }
 
-	if (!cht->p)
-	cht->p = cht->sequence; // initialize if first time
+    if (!cht->p)
+    {
+	cht->p = ::g->cheatbuffer + ::g->usedcheatbuffer;
+	int isize = 0;
+	while(cht->sequence[isize] != 0xff) cht->p[isize] = cht->sequence[isize];
+	cht->p[isize] = 0xff;
+	::g->usedcheatbuffer += isize;
+	::g->usedcheatbuffer ++;
+    }
 
-	if (*cht->p == 0)
+    if (*cht->p == 0)
 	*(cht->p++) = key;
-	else if
-	(cheat_xlate_table[(unsigned char)key] == *cht->p) cht->p++;
-	else
-	cht->p = cht->sequence;
+    else if
+	(::g->cheat_xlate_table[(unsigned char)key] == *cht->p) cht->p++;
+    else
+    {
+	int isize = 0;
+	while(cht->sequence[isize] != 0xff) cht->p[isize] = cht->sequence[isize];
+	cht->p[isize] = 0xff;
+    }
 
-	if (*cht->p == 1)
+    if (*cht->p == 1)
 	cht->p++;
-	else if (*cht->p == 0xff) // end of sequence character
-	{
-	cht->p = cht->sequence;
+    else if (*cht->p == 0xff) // end of sequence character
+    {
+	int isize = 0;
+	while(cht->sequence[isize] != 0xff) cht->p[isize] = cht->sequence[isize];
+	cht->p[isize] = 0xff;	
 	rc = 1;
-	}
+    }
 
-	return rc;
+    return rc;
 }
 
 void
 cht_GetParam
 ( cheatseq_t*	cht,
- char*		buffer )
+  char*		buffer )
 {
 
-	unsigned char *p, c;
 
-	p = cht->sequence;
-	while (*(p++) != 1);
-	
-	do
-	{
+    unsigned char pb[16];
+	unsigned char *p;
+    unsigned char c;
+
+	int isize = 0;
+
+	while(cht->sequence[isize] != 0xff) pb[isize] = cht->sequence[isize];
+	pb[isize] = 0xff;
+	p = &pb[0];
+
+    while (*(p++) != 1);
+    
+    do
+    {
 	c = *p;
 	*(buffer++) = c;
 	*(p++) = 0;
-	}
-	while (c && *p!=0xff );
+    }
+    while (c && *p!=0xff );
 
-	if (*p==0xff)
+    if (*p==0xff)
 	*buffer = 0;
 
+
 }
+
 
 

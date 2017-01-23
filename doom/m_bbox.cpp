@@ -23,19 +23,11 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//	Main loop menu stuff.
-//	Random number LUT.
-//	Default Config File.
-//	PCX Screenshots.
-
 ===========================================================================
 */
 
-static const char
-rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
+#include "Precompiled.h"
+#include "globaldata.h"
 
 
 #ifdef __GNUG__
@@ -43,30 +35,32 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #endif
 #include "m_bbox.h"
 
+#include "doomtype.h"
 
 
 
 void M_ClearBox (fixed_t *box)
 {
-	box[BOXTOP] = box[BOXRIGHT] = MININT;
-	box[BOXBOTTOM] = box[BOXLEFT] = MAXINT;
+    box[BOXTOP] = box[BOXRIGHT] = MININT;
+    box[BOXBOTTOM] = box[BOXLEFT] = MAXINT;
 }
 
 void
 M_AddToBox
 ( fixed_t*	box,
- fixed_t	x,
- fixed_t	y )
+  fixed_t	x,
+  fixed_t	y )
 {
-	if (x<box[BOXLEFT])
+    if (x<box[BOXLEFT])
 	box[BOXLEFT] = x;
-	else if (x>box[BOXRIGHT])
+    else if (x>box[BOXRIGHT])
 	box[BOXRIGHT] = x;
-	if (y<box[BOXBOTTOM])
+    if (y<box[BOXBOTTOM])
 	box[BOXBOTTOM] = y;
-	else if (y>box[BOXTOP])
+    else if (y>box[BOXTOP])
 	box[BOXTOP] = y;
 }
+
 
 
 

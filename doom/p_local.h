@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	Play functions, animation, global header.
-
 ===========================================================================
 */
-
 
 #ifndef __P_LOCAL__
 #define __P_LOCAL__
@@ -68,7 +64,7 @@ If you have questions concerning this license or the applicable additional terms
 #define MISSILERANGE	(32*64*FRACUNIT)
 
 // follow a player exlusively for 3 seconds
-#define	BASETHRESHOLD		100
+#define	BASETHRESHOLD	 	100
 
 
 
@@ -119,12 +115,12 @@ void P_RespawnSpecials (void);
 mobj_t*
 P_SpawnMobj
 ( fixed_t	x,
- fixed_t	y,
- fixed_t	z,
- mobjtype_t	type );
+  fixed_t	y,
+  fixed_t	z,
+  mobjtype_t	type );
 
 void 	P_RemoveMobj (mobj_t* th);
-boolean	P_SetMobjState (mobj_t* mobj, statenum_t state);
+qboolean	P_SetMobjState (mobj_t* mobj, statenum_t state);
 void 	P_MobjThinker (mobj_t* mobj);
 
 void	P_SpawnPuff (fixed_t x, fixed_t y, fixed_t z);
@@ -144,21 +140,21 @@ void P_NoiseAlert (mobj_t* target, mobj_t* emmiter);
 //
 typedef struct
 {
-	fixed_t	x;
-	fixed_t	y;
-	fixed_t	dx;
-	fixed_t	dy;
-	
+    fixed_t	x;
+    fixed_t	y;
+    fixed_t	dx;
+    fixed_t	dy;
+    
 } divline_t;
 
 typedef struct
 {
-	fixed_t	frac;		// along trace line
-	boolean	isaline;
-	union {
+    fixed_t	frac;		// along trace line
+    qboolean	isaline;
+    union {
 	mobj_t*	thing;
 	line_t*	line;
-	}			d;
+    }			d;
 } intercept_t;
 
 #define MAXINTERCEPTS	128
@@ -166,7 +162,7 @@ typedef struct
 extern intercept_t	intercepts[MAXINTERCEPTS];
 extern intercept_t*	intercept_p;
 
-typedef boolean (*traverser_t) (intercept_t *in);
+typedef qboolean (*traverser_t) (intercept_t *in);
 
 fixed_t P_AproxDistance (fixed_t dx, fixed_t dy);
 int 	P_PointOnLineSide (fixed_t x, fixed_t y, line_t* line);
@@ -182,8 +178,8 @@ extern fixed_t		lowfloor;
 
 void 	P_LineOpening (line_t* linedef);
 
-boolean P_BlockLinesIterator (int x, int y, boolean(*func)(line_t*) );
-boolean P_BlockThingsIterator (int x, int y, boolean(*func)(mobj_t*) );
+qboolean P_BlockLinesIterator (int x, int y, qboolean(*func)(line_t*) );
+qboolean P_BlockThingsIterator (int x, int y, qboolean(*func)(mobj_t*) );
 
 #define PT_ADDLINES		1
 #define PT_ADDTHINGS	2
@@ -191,14 +187,14 @@ boolean P_BlockThingsIterator (int x, int y, boolean(*func)(mobj_t*) );
 
 extern divline_t	trace;
 
-boolean
+qboolean
 P_PathTraverse
 ( fixed_t	x1,
- fixed_t	y1,
- fixed_t	x2,
- fixed_t	y2,
- int		flags,
- boolean	(*trav) (intercept_t *));
+  fixed_t	y1,
+  fixed_t	x2,
+  fixed_t	y2,
+  int		flags,
+  qboolean	(*trav) (intercept_t *));
 
 void P_UnsetThingPosition (mobj_t* thing);
 void P_SetThingPosition (mobj_t* thing);
@@ -210,77 +206,68 @@ void P_SetThingPosition (mobj_t* thing);
 
 // If "floatok" true, move would be ok
 // if within "tmfloorz - tmceilingz".
-extern boolean		floatok;
+extern qboolean		floatok;
 extern fixed_t		tmfloorz;
 extern fixed_t		tmceilingz;
 
 
 extern	line_t*		ceilingline;
 
-boolean P_CheckPosition (mobj_t *thing, fixed_t x, fixed_t y);
-boolean P_TryMove (mobj_t* thing, fixed_t x, fixed_t y);
-boolean P_TeleportMove (mobj_t* thing, fixed_t x, fixed_t y);
+qboolean P_CheckPosition (mobj_t *thing, fixed_t x, fixed_t y);
+qboolean P_TryMove (mobj_t* thing, fixed_t x, fixed_t y);
+qboolean P_TeleportMove (mobj_t* thing, fixed_t x, fixed_t y);
 void	P_SlideMove (mobj_t* mo);
-boolean P_CheckSight (mobj_t* t1, mobj_t* t2);
+qboolean P_CheckSight (mobj_t* t1, mobj_t* t2);
 void 	P_UseLines (player_t* player);
 
-boolean P_ChangeSector (sector_t* sector, boolean crunch);
+qboolean P_ChangeSector (sector_t* sector, qboolean crunch);
 
 extern mobj_t*	linetarget;	// who got hit (or NULL)
 
 fixed_t
 P_AimLineAttack
 ( mobj_t*	t1,
- angle_t	angle,
- fixed_t	distance );
+  angle_t	angle,
+  fixed_t	distance );
 
 void
 P_LineAttack
 ( mobj_t*	t1,
- angle_t	angle,
- fixed_t	distance,
- fixed_t	slope,
- int		damage );
+  angle_t	angle,
+  fixed_t	distance,
+  fixed_t	slope,
+  int		damage );
 
 void
 P_RadiusAttack
 ( mobj_t*	spot,
- mobj_t*	source,
- int		damage );
+  mobj_t*	source,
+  int		damage );
 
 
 
 //
 // P_SETUP
 //
-extern byte*		rejectmatrix;	// for fast sight rejection
-extern short*		blockmaplump;	// offsets in blockmap are from here
-extern short*		blockmap;
-extern int		bmapwidth;
-extern int		bmapheight;	// in mapblocks
-extern fixed_t		bmaporgx;
-extern fixed_t		bmaporgy;	// origin of block map
-extern mobj_t**		blocklinks;	// for thing chains
-
 
 
 //
 // P_INTER
 //
-extern int		maxammo[NUMAMMO];
-extern int		clipammo[NUMAMMO];
+extern const int		maxammo[NUMAMMO];
+extern const int		clipammo[NUMAMMO];
 
 void
 P_TouchSpecialThing
 ( mobj_t*	special,
- mobj_t*	toucher );
+  mobj_t*	toucher );
 
 void
 P_DamageMobj
 ( mobj_t*	target,
- mobj_t*	inflictor,
- mobj_t*	source,
- int		damage );
+  mobj_t*	inflictor,
+  mobj_t*	source,
+  int		damage );
 
 
 //
@@ -290,4 +277,6 @@ P_DamageMobj
 
 
 #endif	// __P_LOCAL__
+
+
 

@@ -23,23 +23,20 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-
 ===========================================================================
 */
 
-static const char
-rcsid[] = "$Id:$";
-
-// We are referring to sprite numbers.
-#include "info.h"
+#include "Precompiled.h"
 
 #ifdef __GNUG__
 #pragma implementation "d_items.h"
 #endif
 #include "d_items.h"
+
+#include "globaldata.h"
+
+// We are referring to sprite numbers.
+#include "info.h"
 
 
 //
@@ -54,7 +51,7 @@ rcsid[] = "$Id:$";
 // atkstate, i.e. attack/fire/hit frame
 // flashstate, muzzle flash
 //
-weaponinfo_t	weaponinfo[NUMWEAPONS] =
+const weaponinfo_t	weaponinfo[NUMWEAPONS] =
 {
     {
 	// fist

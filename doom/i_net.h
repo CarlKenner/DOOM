@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	System specific network interface stuff.
-
 ===========================================================================
 */
-
 
 #ifndef __I_NET__
 #define __I_NET__
@@ -46,6 +42,8 @@ If you have questions concerning this license or the applicable additional terms
 void I_InitNetwork (void);
 void I_NetCmd (void);
 
+// DHM - Nerve
+void I_ShutdownNetwork();
 
 #endif
 

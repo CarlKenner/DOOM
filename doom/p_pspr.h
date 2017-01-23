@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//  Sprite animation.
-
 ===========================================================================
 */
-
 
 #ifndef __P_PSPR__
 #define __P_PSPR__
@@ -69,18 +65,18 @@ If you have questions concerning this license or the applicable additional terms
 //
 typedef enum
 {
-	ps_weapon,
-	ps_flash,
-	NUMPSPRITES
+    ps_weapon,
+    ps_flash,
+    NUMPSPRITES
 
 } psprnum_t;
 
 typedef struct
 {
-	state_t*	state;	// a NULL state means not active
-	int		tics;
-	fixed_t	sx;
-	fixed_t	sy;
+    const state_t*	state;	// a NULL state means not active
+    int		tics;
+    fixed_t	sx;
+    fixed_t	sy;
 
 } pspdef_t;
 

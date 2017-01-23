@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	Endianess handling, swapping 16bit and 32bit.
-
 ===========================================================================
 */
-
 
 #ifndef __M_SWAP__
 #define __M_SWAP__
@@ -42,8 +38,27 @@ If you have questions concerning this license or the applicable additional terms
 // Endianess handling.
 // WAD files are stored little endian.
 #ifdef __BIG_ENDIAN__
-short	SwapSHORT(short);
-long	SwapLONG(long);
+//short	SwapSHORT(short);
+//long	SwapLONG(long);
+
+// Swap 16bit, that is, MSB and LSB byte.
+inline unsigned short SwapSHORT(unsigned short x)
+{
+    // No masking with 0xFF should be necessary. 
+    return (x>>8) | (x<<8);
+}
+
+// Swapping 32bit.
+inline unsigned long SwapLONG( unsigned long x)
+{
+    return
+	(x>>24)
+	| ((x>>8) & 0xff00)
+	| ((x<<8) & 0xff0000)
+	| (x<<24);
+}
+
+
 #define SHORT(x)	((short)SwapSHORT((unsigned short) (x)))
 #define LONG(x)         ((long)SwapLONG((unsigned long) (x)))
 #else

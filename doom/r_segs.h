@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	Refresh module, drawing LineSegs from BSP.
-
 ===========================================================================
 */
-
 
 #ifndef __R_SEGS__
 #define __R_SEGS__
@@ -42,8 +38,8 @@ If you have questions concerning this license or the applicable additional terms
 void
 R_RenderMaskedSegRange
 ( drawseg_t*	ds,
- int		x1,
- int		x2 );
+  int		x1,
+  int		x2 );
 
 
 #endif

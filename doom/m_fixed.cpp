@@ -23,29 +23,22 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//	Fixed point implementation.
-
 ===========================================================================
 */
 
-
-static const char
-rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
-
-#include "stdlib.h"
-
-#include "doomtype.h"
-#include "i_system.h"
+#include "Precompiled.h"
 
 #ifdef __GNUG__
 #pragma implementation "m_fixed.h"
 #endif
 #include "m_fixed.h"
 
+#include "globaldata.h"
 
+#include "stdlib.h"
+
+#include "doomtype.h"
+#include "i_system.h"
 
 
 // Fixme. __USE_C_FIXED__ or something.
@@ -53,9 +46,9 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 fixed_t
 FixedMul
 ( fixed_t	a,
- fixed_t	b )
+  fixed_t	b )
 {
-	return ((long long) a * (long long) b) >> FRACBITS;
+    return fixed_t( ((long long) a * (long long) b) >> FRACBITS );
 }
 
 
@@ -67,11 +60,11 @@ FixedMul
 fixed_t
 FixedDiv
 ( fixed_t	a,
- fixed_t	b )
+  fixed_t	b )
 {
-	if ( (abs(a)>>14) >= abs(b))
+    if ( (abs(a)>>14) >= abs(b))
 	return (a^b)<0 ? MININT : MAXINT;
-	return FixedDiv2 (a,b);
+    return FixedDiv2 (a,b);
 }
 
 
@@ -79,19 +72,20 @@ FixedDiv
 fixed_t
 FixedDiv2
 ( fixed_t	a,
- fixed_t	b )
+  fixed_t	b )
 {
 #if 0
-	long long c;
-	c = ((long long)a<<16) / ((long long)b);
-	return (fixed_t) c;
+    long long c;
+    c = ((long long)a<<16) / ((long long)b);
+    return (fixed_t) c;
 #endif
 
-	double c;
+    double c;
 
-	c = ((double)a) / ((double)b) * FRACUNIT;
+    c = ((double)a) / ((double)b) * FRACUNIT;
 
-	if (c >= 2147483648.0 || c < -2147483648.0)
+    if (c >= 2147483648.0 || c < -2147483648.0)
 	I_Error("FixedDiv: divide by zero");
-	return (fixed_t) c;
+    return (fixed_t) c;
 }
+

@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	System specific interface stuff.
-
 ===========================================================================
 */
-
 
 #ifndef __R_MAIN__
 #define __R_MAIN__
@@ -76,12 +72,12 @@ extern int		loopcount;
 
 // Lighting constants.
 // Now why not 32 levels here?
-#define LIGHTLEVELS			16
-#define LIGHTSEGSHIFT			4
+#define LIGHTLEVELS	        16
+#define LIGHTSEGSHIFT	         4
 
 #define MAXLIGHTSCALE		48
 #define LIGHTSCALESHIFT		12
-#define MAXLIGHTZ			128
+#define MAXLIGHTZ	       128
 #define LIGHTZSHIFT		20
 
 extern lighttable_t*	scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
@@ -107,11 +103,23 @@ extern	int		detailshift;
 // Function pointers to switch refresh/drawing functions.
 // Used to select shadow mode etc.
 //
-extern void		(*colfunc) (void);
-extern void		(*basecolfunc) (void);
-extern void		(*fuzzcolfunc) (void);
+extern void		(*colfunc) ( lighttable_t * ds_colormap,
+						byte * ds_source );
+extern void		(*basecolfunc) ( lighttable_t * ds_colormap,
+						byte * ds_source );
+extern void		(*fuzzcolfunc) ( lighttable_t * ds_colormap,
+						byte * ds_source );
 // No shadow effects on floors.
-extern void		(*spanfunc) (void);
+extern void		(*spanfunc) (
+	fixed_t xfrac,
+	fixed_t yfrac,
+	fixed_t ds_y,
+	int ds_x1,
+	int ds_x2,
+	fixed_t ds_xstep,
+	fixed_t ds_ystep,
+	lighttable_t * ds_colormap,
+	byte * ds_source );
 
 
 //
@@ -119,31 +127,31 @@ extern void		(*spanfunc) (void);
 int
 R_PointOnSide
 ( fixed_t	x,
- fixed_t	y,
- node_t*	node );
+  fixed_t	y,
+  node_t*	node );
 
 int
 R_PointOnSegSide
 ( fixed_t	x,
- fixed_t	y,
- seg_t*	line );
+  fixed_t	y,
+  seg_t*	line );
 
 angle_t
 R_PointToAngle
 ( fixed_t	x,
- fixed_t	y );
+  fixed_t	y );
 
 angle_t
 R_PointToAngle2
 ( fixed_t	x1,
- fixed_t	y1,
- fixed_t	x2,
- fixed_t	y2 );
+  fixed_t	y1,
+  fixed_t	x2,
+  fixed_t	y2 );
 
 fixed_t
 R_PointToDist
 ( fixed_t	x,
- fixed_t	y );
+  fixed_t	y );
 
 
 fixed_t R_ScaleFromGlobalAngle (angle_t visangle);
@@ -151,13 +159,13 @@ fixed_t R_ScaleFromGlobalAngle (angle_t visangle);
 subsector_t*
 R_PointInSubsector
 ( fixed_t	x,
- fixed_t	y );
+  fixed_t	y );
 
 void
 R_AddPointToBox
 ( int		x,
- int		y,
- fixed_t*	box );
+  int		y,
+  fixed_t*	box );
 
 
 

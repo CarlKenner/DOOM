@@ -23,8 +23,6 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:  Head up display
-
 ===========================================================================
 */
 
@@ -60,7 +58,7 @@ If you have questions concerning this license or the applicable additional terms
 void HU_Init(void);
 void HU_Start(void);
 
-boolean HU_Responder(event_t* ev);
+qboolean HU_Responder(event_t* ev);
 
 void HU_Ticker(void);
 void HU_Drawer(void);

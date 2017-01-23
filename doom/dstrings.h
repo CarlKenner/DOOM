@@ -23,15 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-//
-// $Log:$
-//
-// DESCRIPTION:
-//	DOOM strings, by language.
-
 ===========================================================================
 */
-
 
 #ifndef __DSTRINGS__
 #define __DSTRINGS__
@@ -41,11 +34,7 @@ If you have questions concerning this license or the applicable additional terms
 // Language selection (message strings).
 // Use -DFRENCH etc.
 
-#ifdef FRENCH
-#include "d_french.h"
-#else
 #include "d_englsh.h"
-#endif
 
 // Misc. other strings.
 #define SAVEGAMENAME	"doomsav"
@@ -60,12 +49,10 @@ If you have questions concerning this license or the applicable additional terms
 #define DEVDATA "devdata"
 
 
-// Not done in french?
-
 // QuitDOOM messages
 #define NUM_QUITMESSAGES   22
 
-extern char* endmsg[];
+extern const char* endmsg[];
 
 
 #endif

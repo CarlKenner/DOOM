@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	Refresh/render internal state variables (global).
-
 ===========================================================================
 */
-
 
 #ifndef __R_STATE__
 #define __R_STATE__
@@ -51,7 +47,6 @@ If you have questions concerning this license or the applicable additional terms
 //
 
 // needed for texture pegging
-extern fixed_t*		textureheight;
 
 // needed for pre rendering (fracs)
 extern fixed_t*		spritewidth;
@@ -136,8 +131,6 @@ extern int		rw_angle1;
 // Segs count?
 extern int		sscount;
 
-extern visplane_t*	floorplane;
-extern visplane_t*	ceilingplane;
 
 
 #endif

@@ -23,9 +23,6 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//  AutoMap module.
-
 ===========================================================================
 */
 
@@ -39,7 +36,7 @@ If you have questions concerning this license or the applicable additional terms
 
 
 // Called by main loop.
-boolean AM_Responder (event_t* ev);
+qboolean AM_Responder (event_t* ev);
 
 // Called by main loop.
 void AM_Ticker (void);

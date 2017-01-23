@@ -23,9 +23,6 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//  Intermission.
-
 ===========================================================================
 */
 
@@ -36,16 +33,6 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "doomdef.h"
 
-// States for the intermission
-
-typedef enum
-{
-	NoState = -1,
-	StatCount,
-	ShowNextLoc
-
-} stateenum_t;
-
 // Called by main loop, animate the intermission.
 void WI_Ticker (void);
 
@@ -54,7 +41,7 @@ void WI_Ticker (void);
 void WI_Drawer (void);
 
 // Setup for an intermission screen.
-void WI_Start(wbstartstruct_t*	wbstartstruct);
+void WI_Start(wbstartstruct_t*	 wbstartstruct);
 
 #endif
 

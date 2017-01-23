@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	System specific interface stuff.
-
 ===========================================================================
 */
-
 
 #ifndef __I_SYSTEM__
 #define __I_SYSTEM__
@@ -43,12 +39,6 @@ If you have questions concerning this license or the applicable additional terms
 
 // Called by DoomMain.
 void I_Init (void);
-
-// Called by startup code
-// to get the ammount of memory to malloc
-// for the zone management.
-byte*	I_ZoneBase (int *size);
-
 
 // Called by D_DoomLoop,
 // returns current time in tics.
@@ -71,7 +61,7 @@ void I_StartFrame (void);
 // called before processing each tic in a frame.
 // Quick syncronous operations are performed here.
 // Can call D_PostEvent.
-void I_StartTic (void);
+#include "doomlib.h"
 
 // Asynchronous interrupt functions should maintain private queues
 // that are read by the synchronous functions
@@ -89,14 +79,9 @@ ticcmd_t* I_BaseTiccmd (void);
 void I_Quit (void);
 
 
-// Allocates from low memory under dos,
-// just mallocs under unix
-byte* I_AllocLow (int length);
-
-void I_Tactile (int on, int off, int total);
-
-
-void I_Error (char *error, ...);
+void I_Error (const char *error, ...);
+void I_Printf(const char *error, ...);
+void I_PrintfE(const char *error, ...);
 
 
 #endif

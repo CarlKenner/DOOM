@@ -23,11 +23,6 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	Status bar code.
-//	Does the face/direction indicator animatin.
-//	Does palette indicators as well (red pain/berserk, bright pickup)
-
 ===========================================================================
 */
 
@@ -40,8 +35,8 @@ If you have questions concerning this license or the applicable additional terms
 // Size of statusbar.
 // Now sensitive for scaling.
 #define ST_HEIGHT	32*SCREEN_MUL
-#define ST_WIDTH	SCREENWIDTH
-#define ST_Y		(SCREENHEIGHT - ST_HEIGHT)
+#define ST_WIDTH	ORIGINAL_WIDTH
+#define ST_Y		(ORIGINAL_HEIGHT - ST_HEIGHT)
 
 
 //
@@ -49,13 +44,13 @@ If you have questions concerning this license or the applicable additional terms
 //
 
 // Called by main loop.
-boolean ST_Responder (event_t* ev);
+qboolean ST_Responder (event_t* ev);
 
 // Called by main loop.
 void ST_Ticker (void);
 
 // Called by main loop.
-void ST_Drawer (boolean fullscreen, boolean refresh);
+void ST_Drawer (qboolean fullscreen, qboolean refresh);
 
 // Called when the console player is spawned on each level.
 void ST_Start (void);
@@ -68,23 +63,23 @@ void ST_Init (void);
 // States for status bar code.
 typedef enum
 {
-	AutomapState,
-	FirstPersonState
-	
+    AutomapState,
+    FirstPersonState
+    
 } st_stateenum_t;
 
 
 // States for the chat code.
 typedef enum
 {
-	StartChatState,
-	WaitDestState,
-	GetChatState
-	
+    StartChatState,
+    WaitDestState,
+    GetChatState
+    
 } st_chatstateenum_t;
 
 
-boolean ST_Responder(event_t* ev);
+qboolean ST_Responder(event_t* ev);
 
 
 

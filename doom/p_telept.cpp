@@ -23,16 +23,11 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//	Teleportation.
-
 ===========================================================================
 */
 
-static const char
-rcsid[] = "$Id: p_telept.c,v 1.3 1997/01/28 22:08:29 b1 Exp $";
+#include "Precompiled.h"
+#include "globaldata.h"
 
 
 
@@ -57,86 +52,87 @@ rcsid[] = "$Id: p_telept.c,v 1.3 1997/01/28 22:08:29 b1 Exp $";
 int
 EV_Teleport
 ( line_t*	line,
- int		side,
- mobj_t*	thing )
+  int		side,
+  mobj_t*	thing )
 {
-	int		i;
-	int		tag;
-	mobj_t*	m;
-	mobj_t*	fog;
-	unsigned	an;
-	thinker_t*	thinker;
-	sector_t*	sector;
-	fixed_t	oldx;
-	fixed_t	oldy;
-	fixed_t	oldz;
+    int		i;
+    int		tag;
+    mobj_t*	m;
+    mobj_t*	fog;
+    unsigned	an;
+    thinker_t*	thinker;
+    sector_t*	sector;
+    fixed_t	oldx;
+    fixed_t	oldy;
+    fixed_t	oldz;
 
-	// don't teleport missiles
-	if (thing->flags & MF_MISSILE)
+    // don't teleport missiles
+    if (thing->flags & MF_MISSILE)
 	return 0;		
 
-	// Don't teleport if hit back of line,
-	//  so you can get out of teleporter.
-	if (side == 1)		
+    // Don't teleport if hit back of line,
+    //  so you can get out of teleporter.
+    if (side == 1)		
 	return 0;	
 
-	
-	tag = line->tag;
-	for (i = 0; i < numsectors; i++)
+    
+    tag = line->tag;
+    for (i = 0; i < ::g->numsectors; i++)
+    {
+	if (::g->sectors[ i ].tag == tag )
 	{
-	if (sectors[ i ].tag == tag )
-	{
-		thinker = thinkercap.next;
-		for (thinker = thinkercap.next;
-		thinker != &thinkercap;
-		thinker = thinker->next)
-		{
+	    thinker = ::g->thinkercap.next;
+	    for (thinker = ::g->thinkercap.next;
+		 thinker != &::g->thinkercap;
+		 thinker = thinker->next)
+	    {
 		// not a mobj
 		if (thinker->function.acp1 != (actionf_p1)P_MobjThinker)
-			continue;	
+		    continue;	
 
 		m = (mobj_t *)thinker;
 		
 		// not a teleportman
 		if (m->type != MT_TELEPORTMAN )
-			continue;		
+		    continue;		
 
 		sector = m->subsector->sector;
 		// wrong sector
-		if (sector-sectors != i )
-			continue;	
+		if (sector-::g->sectors != i )
+		    continue;	
 
 		oldx = thing->x;
 		oldy = thing->y;
 		oldz = thing->z;
 				
 		if (!P_TeleportMove (thing, m->x, m->y))
-			return 0;
+		    return 0;
 		
 		thing->z = thing->floorz;  //fixme: not needed?
 		if (thing->player)
-			thing->player->viewz = thing->z+thing->player->viewheight;
+		    thing->player->viewz = thing->z+thing->player->viewheight;
 				
 		// spawn teleport fog at source and destination
 		fog = P_SpawnMobj (oldx, oldy, oldz, MT_TFOG);
 		S_StartSound (fog, sfx_telept);
 		an = m->angle >> ANGLETOFINESHIFT;
 		fog = P_SpawnMobj (m->x+20*finecosine[an], m->y+20*finesine[an]
-					, thing->z, MT_TFOG);
+				   , thing->z, MT_TFOG);
 
 		// emit sound, where?
 		S_StartSound (fog, sfx_telept);
 		
 		// don't move for a bit
 		if (thing->player)
-			thing->reactiontime = 18;	
+		    thing->reactiontime = 18;	
 
 		thing->angle = m->angle;
 		thing->momx = thing->momy = thing->momz = 0;
 		return 1;
-		}	
+	    }	
 	}
-	}
-	return 0;
+    }
+    return 0;
 }
+
 

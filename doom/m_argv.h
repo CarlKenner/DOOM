@@ -23,11 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//  Nil.
-//    
-//-----------------------------------------------------------------------------
-
+===========================================================================
+*/
 
 #ifndef __M_ARGV__
 #define __M_ARGV__
@@ -40,13 +37,8 @@ extern  char**	myargv;
 
 // Returns the position of the given parameter
 // in the arg list (0 if not found).
-int M_CheckParm (char* check);
+int M_CheckParm (const char* check);
 
 
 #endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
 
-===========================================================================
-*/

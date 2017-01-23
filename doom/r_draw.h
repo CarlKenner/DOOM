@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	System specific interface stuff.
-
 ===========================================================================
 */
-
 
 #ifndef __R_DRAW__
 #define __R_DRAW__
@@ -53,23 +49,30 @@ extern byte*		dc_source;
 // The span blitting interface.
 // Hook in assembler or system specific BLT
 //  here.
-void 	R_DrawColumn (void);
-void 	R_DrawColumnLow (void);
+void 	R_DrawColumn ( lighttable_t * dc_colormap,
+						byte * dc_source );
+
+void 	R_DrawColumnLow ( lighttable_t * dc_colormap,
+						  byte * dc_source );
 
 // The Spectre/Invisibility effect.
-void 	R_DrawFuzzColumn (void);
-void 	R_DrawFuzzColumnLow (void);
+void 	R_DrawFuzzColumn ( lighttable_t * dc_colormap,
+						  byte * dc_source );
+void 	R_DrawFuzzColumnLow ( lighttable_t * dc_colormap,
+						  byte * dc_source );
 
 // Draw with color translation tables,
 //  for player sprite rendering,
 //  Green/Red/Blue/Indigo shirts.
-void	R_DrawTranslatedColumn (void);
-void	R_DrawTranslatedColumnLow (void);
+void	R_DrawTranslatedColumn ( lighttable_t * dc_colormap,
+						  byte * dc_source );
+void	R_DrawTranslatedColumnLow ( lighttable_t * dc_colormap,
+						  byte * dc_source );
 
 void
 R_VideoErase
 ( unsigned	ofs,
- int		count );
+  int		count );
 
 extern int		ds_y;
 extern int		ds_x1;
@@ -91,16 +94,33 @@ extern byte*		dc_translation;
 
 // Span blitting for rows, floor/ceiling.
 // No Sepctre effect needed.
-void 	R_DrawSpan (void);
+void 	R_DrawSpan (
+	fixed_t xfrac,
+	fixed_t yfrac,
+	fixed_t ds_y,
+	int ds_x1,
+	int ds_x2,
+	fixed_t ds_xstep,
+	fixed_t ds_ystep,
+	lighttable_t * ds_colormap,
+	byte * ds_source );
 
 // Low resolution mode, 160x200?
-void 	R_DrawSpanLow (void);
+void 	R_DrawSpanLow ( fixed_t xfrac,
+				  fixed_t yfrac,
+				  fixed_t ds_y,
+				  int ds_x1,
+				  int ds_x2,
+				  fixed_t ds_xstep,
+				  fixed_t ds_ystep,
+				  lighttable_t * ds_colormap,
+				  byte * ds_source );
 
 
 void
 R_InitBuffer
 ( int		width,
- int		height );
+  int		height );
 
 
 // Initialize color translation tables,

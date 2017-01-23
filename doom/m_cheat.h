@@ -23,12 +23,8 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-//	Cheat code checking.
-
 ===========================================================================
 */
-
 
 #ifndef __M_CHEAT__
 #define __M_CHEAT__
@@ -41,23 +37,25 @@ If you have questions concerning this license or the applicable additional terms
 ((((a)&1)<<7) + (((a)&2)<<5) + ((a)&4) + (((a)&8)<<1) \
  + (((a)&16)>>1) + ((a)&32) + (((a)&64)>>5) + (((a)&128)>>7))
 
-typedef struct
+struct cheatseq_t
 {
-	unsigned char*	sequence;
+	cheatseq_t() {}
+	cheatseq_t( const unsigned char *seq, unsigned char *pin ) : sequence( seq ), p( pin ) {}
+	const unsigned char*	sequence;
 	unsigned char*	p;
-	
-} cheatseq_t;
+    
+};
 
 int
 cht_CheckCheat
 ( cheatseq_t*		cht,
- char			key );
+  char			key );
 
 
 void
 cht_GetParam
 ( cheatseq_t*		cht,
- char*			buffer );
+  char*			buffer );
 
 
 #endif

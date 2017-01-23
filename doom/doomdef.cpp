@@ -23,26 +23,22 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//  DoomDef - basic defines for DOOM, e.g. Version, game mode
-//   and skill level, and display parameters.
-
 ===========================================================================
 */
 
-static const char
-rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
-
+#include "Precompiled.h"
 
 #ifdef __GNUG__
 #pragma implementation "doomdef.h"
 #endif
 #include "doomdef.h"
 
+#include "globaldata.h"
+
+
 // Location for any defines turned variables.
 
 // None.
+
 
 

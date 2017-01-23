@@ -23,22 +23,18 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//	Random number LUT.
-
 ===========================================================================
 */
 
-static const char rcsid[] = "$Id: m_random.c,v 1.1 1997/02/03 22:45:11 b1 Exp $";
+#include "Precompiled.h"
+#include "globaldata.h"
 
 
 //
 // M_Random
 // Returns a 0-255 number
 //
-unsigned char rndtable[256] = {
+const unsigned char rndtable[256] = {
     0,   8, 109, 220, 222, 241, 149, 107,  75, 248, 254, 140,  16,  66 ,
     74,  21, 211,  47,  80, 242, 154,  27, 205, 128, 161,  89,  77,  36 ,
     95, 110,  85,  48, 212, 140, 211, 249,  22,  79, 200,  50,  28, 188 ,
@@ -60,25 +56,23 @@ unsigned char rndtable[256] = {
     120, 163, 236, 249
 };
 
-int	rndindex = 0;
-int	prndindex = 0;
 
 // Which one is deterministic?
 int P_Random (void)
 {
-    prndindex = (prndindex+1)&0xff;
-    return rndtable[prndindex];
+    ::g->prndindex = (::g->prndindex+1)&0xff;
+    return rndtable[::g->prndindex];
 }
 
 int M_Random (void)
 {
-    rndindex = (rndindex+1)&0xff;
-    return rndtable[rndindex];
+    ::g->rndindex = (::g->rndindex+1)&0xff;
+    return rndtable[::g->rndindex];
 }
 
 void M_ClearRandom (void)
 {
-    rndindex = prndindex = 0;
+    ::g->rndindex = ::g->prndindex = 0;
 }
 
 

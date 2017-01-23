@@ -23,16 +23,11 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// $Log:$
-//
-// DESCRIPTION:
-//	Moving object handling. Spawn functions.
-
 ===========================================================================
 */
 
-static const char
-rcsid[] = "$Id: p_mobj.c,v 1.5 1997/02/03 22:45:12 b1 Exp $";
+#include "Precompiled.h"
+#include "globaldata.h"
 
 #include "i_system.h"
 #include "z_zone.h"
@@ -49,6 +44,7 @@ rcsid[] = "$Id: p_mobj.c,v 1.5 1997/02/03 22:45:12 b1 Exp $";
 
 #include "doomstat.h"
 
+extern bool globalNetworking;
 
 void G_PlayerReborn (int player);
 void P_SpawnMapThing (mapthing_t*	mthing);
@@ -58,25 +54,24 @@ void P_SpawnMapThing (mapthing_t*	mthing);
 // P_SetMobjState
 // Returns true if the mobj is still present.
 //
-int test;
 
-boolean
+qboolean
 P_SetMobjState
 ( mobj_t*	mobj,
  statenum_t	state )
 {
-	state_t*	st;
+	const state_t*	st;
 
 	do
 	{
 		if (state == S_NULL)
 		{
-			mobj->state = (state_t *) S_NULL;
+			mobj->state = (const state_t *) S_NULL;
 			P_RemoveMobj (mobj);
 			return false;
 		}
 
-		st = &states[state];
+		st = &::g->states[state];
 		mobj->state = st;
 		mobj->tics = st->tics;
 		mobj->sprite = st->sprite;
@@ -85,7 +80,7 @@ P_SetMobjState
 		// Modified handling.
 		// Call action functions when the state is set
 		if (st->action)		
-			st->action(mobj);	
+			st->action(mobj, NULL);	
 
 		state = st->nextstate;
 	} while (!mobj->tics);
@@ -101,7 +96,7 @@ void P_ExplodeMissile (mobj_t* mo)
 {
 	mo->momx = mo->momy = mo->momz = 0;
 
-	P_SetMobjState (mo, mobjinfo[mo->type].deathstate);
+	P_SetMobjState (mo, (statenum_t)mobjinfo[mo->type].deathstate);
 
 	mo->tics -= P_Random()&3;
 
@@ -135,7 +130,7 @@ void P_XYMovement (mobj_t* mo)
 			mo->flags &= ~MF_SKULLFLY;
 			mo->momx = mo->momy = mo->momz = 0;
 
-			P_SetMobjState (mo, mo->info->spawnstate);
+			P_SetMobjState (mo, (statenum_t)mo->info->spawnstate);
 		}
 		return;
 	}
@@ -181,9 +176,9 @@ void P_XYMovement (mobj_t* mo)
 			else if (mo->flags & MF_MISSILE)
 			{
 				// explode a missile
-				if (ceilingline &&
-					ceilingline->backsector &&
-					ceilingline->backsector->ceilingpic == skyflatnum)
+				if (::g->ceilingline &&
+					::g->ceilingline->backsector &&
+					::g->ceilingline->backsector->ceilingpic == ::g->skyflatnum)
 				{
 					// Hack to prevent missiles exploding
 					// against the sky.
@@ -235,7 +230,7 @@ void P_XYMovement (mobj_t* mo)
 		&& player->cmd.sidemove == 0 ) ) )
 	{
 		// if in a walking frame, stop moving
-		if ( player&&(unsigned)((player->mo->state - states)- S_PLAY_RUN1) < 4)
+		if ( player&&(unsigned)((player->mo->state - ::g->states)- S_PLAY_RUN1) < 4)
 			P_SetMobjState (player->mo, S_PLAY);
 
 		mo->momx = 0;
@@ -308,10 +303,11 @@ void P_ZMovement (mobj_t* mo)
 				&& mo->momz < -GRAVITY*8)	
 			{
 				// Squat down.
-				// Decrease viewheight for a moment
+				// Decrease ::g->viewheight for a moment
 				// after hitting the ground (hard),
 				// and utter appropriate sound.
 				mo->player->deltaviewheight = mo->momz>>3;
+				if (globalNetworking || (mo->player == &::g->players[::g->consoleplayer]))
 					S_StartSound (mo, sfx_oof);
 			}
 			mo->momz = 0;
@@ -461,15 +457,15 @@ void P_MobjThinker (mobj_t* mobj)
 		if (! (mobj->flags & MF_COUNTKILL) )
 			return;
 
-		if (!respawnmonsters)
+		if (!::g->respawnmonsters)
 			return;
 
 		mobj->movecount++;
 
-		if (mobj->movecount < 12*35)
+		if (mobj->movecount < 12*TICRATE)
 			return;
 
-		if ( leveltime&31 )
+		if ( ::g->leveltime&31 )
 			return;
 
 		if (P_Random () > 4)
@@ -492,10 +488,10 @@ P_SpawnMobj
  mobjtype_t	type )
 {
 	mobj_t*	mobj;
-	state_t*	st;
-	mobjinfo_t*	info;
-	
-	mobj = Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
+	const state_t*	st;
+	const mobjinfo_t*	info;
+
+	mobj = (mobj_t*)DoomLib::Z_Malloc(sizeof(*mobj), PU_LEVEL, NULL);
 	memset (mobj, 0, sizeof (*mobj));
 	info = &mobjinfo[type];
 
@@ -508,13 +504,13 @@ P_SpawnMobj
 	mobj->flags = info->flags;
 	mobj->health = info->spawnhealth;
 
-	if (gameskill != sk_nightmare)
+	if (::g->gameskill != sk_nightmare)
 		mobj->reactiontime = info->reactiontime;
 
 	mobj->lastlook = P_Random () % MAXPLAYERS;
 	// do not set the state with P_SetMobjState,
 	// because action routines can not be called yet
-	st = &states[info->spawnstate];
+	st = &::g->states[info->spawnstate];
 
 	mobj->state = st;
 	mobj->tics = st->tics;
@@ -554,20 +550,20 @@ void P_RemoveMobj (mobj_t* mobj)
 		&& (mobj->type != MT_INV)
 		&& (mobj->type != MT_INS))
 	{
-		itemrespawnque[iquehead] = mobj->spawnpoint;
-		itemrespawntime[iquehead] = leveltime;
-		iquehead = (iquehead+1)&(ITEMQUESIZE-1);
+		::g->itemrespawnque[::g->iquehead] = mobj->spawnpoint;
+		::g->itemrespawntime[::g->iquehead] = ::g->leveltime;
+		::g->iquehead = (::g->iquehead+1)&(ITEMQUESIZE-1);
 
 		// lose one off the end?
-		if (iquehead == iquetail)
-			iquetail = (iquetail+1)&(ITEMQUESIZE-1);
+		if (::g->iquehead == ::g->iquetail)
+			::g->iquetail = (::g->iquetail+1)&(ITEMQUESIZE-1);
 	}
 
 	// unlink from sector and block lists
 	P_UnsetThingPosition (mobj);
 
 	// stop any playing sound
-	S_StopSound (mobj);
+	//S_StopSound (mobj);
 
 	// free block
 	P_RemoveThinker ((thinker_t*)mobj);
@@ -591,19 +587,19 @@ void P_RespawnSpecials (void)
 
 	int			i;
 
-	// only respawn items in deathmatch
-	if (deathmatch != 2)
+	// only respawn items in ::g->deathmatch
+	if (::g->deathmatch != 2)
 		return;	// 
 
 	// nothing left to respawn?
-	if (iquehead == iquetail)
+	if (::g->iquehead == ::g->iquetail)
 		return;		
 
 	// wait at least 30 seconds
-	if (leveltime - itemrespawntime[iquetail] < 30*35)
+	if (::g->leveltime - ::g->itemrespawntime[::g->iquetail] < 30*TICRATE)
 		return;			
 
-	mthing = &itemrespawnque[iquetail];
+	mthing = &::g->itemrespawnque[::g->iquetail];
 
 	x = mthing->x << FRACBITS; 
 	y = mthing->y << FRACBITS; 
@@ -626,12 +622,12 @@ void P_RespawnSpecials (void)
 	else
 		z = ONFLOORZ;
 
-	mo = P_SpawnMobj (x,y,z, i);
+	mo = (mobj_t*)P_SpawnMobj (x,y,z, (mobjtype_t)i);
 	mo->spawnpoint = *mthing;	
 	mo->angle = ANG45 * (mthing->angle/45);
 
 	// pull it from the que
-	iquetail = (iquetail+1)&(ITEMQUESIZE-1);
+	::g->iquetail = (::g->iquetail+1)&(ITEMQUESIZE-1);
 }
 
 
@@ -655,10 +651,10 @@ void P_SpawnPlayer (mapthing_t* mthing)
 	int			i;
 
 	// not playing?
-	if (!playeringame[mthing->type-1])
+	if (!::g->playeringame[mthing->type-1])
 		return;					
 
-	p = &players[mthing->type-1];
+	p = &::g->players[mthing->type-1];
 
 	if (p->playerstate == PST_REBORN)
 		G_PlayerReborn (mthing->type-1);
@@ -668,7 +664,7 @@ void P_SpawnPlayer (mapthing_t* mthing)
 	z		= ONFLOORZ;
 	mobj	= P_SpawnMobj (x,y,z, MT_PLAYER);
 
-	// set color translations for player sprites
+	// set color translations for player ::g->sprites
 	if (mthing->type > 1)		
 		mobj->flags |= (mthing->type-1)<<MF_TRANSSHIFT;
 
@@ -690,17 +686,34 @@ void P_SpawnPlayer (mapthing_t* mthing)
 	P_SetupPsprites (p);
 
 	// give all cards in death match mode
-	if (deathmatch)
+	if (::g->deathmatch)
 		for (i=0 ; i<NUMCARDS ; i++)
 			p->cards[i] = true;
 
-	if (mthing->type-1 == consoleplayer)
+	if (mthing->type-1 == ::g->consoleplayer)
 	{
 		// wake up the status bar
 		ST_Start ();
 		// wake up the heads up text
 		HU_Start ();		
 	}
+
+	// Give him everything is Give All is on.
+	if( p->cheats & CF_GIVEALL ) {
+		 p->armorpoints = 200;
+		 p->armortype = 2;
+
+		int i;
+		for (i=0;i<NUMWEAPONS;i++)
+			 p->weaponowned[i] = true;
+
+		for (i=0;i<NUMAMMO;i++)
+			 p->ammo[i] =  p->maxammo[i];
+
+		for (i=0;i<NUMCARDS;i++)
+			 p->cards[i] = true;
+	}
+
 }
 
 
@@ -718,58 +731,61 @@ void P_SpawnMapThing (mapthing_t* mthing)
 	fixed_t		y;
 	fixed_t		z;
 
-	// count deathmatch start positions
+	// count ::g->deathmatch start positions
 	if (mthing->type == 11)
 	{
-		if (deathmatch_p < &deathmatchstarts[10])
+		if (::g->deathmatch_p < &::g->deathmatchstarts[10])
 		{
-			memcpy (deathmatch_p, mthing, sizeof(*mthing));
-			deathmatch_p++;
+			memcpy (::g->deathmatch_p, mthing, sizeof(*mthing));
+			::g->deathmatch_p++;
 		}
 		return;
 	}
 
-	// check for players specially
+	// check for ::g->players specially
 	if (mthing->type <= 4)
 	{
 		// save spots for respawning in network games
-		playerstarts[mthing->type-1] = *mthing;
-		if (!deathmatch)
+		::g->playerstarts[mthing->type-1] = *mthing;
+		if (!::g->deathmatch)
 			P_SpawnPlayer (mthing);
 
 		return;
 	}
 
 	// check for apropriate skill level
-	if (!netgame && (mthing->options & 16) )
+	if (!::g->netgame && (mthing->options & 16) )
 		return;
 
-	if (gameskill == sk_baby)
+	if (::g->gameskill == sk_baby)
 		bit = 1;
-	else if (gameskill == sk_nightmare)
+	else if (::g->gameskill == sk_nightmare)
 		bit = 4;
 	else
-		bit = 1<<(gameskill-1);
+		bit = 1<<(::g->gameskill-1);
 
 	if (!(mthing->options & bit) )
 		return;
 
 	// find which type to spawn
 	for (i=0 ; i< NUMMOBJTYPES ; i++)
-	if (mthing->type == mobjinfo[i].doomednum)
-		break;
-	
-	if (i==NUMMOBJTYPES)
-	I_Error ("P_SpawnMapThing: Unknown type %i at (%i, %i)",
-		mthing->type,
-		mthing->x, mthing->y);
-		
-	// don't spawn keycards and players in deathmatch
-	if (deathmatch && mobjinfo[i].flags & MF_NOTDMATCH)
+		if (mthing->type == mobjinfo[i].doomednum)
+			break;
+
+	if ( i==NUMMOBJTYPES ) {
+		//printf( "P_SpawnMapThing: Unknown type %i at (%i, %i)", mthing->type, mthing->x, mthing->y);
+		return;
+		//I_Error ("P_SpawnMapThing: Unknown type %i at (%i, %i)",
+		//mthing->type,
+		//mthing->x, mthing->y);
+	}
+
+	// don't spawn keycards and ::g->players in ::g->deathmatch
+	if (::g->deathmatch && mobjinfo[i].flags & MF_NOTDMATCH)
 		return;
 
-	// don't spawn any monsters if -nomonsters
-	if (nomonsters
+	// don't spawn any monsters if -::g->nomonsters
+	if (::g->nomonsters
 		&& ( i == MT_SKULL
 		|| (mobjinfo[i].flags & MF_COUNTKILL)) )
 	{
@@ -785,15 +801,15 @@ void P_SpawnMapThing (mapthing_t* mthing)
 	else
 		z = ONFLOORZ;
 
-	mobj = P_SpawnMobj (x,y,z, i);
+	mobj = (mobj_t*)P_SpawnMobj (x,y,z, (mobjtype_t)i);
 	mobj->spawnpoint = *mthing;
 
 	if (mobj->tics > 0)
 		mobj->tics = 1 + (P_Random () % mobj->tics);
 	if (mobj->flags & MF_COUNTKILL)
-		totalkills++;
+		::g->totalkills++;
 	if (mobj->flags & MF_COUNTITEM)
-		totalitems++;
+		::g->totalitems++;
 
 	mobj->angle = ANG45 * (mthing->angle/45);
 	if (mthing->options & MTF_AMBUSH)
@@ -829,7 +845,7 @@ P_SpawnPuff
 		th->tics = 1;
 
 	// don't make punches spark on the wall
-	if (attackrange == MELEERANGE) {
+	if (::g->attackrange == MELEERANGE) {
 
 		P_SetMobjState (th, S_PUFF3);
 		
@@ -953,32 +969,32 @@ P_SpawnPlayerMissile
 	// see which target is to be aimed at
 	an = source->angle;
 	slope = P_AimLineAttack (source, an, 16*64*FRACUNIT);
-	
-	if (!linetarget)
-	{
-	an += 1<<26;
-	slope = P_AimLineAttack (source, an, 16*64*FRACUNIT);
 
-	if (!linetarget)
+	if (!::g->linetarget)
 	{
-		an -= 2<<26;
+		an += 1<<26;
 		slope = P_AimLineAttack (source, an, 16*64*FRACUNIT);
+
+		if (!::g->linetarget)
+		{
+			an -= 2<<26;
+			slope = P_AimLineAttack (source, an, 16*64*FRACUNIT);
+		}
+
+		if (!::g->linetarget)
+		{
+			an = source->angle;
+			slope = 0;
+		}
 	}
 
-	if (!linetarget)
-	{
-		an = source->angle;
-		slope = 0;
-	}
-	}
-		
 	x = source->x;
 	y = source->y;
 	z = source->z + 4*8*FRACUNIT;
 
 	th = P_SpawnMobj (x,y,z, type);
 
-	if (th->info->seesound) {
+	if (th->info->seesound && (source->player == &::g->players[::g->consoleplayer]) ) {
 		S_StartSound (th, th->info->seesound);
 	}
 

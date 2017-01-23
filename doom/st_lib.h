@@ -23,9 +23,6 @@ In addition, the Doom 3 BFG Edition Source Code is also subject to certain addit
 
 If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
 
-// DESCRIPTION:
-// 	The status bar widget code.
-
 ===========================================================================
 */
 
@@ -53,30 +50,30 @@ If you have questions concerning this license or the applicable additional terms
 
 typedef struct
 {
-	// upper right-hand corner
-	//  of the number (right-justified)
-	int		x;
-	int		y;
+    // upper right-hand corner
+    //  of the number (right-justified)
+    int		x;
+    int		y;
 
-	// max # of digits in number
-	int width;    
+    // max # of digits in number
+    int width;    
 
-	// last number value
-	int		oldnum;
-	
-	// pointer to current value
-	int*	num;
+    // last number value
+    int		oldnum;
+    
+    // pointer to current value
+    int*	num;
 
-	// pointer to boolean stating
-	//  whether to update number
-	boolean*	on;
+    // pointer to qboolean stating
+    //  whether to update number
+    qboolean*	on;
 
-	// list of patches for 0-9
-	patch_t**	p;
+    // list of patches for 0-9
+    patch_t**	p;
 
-	// user data
-	int data;
-	
+    // user data
+    int data;
+    
 } st_number_t;
 
 
@@ -85,12 +82,12 @@ typedef struct
 //  or, more precisely, contains a number widget.)
 typedef struct
 {
-	// number information
-	st_number_t		n;
+    // number information
+    st_number_t		n;
 
-	// percent sign graphic
-	patch_t*		p;
-	
+    // percent sign graphic
+    patch_t*		p;
+    
 } st_percent_t;
 
 
@@ -98,26 +95,26 @@ typedef struct
 // Multiple Icon widget
 typedef struct
 {
-	// center-justified location of icons
-	int			x;
-	int			y;
+     // center-justified location of icons
+    int			x;
+    int			y;
 
-	// last icon number
-	int			oldinum;
+    // last icon number
+    int			oldinum;
 
-	// pointer to current icon
-	int*		inum;
+    // pointer to current icon
+    int*		inum;
 
-	// pointer to boolean stating
-	//  whether to update icon
-	boolean*		on;
+    // pointer to qboolean stating
+    //  whether to update icon
+    qboolean*		on;
 
-	// list of icons
-	patch_t**		p;
-	
-	// user data
-	int			data;
-	
+    // list of icons
+    patch_t**		p;
+    
+    // user data
+    int			data;
+    
 } st_multicon_t;
 
 
@@ -127,24 +124,24 @@ typedef struct
 
 typedef struct
 {
-	// center-justified location of icon
-	int			x;
-	int			y;
+    // center-justified location of icon
+    int			x;
+    int			y;
 
-	// last icon value
-	int			oldval;
+    // last icon value
+    int			oldval;
 
-	// pointer to current icon status
-	boolean*		val;
+    // pointer to current icon status
+    qboolean*		val;
 
-	// pointer to boolean
-	//  stating whether to update icon
-	boolean*		on;  
+    // pointer to qboolean
+    //  stating whether to update icon
+    qboolean*		on;  
 
 
-	patch_t*		p;	// icon
-	int			data;   // user data
-	
+    patch_t*		p;	// icon
+    int			data;   // user data
+    
 } st_binicon_t;
 
 
@@ -165,68 +162,68 @@ void STlib_init(void);
 void
 STlib_initNum
 ( st_number_t*		n,
- int			x,
- int			y,
- patch_t**		pl,
- int*			num,
- boolean*		on,
- int			width );
+  int			x,
+  int			y,
+  patch_t**		pl,
+  int*			num,
+  qboolean*		on,
+  int			width );
 
 void
 STlib_updateNum
 ( st_number_t*		n,
- boolean		refresh );
+  qboolean		refresh );
 
 
 // Percent widget routines
 void
 STlib_initPercent
 ( st_percent_t*		p,
- int			x,
- int			y,
- patch_t**		pl,
- int*			num,
- boolean*		on,
- patch_t*		percent );
+  int			x,
+  int			y,
+  patch_t**		pl,
+  int*			num,
+  qboolean*		on,
+  patch_t*		percent );
 
 
 void
 STlib_updatePercent
 ( st_percent_t*		per,
- int			refresh );
+  int			refresh );
 
 
 // Multiple Icon widget routines
 void
 STlib_initMultIcon
 ( st_multicon_t*	mi,
- int			x,
- int			y,
- patch_t**		il,
- int*			inum,
- boolean*		on );
+  int			x,
+  int			y,
+  patch_t**		il,
+  int*			inum,
+  qboolean*		on );
 
 
 void
 STlib_updateMultIcon
 ( st_multicon_t*	mi,
- boolean		refresh );
+  qboolean		refresh );
 
 // Binary Icon widget routines
 
 void
 STlib_initBinIcon
 ( st_binicon_t*		b,
- int			x,
- int			y,
- patch_t*		i,
- boolean*		val,
- boolean*		on );
+  int			x,
+  int			y,
+  patch_t*		i,
+  qboolean*		val,
+  qboolean*		on );
 
 void
 STlib_updateBinIcon
 ( st_binicon_t*		bi,
- boolean		refresh );
+  qboolean		refresh );
 
 #endif
 
